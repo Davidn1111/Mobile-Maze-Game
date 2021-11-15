@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">AMazeByDavidNi</string>
+
+    <string name = "titleWelcome">Welcome to the Maze</string>
+    <string name ="choose">Choose a:</string>
+    <string name = "skillLevel">Skill Level </string>
+    <string name = "mazeGen">Maze Generator</string>
+    <string name = "roomCheckBox">Generate with Rooms</string>
+    <string name = "revisit">Revisit</string>
+    <string name = "explore">Explore</string>
+
+    <string-array name="generation" >
+        <item>Boruvka</item>
+        <item>Prim</item>
+        <item>DFS</item>
+    </string-array>
 </resources>
