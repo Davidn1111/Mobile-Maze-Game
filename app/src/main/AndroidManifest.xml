@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AMazeByDavidNi">
         <activity
+            android:name=".GeneratingActivity"
+            android:exported="false" />
+        <activity
             android:name=".AMazeActivity"
             android:exported="true">
             <intent-filter>
