@@ -74,7 +74,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         });
 
         // Spinner for maze generation selection
-        Spinner mazeGenSpinner = findViewById(R.id.spinnerMazeGen);
+        Spinner mazeGenSpinner = (Spinner)findViewById(R.id.spinnerMazeGen);
         // Populate spinner with all generation options (default Boruvka)
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.generation, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -83,7 +83,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
 
         // Checkbox to determine if maze has rooms
         // Default checked to be true
-        CheckBox roomCheck = findViewById(R.id.roomCheckBox);
+        CheckBox roomCheck = (CheckBox)findViewById(R.id.roomCheckBox);
 
         // Checkbox Listener
         roomCheck.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +118,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         // Button for exploring maze
         // Clicking generates a random seed
         // and sends current maze settings to GeneratingActivity for maze generation.
-        Button explore = findViewById(R.id.explore);
+        Button explore = (Button)findViewById(R.id.explore);
 
         // Listener for the "explore" button
         explore.setOnClickListener(new View.OnClickListener() {
@@ -136,7 +136,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
 
         // Button for revisiting a previous maze
         // Clicking gets previous maze configuration stored in Android internal storage (as file)
-        Button revisit = findViewById(R.id.revisit);
+        Button revisit = (Button)findViewById(R.id.revisit);
 
         // Listener for the "revisit" button
         revisit.setOnClickListener(new View.OnClickListener() {
@@ -198,13 +198,16 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         writeFile(this.seed,this.size,this.generationMethod,this.rooms);
 
         // Toast message displaying maze configuration sent to GeneratingActivity, for debugging purposes
-        Toast.makeText(getApplicationContext(), "Sent maze configuration (" + this.seed + "," + this.size + "," + this.generationMethod+ "," + this.rooms, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Sent maze configuration (" + this.seed + "," + this.size + "," + this.generationMethod+ "," + this.rooms + ") for generating", Toast.LENGTH_SHORT).show();
         // Log message that displays the maze configuration sent to GeneratingActivity, for debugging purposes
         Log.v("AMazeActivity","Send the following information to GeneratingActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Algorithm: " + this.generationMethod + ", Rooms: " + this.rooms);
 
         // Send maze configuration to GeneratingActivity using intent
-        // TODO get intent to transfer maze configuration to GeneratingActivity
-        Intent intent = new Intent(this,GeneratingActivity.class);
+        Intent intent = new Intent(this, GeneratingActivity.class);
+        intent.putExtra("Seed", this.seed);
+        intent.putExtra("Size", this.size);
+        intent.putExtra("Algorithm",this.generationMethod);
+        intent.putExtra("Rooms", this.rooms);
         startActivity(intent);
     }
 
@@ -228,13 +231,16 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
             this.rooms = Boolean.parseBoolean(mazeConfigSplit[3]);
 
             // Toast message displaying maze configuration sent to GeneratingActivity, for debugging purposes
-            Toast.makeText(getApplicationContext(), "Sent maze configuration (" + this.seed + "," + this.size + "," + this.generationMethod+ "," + this.rooms, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Sent maze configuration (" + this.seed + "," + this.size + "," + this.generationMethod+ "," + this.rooms + ") for generating", Toast.LENGTH_SHORT).show();
             // Log message that displays the maze configuration sent to GeneratingActivity, for debugging purposes
             Log.v("AMazeActivity","Send the following information to GeneratingActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Algorithm: " + this.generationMethod + ", Rooms: " + this.rooms);
 
             // Send maze configuration to GeneratingActivity using intent
-            // TODO get intent to transfer maze configuration to GeneratingActivity
-            Intent intent = new Intent(this,GeneratingActivity.class);
+            Intent intent = new Intent(this, GeneratingActivity.class);
+            intent.putExtra("Seed", this.seed);
+            intent.putExtra("Size", this.size);
+            intent.putExtra("Algorithm",this.generationMethod);
+            intent.putExtra("Rooms", this.rooms);
             startActivity(intent);
         }
 
@@ -246,6 +252,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
 
     /**
      * Helper method that writes given maze configuration to a file.
+     * Prints Logcat verbose message for debugging purposes.
      * @param seed Seed of the maze
      * @param size Size of the maze
      * @param Algorithm Generation algorithm of the maze
@@ -274,6 +281,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
 
     /**
      * Helper method that reads the previous maze configuration stored in file and returns it.
+     * Prints Logcat verbose message for debugging purposes.
      * @return The previous maze configuration (stored as string, with information delimited by ",")
      */
     public String readFile() {
