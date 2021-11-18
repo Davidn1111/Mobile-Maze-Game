@@ -9,9 +9,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/titleWelcome"
+        android:text="@string/welcomeMsg"
         android:layout_gravity = "center"
-        android:layout_marginTop = "80dp"
+        android:layout_marginTop = "60dp"
         android:textColor = "@color/black"
         android:textSize = "35sp"
         />
@@ -19,10 +19,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/choose"
-        android:layout_gravity = "left"
+        android:text="@string/chooseMsg"
+        android:layout_gravity = "start"
         android:layout_marginTop = "40dp"
-        android:layout_marginLeft = "40dp"
+        android:layout_marginStart = "40dp"
         android:textColor = "@color/black"
         android:textSize = "20sp"
         />
@@ -30,7 +30,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/skillLevel"
+        android:text="@string/skillLevelMsg"
         android:layout_gravity = "center"
         android:layout_marginTop = "30dp"
         android:textColor = "@color/black"
@@ -52,7 +52,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/mazeGen"
+        android:text="@string/mazeGenMsg"
         android:layout_gravity = "center"
         android:layout_marginTop = "20dp"
         android:textColor = "@color/black"
@@ -63,8 +63,9 @@
         android:id="@+id/spinnerMazeGen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity = "center"
-        />
+        android:layout_gravity="center"
+        android:contentDescription="@string/genSpinnerContent"
+        android:minHeight="48dp" />
 
     <CheckBox
         android:id="@+id/roomCheckBox"
@@ -72,8 +73,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:text="@string/roomCheckBox"
+        android:layout_marginStart="30dp"
+        android:text="@string/roomCheckBoxMsg"
         android:textColor="@color/black"
         android:textSize="15sp"
         />
@@ -87,7 +88,7 @@
             android:id="@+id/revisit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:text="@string/revisit"
             android:backgroundTint = "@color/black"
@@ -98,7 +99,7 @@
             android:id="@+id/explore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="20dp"
             android:text="@string/explore"
             android:backgroundTint = "@color/black"

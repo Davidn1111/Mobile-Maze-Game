@@ -1,17 +1,29 @@
 <resources>
     <string name="app_name">AMazeByDavidNi</string>
 
-    <string name="titleWelcome">Welcome to the Maze</string>
-    <string name="choose">Choose a:</string>
-    <string name="skillLevel">Skill Level </string>
-    <string name="mazeGen">Maze Generator</string>
-    <string name="roomCheckBox">Generate with Rooms</string>
+    <string name="welcomeMsg">Welcome to the Maze</string>
+    <string name="chooseMsg">Choose a:</string>
+    <string name="skillLevelMsg">Skill Level </string>
+    <string name="mazeGenMsg">Maze Generator</string>
+    <string name="genSpinnerContent">Select Generation Method</string>
+    <string name="roomCheckBoxMsg">Generate with Rooms</string>
     <string name="revisit">Revisit</string>
     <string name="explore">Explore</string>
+
+    <string name="genMsg">Generating Maze</string>
+    <string name="driverSpinnerContent">Select Driver</string>
 
     <string-array name="generation">
         <item>Boruvka</item>
         <item>Prim</item>
         <item>DFS</item>
     </string-array>
+
+    <string-array name="drivers">
+        <item>Choose a Driver</item>
+        <item>Manual</item>
+        <item>Wizard</item>
+        <item>WallFollower</item>
+    </string-array>
+
 </resources>

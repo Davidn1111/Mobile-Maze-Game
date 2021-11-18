@@ -25,14 +25,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 public class AMazeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    // Seed of the maze
+    private int seed;
+    // Size of the maze, default to 0
+    private int size = 0;
     // Generation method of the maze, default Boruvka
     private String generationMethod = "Boruvka";
     // Flag to check if maze has rooms, default to true
     private boolean rooms = true;
-    // Size of the maze, default to 0
-    private int size = 0;
-    // Seed of the maze
-    private int seed;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
