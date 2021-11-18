@@ -11,7 +11,10 @@
     <string name="explore">Explore</string>
 
     <string name="genMsg">Generating Maze</string>
+    <string name="robotConfigMsg">Robot Configuration: </string>
+    <string name = "driverSelectMsg">Select a Driver: </string>
     <string name="driverSpinnerContent">Select Driver</string>
+    <string name= "robotSpinnerContent">Select Robot Configuration</string>
 
     <string-array name="generation">
         <item>Boruvka</item>
@@ -19,11 +22,11 @@
         <item>DFS</item>
     </string-array>
 
-    <string-array name="drivers">
-        <item>Choose a Driver</item>
-        <item>Manual</item>
-        <item>Wizard</item>
-        <item>WallFollower</item>
+    <string-array name="robots">
+        <item>Premium</item>
+        <item>Mediocre</item>
+        <item>SoSo</item>
+        <item>Shaky</item>
     </string-array>
 
 </resources>

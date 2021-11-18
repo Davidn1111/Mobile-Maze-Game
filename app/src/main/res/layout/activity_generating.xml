@@ -1,41 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".GeneratingActivity">
 
-    <TextView
+    <RadioGroup
+        android:id="@+id/driverRadio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/genProgressBar"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.069"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/driverText"
+        app:layout_constraintVertical_bias="0.0">
+
+        <RadioButton
+            android:id = "@+id/manualButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Manual"
+            android:onClick = "checkButton"
+            />
+
+        <RadioButton
+            android:id = "@+id/wizardButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wizard"
+            android:onClick = "checkButton"
+            />
+
+        <RadioButton
+            android:id = "@+id/followerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wall-Follower"
+            android:onClick = "checkButton"
+            />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/progressText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/genProgressBar"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_marginBottom="53dp"
+        android:layout_marginTop="88dp"
         android:text="@string/genMsg"
         android:textColor="@color/black"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
         android:id="@+id/genProgressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="343dp"
+        android:layout_height="62dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressText" />
+
+    <TextView
+        android:id="@+id/driverText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin ="10dp"
-        />
+        android:layout_above="@id/genProgressBar"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="36dp"
+        android:text="@string/driverSelectMsg"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/genProgressBar" />
 
+    <TextView
+        android:id="@+id/robotConfigText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/genProgressBar"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="36dp"
+        android:text="@string/robotConfigMsg"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.737"
+        app:layout_constraintStart_toEndOf="@+id/driverText"
+        app:layout_constraintTop_toBottomOf="@+id/genProgressBar" />
 
     <Spinner
-        android:id="@+id/spinnerDriver"
-        android:layout_width="289dp"
-        android:layout_height="wrap_content"
+        android:id="@+id/spinnerRobotConfig"
+        android:layout_width="175dp"
+        android:layout_height="55dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
-        android:layout_marginStart="64dp"
-        android:layout_marginBottom="228dp"
-        android:contentDescription="@string/driverSpinnerContent"
-        android:minHeight="48dp" />
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
+        android:contentDescription="@string/robotSpinnerContent"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/robotConfigText" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
