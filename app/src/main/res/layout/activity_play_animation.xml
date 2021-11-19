@@ -20,7 +20,7 @@
         app:layout_constraintVertical_bias="0.023" />
 
     <Button
-        android:id="@+id/autoWin"
+        android:id="@+id/Go2Winning"
         android:layout_width="143dp"
         android:layout_height="278dp"
         android:layout_marginStart="64dp"
@@ -33,7 +33,7 @@
         app:layout_constraintTop_toBottomOf="@+id/animMapText" />
 
     <Button
-        android:id="@+id/autoLose"
+        android:id="@+id/Go2Losing"
         android:layout_width="143dp"
         android:layout_height="278dp"
         android:layout_marginStart="4dp"
@@ -44,7 +44,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@id/autoWin"
+        app:layout_constraintStart_toEndOf="@id/Go2Winning"
         app:layout_constraintTop_toBottomOf="@+id/animMapText" />
 
     <TextView
@@ -98,13 +98,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Energy Consumption:"
+        android:text="Robot's Energy:"
         android:textColor = "@color/black"
         android:textSize = "15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/autoWin" />
+        app:layout_constraintTop_toBottomOf="@+id/Go2Winning" />
 
     <TextView
         android:id="@+id/speedText"
@@ -147,7 +147,7 @@
             android:layout_marginStart="38dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
-            android:contentDescription = "Forward Sensor Status"
+            android:contentDescription="Forward Sensor Status"
             app:srcCompat="@android:drawable/btn_dialog"
             app:tint="@android:color/holo_green_dark"
             tools:layout_editor_absoluteX="60dp"
