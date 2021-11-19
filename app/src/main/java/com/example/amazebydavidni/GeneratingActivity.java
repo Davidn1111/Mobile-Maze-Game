@@ -151,8 +151,6 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
                         }
                     });
                 }
-                // Wait 1000 ms before sending a warning message
-                android.os.SystemClock.sleep(1000);
                 mazeGenHandler.post(new Runnable() {
                     /**
                      * This method uses a handler to communicate to the UI that maze generation has finished.
@@ -166,7 +164,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
                         // If no driver has been selected, send out a warning.
                         if (driver == null) {
                             popup.setTitle("Reminder: No Driver Selected");
-                            popup.setMessage("Maze has finished generating. Please select a driver to start the maze game.");
+                            popup.setMessage("Maze has finished generating.\nPlease select a driver to start the maze game.");
                             popup.show();
                         }
                         // If the maze is finished generating and a driver is selected,
@@ -238,7 +236,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
      */
     private void startPlaying() {
         if (this.driver.equals("Manual")) {
-            // TODO add correct intents for PlayManuallyActivity (maze reference?)
+            // TODO add intents for PlayManuallyActivity (send maze reference)
             // Send maze configuration to GeneratingActivity using intent
             Intent intent = new Intent(this, PlayManuallyActivity.class);
             startActivity(intent);
@@ -249,7 +247,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
             Log.v("GeneratingActivity", "Starting PlayManuallyActivity");
         }
         else{
-            //TODO add correct intents for PlayAnimationActivity (maze reference?)
+            //TODO add correct intents for PlayAnimationActivity (send maze reference, driver, and sensor configuration)
             Intent intent = new Intent(this, PlayAnimationActivity.class);
             startActivity(intent);
 

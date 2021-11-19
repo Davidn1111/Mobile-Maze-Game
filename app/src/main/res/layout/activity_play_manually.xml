@@ -6,4 +6,168 @@
     android:layout_height="match_parent"
     tools:context=".PlayManuallyActivity">
 
+    <ToggleButton
+        android:id="@+id/manualSolutionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:contentDescription="Shows Solution"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.073" />
+
+    <ToggleButton
+        android:id="@+id/mazeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:contentDescription = "Shows Maze"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/manualSolutionButton"
+        app:layout_constraintHorizontal_bias="0.943"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.073" />
+
+    <ToggleButton
+        android:id="@+id/wallButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:contentDescription = "Shows Walls"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.055"
+        app:layout_constraintStart_toEndOf="@id/manualSolutionButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.073" />
+
+    <Button
+        android:id="@+id/mazeTemp"
+        android:layout_width="310dp"
+        android:layout_height="284dp"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/black"
+        android:text="Maze Goes Here\nClick to Win"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/solutionText" />
+
+    <TextView
+        android:id="@+id/mazeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Maze"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/mazeTemp"
+        app:layout_constraintEnd_toStartOf="@+id/solutionText"
+        app:layout_constraintHorizontal_bias="0.651"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mazeButton"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/solutionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Solution"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/manualSolutionButton" />
+
+    <TextView
+        android:id="@+id/wallText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Walls"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/mazeTemp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.348"
+        app:layout_constraintStart_toEndOf="@+id/solutionText"
+        app:layout_constraintTop_toBottomOf="@+id/wallButton"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/upButton"
+        android:layout_width="78dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/purple_500"
+        android:scaleType="fitCenter"
+        android:contentDescription="Move Up in Maze Game"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.324"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mazeTemp"
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+    <ImageButton
+        android:id="@+id/leftButton"
+        android:layout_width="78dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="30dp"
+        android:backgroundTint="@color/design_default_color_secondary"
+        android:scaleType="fitCenter"
+        android:contentDescription="Move Left in Maze Game"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/upButton"
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+    <ImageButton
+        android:id="@+id/rightButton"
+        android:layout_width="78dp"
+        android:layout_height="75dp"
+        android:backgroundTint="@color/cardview_dark_background"
+        android:scaleType="fitCenter"
+        android:contentDescription="Move Right in Maze Game"
+        app:layout_constraintStart_toEndOf="@+id/jumpButton"
+        app:layout_constraintTop_toBottomOf="@+id/upButton"
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+    <ImageButton
+        android:id="@+id/jumpButton"
+        android:layout_width="78dp"
+        android:layout_height="75dp"
+        android:backgroundTint="@color/purple_200"
+        android:scaleType="fitCenter"
+        android:contentDescription="Jump in Maze Game"
+        app:layout_constraintStart_toEndOf="@+id/leftButton"
+        app:layout_constraintTop_toBottomOf="@+id/upButton"
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+    <ImageButton
+        android:id="@+id/zoomOutButton"
+        android:layout_width="61dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="40dp"
+        android:contentDescription="Zoom out of Map"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/zoomInButton"
+        app:srcCompat="@android:drawable/btn_minus" />
+
+    <ImageButton
+        android:id="@+id/zoomInButton"
+        android:layout_width="61dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:contentDescription="Zoom into Map"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/mazeTemp"
+        app:srcCompat="@android:drawable/btn_plus" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
