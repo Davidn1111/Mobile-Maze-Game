@@ -4,6 +4,211 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlayAnimationActivity">
+    tools:context=".PlayManuallyActivity">
+
+    <ToggleButton
+        android:id="@+id/animMapButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Shows Solution While Automated Play Occurs"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.291"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023" />
+
+    <Button
+        android:id="@+id/autoWin"
+        android:layout_width="143dp"
+        android:layout_height="278dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/black"
+        android:text="Click to Win"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/animMapText" />
+
+    <Button
+        android:id="@+id/autoLose"
+        android:layout_width="143dp"
+        android:layout_height="278dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="@color/black"
+        android:text="Click to Lose"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/autoWin"
+        app:layout_constraintTop_toBottomOf="@+id/animMapText" />
+
+    <TextView
+        android:id="@+id/animMapText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Map"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.292"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/animMapButton" />
+
+    <ImageButton
+        android:id="@+id/animZoomOutButton"
+        android:layout_width="61dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/black"
+        android:contentDescription="Zoom out of Map While Automatic Play Occurs"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toEndOf="@id/animMapButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/btn_minus" />
+
+    <ImageButton
+        android:id="@+id/animZoomInButton"
+        android:layout_width="61dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/black"
+        android:contentDescription="Zoom into Map While Automatic Play Occurs"
+        android:scaleType="fitCenter"
+        app:layout_constraintStart_toEndOf="@+id/animZoomOutButton"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/btn_plus" />
+
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="295dp"
+        android:layout_height="31dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/energyText" />
+
+    <TextView
+        android:id="@+id/energyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Energy Consumption:"
+        android:textColor = "@color/black"
+        android:textSize = "15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/autoWin" />
+
+    <TextView
+        android:id="@+id/speedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="68dp"
+        android:text="Set Speed: "
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintStart_toEndOf="@+id/statusText"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar2" />
+
+    <SeekBar
+        android:id="@+id/speedBar"
+        android:layout_width="127dp"
+        android:layout_height="21dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintStart_toEndOf="@+id/relativeLayout"
+        app:layout_constraintTop_toBottomOf="@+id/speedText" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="130dp"
+        android:layout_height="136dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/statusText"
+        app:layout_constraintVertical_bias="0.0">
+
+        <ImageView
+            android:id="@+id/fSensor"
+            android:layout_width="51dp"
+            android:layout_height="45dp"
+            android:layout_above="@+id/leftSensor"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="38dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:contentDescription = "Forward Sensor Status"
+            app:srcCompat="@android:drawable/btn_dialog"
+            app:tint="@android:color/holo_green_dark"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="536dp" />
+
+        <ImageView
+            android:id="@+id/leftSensor"
+            android:layout_width="51dp"
+            android:layout_height="45dp"
+            android:layout_above="@+id/bSensor"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginBottom="0dp"
+            android:contentDescription = "Left Sensor Status"
+            app:srcCompat="@android:drawable/btn_dialog"
+            app:tint="@android:color/holo_green_dark"
+            tools:layout_editor_absoluteX="23dp"
+            tools:layout_editor_absoluteY="581dp" />
+
+        <ImageView
+            android:id="@+id/rightSensor"
+            android:layout_width="51dp"
+            android:layout_height="45dp"
+            android:layout_above="@+id/bSensor"
+            android:layout_below="@+id/fSensor"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
+            android:layout_toEndOf="@+id/leftSensor"
+            android:contentDescription = "Right Sensor Status"
+            app:srcCompat="@android:drawable/btn_dialog"
+            app:tint="@android:color/holo_green_dark"
+            tools:layout_editor_absoluteX="89dp"
+            tools:layout_editor_absoluteY="581dp" />
+
+        <ImageView
+            android:id="@+id/bSensor"
+            android:layout_width="51dp"
+            android:layout_height="45dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="38dp"
+            android:layout_marginBottom="0dp"
+            android:contentDescription = "Back Sensor Status"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@android:drawable/btn_dialog"
+            app:tint="@android:color/holo_green_dark" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="0dp"
+        android:text="Robot Status:"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar2" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
