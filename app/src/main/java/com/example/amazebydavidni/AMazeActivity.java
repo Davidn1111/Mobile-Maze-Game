@@ -41,8 +41,8 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
 
         // SeekBar for maze complexity/size
         // Range 0-10, starts at value 0
-        TextView sizeText = (TextView)findViewById(R.id.mazeSizeText);
-        SeekBar sizeSeekBar = (SeekBar)findViewById(R.id.sizeSeekBar);
+        TextView sizeText = findViewById(R.id.mazeSizeText);
+        SeekBar sizeSeekBar = findViewById(R.id.sizeSeekBar);
 
         // SeekBar Listener
         sizeSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -74,7 +74,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         });
 
         // Spinner for maze generation selection
-        Spinner mazeGenSpinner = (Spinner)findViewById(R.id.spinnerMazeGen);
+        Spinner mazeGenSpinner = findViewById(R.id.spinnerMazeGen);
         // Populate spinner with all generation options (default Boruvka)
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.generation, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -83,7 +83,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
 
         // Checkbox to determine if maze has rooms
         // Default checked to be true
-        CheckBox roomCheck = (CheckBox)findViewById(R.id.roomCheckBox);
+        CheckBox roomCheck = findViewById(R.id.roomCheckBox);
 
         // Checkbox Listener
         roomCheck.setOnClickListener(new View.OnClickListener() {
@@ -118,7 +118,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         // Button for exploring maze
         // Clicking generates a random seed
         // and sends current maze settings to GeneratingActivity for maze generation.
-        Button explore = (Button)findViewById(R.id.explore);
+        Button explore = findViewById(R.id.explore);
 
         // Listener for the "explore" button
         explore.setOnClickListener(new View.OnClickListener() {
@@ -136,7 +136,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
 
         // Button for revisiting a previous maze
         // Clicking gets previous maze configuration stored in Android internal storage (as file)
-        Button revisit = (Button)findViewById(R.id.revisit);
+        Button revisit = findViewById(R.id.revisit);
 
         // Listener for the "revisit" button
         revisit.setOnClickListener(new View.OnClickListener() {

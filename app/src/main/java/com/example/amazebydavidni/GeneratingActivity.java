@@ -70,10 +70,10 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         Log.v("GeneratingActivity","Received the following information from AMazeActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Algorithm: " + this.generationMethod + ", Rooms: " + this.rooms);
 
         // Radio button for driver selection
-        driverGroup = (RadioGroup) findViewById(R.id.driverRadio);
+        driverGroup = findViewById(R.id.driverRadio);
 
         // Spinner for robot configuration selection
-        robotSpinner = (Spinner)findViewById(R.id.spinnerRobotConfig);
+        robotSpinner = findViewById(R.id.spinnerRobotConfig);
         // Populate spinner with all robot options
         ArrayAdapter<CharSequence> robotAdapter = ArrayAdapter.createFromResource(this,R.array.robots, android.R.layout.simple_spinner_item);
         robotAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -81,9 +81,9 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         robotSpinner.setOnItemSelectedListener(this);
 
         // Progress bar of maze generation
-        mazeProgress = (ProgressBar) findViewById(R.id.genProgressBar);
+        mazeProgress = findViewById(R.id.genProgressBar);
         // Text displaying progress status
-        progressText = (TextView) findViewById(R.id.progressText);
+        progressText = findViewById(R.id.progressText);
 
         // Background Thread for P6 meant to simulate maze generation thread progress
         new Thread(new Runnable() {
@@ -91,15 +91,15 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
             boolean popupOpen = false;
 
             /**
-             * This method runs the background thread simulating maze generation.
-             * Simulates 1% of the maze generation being completed every 50 ms.
+             * This method runs a background thread simulating maze generation.
+             * The thread stalls every 50 ms to simulate the maze loading.
+             *
              * Sends popup warnings for the following issues:
              * A driver is selected before maze generation is complete.
              * A driver is not selected after maze generation is complete.
              * <P>
              *     If the maze is done generating, and a driver was selected,
-             *     this method starts the corresponding "playing" activity
-             *     based on the selected maze,driver, and robot configuration
+             *     this method starts the corresponding "playing" activity.
              * </P>
              */
             @Override
@@ -111,7 +111,11 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
                 popup.setMessage("Please wait for the maze to finish generating, before selecting a driver.");
 
                 popup.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                    // TODO write description
+                    /**
+                     * This method closes the AlertDialog when the "Ok" button is pressed.
+                     * @param dialogInterface The dialog interface of the desired AlertDialog
+                     * @param i Position of the button that was clicked
+                     */
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.cancel();
@@ -126,10 +130,14 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
 
                     // Use handler to communicate back with UI thread
                     mazeGenHandler.post(new Runnable() {
-                        //TODO write description
+                        /**
+                         * This method uses a handler to communicate the maze generation's progress to the UI's progress bar.
+                         * Sets the UI's progress bar to display progress of the maze generation.
+                         * This method also displays a warning message, if a driver is selected while maze generation has not yet been completed.
+                         */
                         @Override
                         public void run() {
-                            String progress = "Progress: " + progressStatus + "%";
+                            String progress = "Maze generation: " + progressStatus + "%";
                             progressText.setText(progress);
                             mazeProgress.setProgress(progressStatus);
                             // If a driver was selected before the maze was done generating, send out a warning
@@ -146,12 +154,18 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
                 // Wait 1000 ms before sending a warning message
                 android.os.SystemClock.sleep(1000);
                 mazeGenHandler.post(new Runnable() {
-                    // TODO write description
+                    /**
+                     * This method uses a handler to communicate to the UI that maze generation has finished.
+                     * If no driver had been selected when maze generation is completed,
+                     * this method displays a reminder to select a driver.
+                     * If a driver has been selected when maze generation is completed,
+                     * this method starts the corresponding "playing" activity.
+                     */
                     @Override
                     public void run() {
                         // If no driver has been selected, send out a warning.
                         if (driver == null) {
-                            popup.setTitle("Warning: No Driver Selected");
+                            popup.setTitle("Reminder: No Driver Selected");
                             popup.setMessage("Maze has finished generating. Please select a driver to start the maze game.");
                             popup.show();
                         }
@@ -189,17 +203,16 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
     }
 
     /**
-     * This method is called whenever a radio button in the "Drivers" radio group.
-     * Sets the desired driver based on the radio button selected.
+     * This method is called whenever a radio button in the "Drivers" radio group, is pressed.
+     * Whenever a radio button is pressed, the maze's driver is set to the button's corresponding driver.
      * If the maze is finished generating and a driver is selected,
-     * this method starts the corresponding "playing" activity
-     * based on the selected maze,driver, and robot configuration
+     * this method starts the corresponding "playing" activity.
      * @param view The current view
      */
     public void checkButton(View view) {
         int radioID = driverGroup.getCheckedRadioButtonId();
         // Set the current driver to the radio button that was checked
-        driverButton = (RadioButton) findViewById(radioID);
+        driverButton = findViewById(radioID);
         // Set the selected driver based on the button selected
         this.driver = driverButton.getText().toString();
 
@@ -218,16 +231,32 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
     }
 
     /**
-     * Helper method that starts the corresponding playing activity (PlayManualActivity or PlayAnimationActivity)
-     * based on the selected parameters (maze, driver, and robot configuration).
+     * Helper method that starts the corresponding playing activity (PlayManuallyActivity or PlayAnimationActivity)
+     * based on the selected driver.
+     * Afterwards, this method passes the selected maze, driver, and robot configuration to the playing activity
+     * for the maze game.
      */
     private void startPlaying() {
-        if (this.driver.equals("Manual"))
-            //TODO replace these with correct intents to PlayManualActivity
-            Log.v("GeneratingActivity","Now playing game in manual mode");
-        else
-            //TODO replace these with correct intents to PlayAnimationActivity
-            Log.v("GeneratingActivity","Now playing automatically playing maze with " + driver);
-    }
+        if (this.driver.equals("Manual")) {
+            // TODO add correct intents for PlayManuallyActivity (maze reference?)
+            // Send maze configuration to GeneratingActivity using intent
+            Intent intent = new Intent(this, PlayManuallyActivity.class);
+            startActivity(intent);
 
+            // Toast to showing app is moving to PlayManuallyActivity, for debugging
+            Toast.makeText(this,"Starting PlayManuallyActivity",Toast.LENGTH_SHORT).show();
+            // Log message to show that app is moving to PlayManuallyActivity, for debugging.
+            Log.v("GeneratingActivity", "Starting PlayManuallyActivity");
+        }
+        else{
+            //TODO add correct intents for PlayAnimationActivity (maze reference?)
+            Intent intent = new Intent(this, PlayAnimationActivity.class);
+            startActivity(intent);
+
+            // Toast to show that app is moving to PlayAnimationActivity with given driver (Wizard or WallFollower), for debugging
+            Toast.makeText(this,"Starting PlayAnimationActivity with driver: " + driver,Toast.LENGTH_SHORT).show();
+            // Log message to show that app is moving to PlayAnimationActivity with given driver (Wizard or WallFollower), for debugging
+            Log.v("GeneratingActivity","Starting PlayAnimationActivity with driver: " + driver);
+        }
+    }
 }

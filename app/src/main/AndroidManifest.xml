@@ -10,9 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AMazeByDavidNi">
         <activity
+            android:name=".PlayAnimationActivity"
+            android:exported="false"
+            android:parentActivityName=".AMazeActivity" />
+        <activity
+            android:name=".PlayManuallyActivity"
+            android:exported="false"
+            android:parentActivityName=".AMazeActivity" />
+        <activity
             android:name=".GeneratingActivity"
-            android:parentActivityName=".AMazeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".AMazeActivity" />
         <activity
             android:name=".AMazeActivity"
             android:exported="true">
