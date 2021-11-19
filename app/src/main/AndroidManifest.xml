@@ -10,6 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AMazeByDavidNi">
         <activity
+            android:name=".LosingActivity"
+            android:exported="false"
+            android:parentActivityName=".AMazeActivity" />
+        <activity
+            android:name=".WinningActivity"
+            android:exported="false"
+            android:parentActivityName=".AMazeActivity" />
+        <activity
             android:name=".PlayAnimationActivity"
             android:exported="false"
             android:parentActivityName=".AMazeActivity" />
