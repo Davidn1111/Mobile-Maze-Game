@@ -108,5 +108,81 @@ public class PlayAnimationActivity extends AppCompatActivity {
         // TODO Update progress bar to reflect robot's energy
 
         // TODO Write code such that sensor images change color to reflect status
+
+        // ImageButton for going to the win activity. Placeholder for maze game.
+        Button goToWin = findViewById(R.id.Go2Winning);
+        // Listener for goToWin button
+        goToWin.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Method listens if the "Go2Winning" button (placeholder for the maze game) is pressed.
+             * Communicates journey information to WinningActivity before starting it.
+             * Journey information uses hardcoded:
+             * path length = 100,
+             * shortest path length = 200,
+             * energy consumption = 300
+             */
+            @Override
+            public void onClick(View view) {
+                // Toast that you won the game, for debugging purposes
+                Toast.makeText(getApplicationContext(),"Going to WinningActivity",Toast.LENGTH_SHORT).show();
+                // Log message to show you won the game, for debugging purposes
+                Log.v("PlayAnimationActivity", "Going to WinningActivity");
+                goToWinning(100,200,300);
+            }
+        });
+
+        // ImageButton for going to the win activity. Placeholder for maze game.
+        Button goToLoss = findViewById(R.id.Go2Losing);
+        // Listener for goToWin button
+        goToLoss.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Method listens if the "Go2Losing" button (placeholder for the maze game) is pressed.
+             * Communicates journey information to LosingActivity before starting it.
+             * Journey information uses hardcoded:
+             * path length = 400,
+             * shortest path length = 500,
+             * energy consumption = 600
+             */
+            @Override
+            public void onClick(View view) {
+                // Toast that you won the game, for debugging purposes
+                Toast.makeText(getApplicationContext(),"Going to LosingActivity",Toast.LENGTH_SHORT).show();
+                // Log message to show you won the game, for debugging purposes
+                Log.v("PlayAnimationActivity", "Going to LosingActivity");
+                goToLosing(400,500,600);
+            }
+        });
+    }
+
+    /**
+     * Helper method called robot loses the maze game.
+     * Communicates robot's journey information (path length,shortest possible path, and energy consumption) to LosingActivity before starting it.
+     * @param pathLength Path length travelled by robot during its journey.
+     * @param shortestPath Shortest possible path (without jumping) to beat the maze.
+     * @param energyConsumed Energy consumed by the robot during its journey.
+     */
+    private void goToLosing(int pathLength, int shortestPath,int energyConsumed) {
+        // Send journey information to WinningActivity
+        Intent intent = new Intent(this, LosingActivity.class);
+        intent.putExtra("PathLength", pathLength);
+        intent.putExtra("ShortestPath", shortestPath);
+        intent.putExtra("energyConsumption", energyConsumed);
+        startActivity(intent);
+    }
+
+    /**
+     * Helper method called after robots beats the maze game.
+     * Communicates robot's journey information (path length,shortest possible path, and energy consumption) to WinningActivity before starting it.
+     * @param pathLength Path length travelled by robot during its journey.
+     * @param shortestPath Shortest possible path (without jumping) to beat the maze.
+     * @param energyConsumed Energy consumed by the robot during its journey.
+     */
+    private void goToWinning(int pathLength, int shortestPath,int energyConsumed) {
+        // Send journey information to WinningActivity
+        Intent intent = new Intent(this, WinningActivity.class);
+        intent.putExtra("PathLength", pathLength);
+        intent.putExtra("ShortestPath", shortestPath);
+        intent.putExtra("energyConsumption", energyConsumed);
+        startActivity(intent);
     }
 }
