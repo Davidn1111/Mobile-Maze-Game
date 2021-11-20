@@ -53,7 +53,5 @@ public class WinningActivity extends AppCompatActivity {
         else {
             energyConsumptionText.setText("");
         }
-
-
     }
 }

@@ -17,7 +17,7 @@
         android:textColor = "@color/white"
         android:background="@color/squidPink"
         android:textSize = "23sp"
-        android:id = "@+id/pathLengthText"
+        android:id = "@+id/lPathLengthText"
         />
 
     <TextView
@@ -29,7 +29,7 @@
         android:textColor = "@color/white"
         android:background="@color/squidPink"
         android:textSize = "23sp"
-        android:id = "@+id/shortestPathText"
+        android:id = "@+id/lShortestPathText"
         />
 
     <TextView
@@ -41,7 +41,7 @@
         android:textColor = "@color/white"
         android:background="@color/squidPink"
         android:textSize = "23sp"
-        android:id = "@+id/energyConsumptionText"
+        android:id = "@+id/lEnergyConsumptionText"
         />
 
 </LinearLayout>
