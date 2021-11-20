@@ -31,18 +31,15 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
     private String driver = null;
     // Robot sensor configuration, default Premium
     private String robotConfig = "Premium";
+    // Global maze object that is generated in this activity.
+    // TODO Used to play maze game in playing activities
+    //static Maze maze;
 
-    // Flag that determines if a previous warning was given.
-    // Used to prevent multiple warnings from appearing for the same driver selection (during maze generation).
-    private boolean warningGiven = false;
+    // Builder for pop messages
+    AlertDialog.Builder popup;
 
     // Radio group for driver selection
     private RadioGroup driverGroup;
-    // Radio button representing current driver selected
-    private RadioButton driverButton;
-    // Spinner for selecting robot configuration
-    private Spinner robotSpinner;
-
     // Text view of the progress bar
     private TextView progressText;
     // Progress bar for maze generation
@@ -73,7 +70,8 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         driverGroup = findViewById(R.id.driverRadio);
 
         // Spinner for robot configuration selection
-        robotSpinner = findViewById(R.id.spinnerRobotConfig);
+        // Spinner for selecting robot configuration
+        Spinner robotSpinner = findViewById(R.id.spinnerRobotConfig);
         // Populate spinner with all robot options
         ArrayAdapter<CharSequence> robotAdapter = ArrayAdapter.createFromResource(this,R.array.robots, android.R.layout.simple_spinner_item);
         robotAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -85,11 +83,24 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         // Text displaying progress status
         progressText = findViewById(R.id.progressText);
 
+        // Create a popup builder
+        // Popup Dialog Box
+        popup = new AlertDialog.Builder(GeneratingActivity.this);
+        popup.setCancelable(true);
+        popup.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+            /**
+             * This method closes the AlertDialog when the "Ok" button is pressed.
+             * @param dialogInterface The dialog interface of the desired AlertDialog
+             * @param i Position of the button that was clicked
+             */
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
         // Background Thread for P6 meant to simulate maze generation thread progress
         new Thread(new Runnable() {
-            // Flag to tell if popup is open (prevents popups from opening when one is already open)
-            boolean popupOpen = false;
-
             /**
              * This method runs a background thread simulating maze generation.
              * The thread stalls every 50 ms to simulate the maze loading.
@@ -104,25 +115,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
              */
             @Override
             public void run() {
-                // Popup Dialog Box
-                AlertDialog.Builder popup = new AlertDialog.Builder(GeneratingActivity.this);
-                popup.setCancelable(true);
-                popup.setTitle("Warning: Maze Still Generated");
-                popup.setMessage("Please wait for the maze to finish generating, before selecting a driver.");
-
-                popup.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                    /**
-                     * This method closes the AlertDialog when the "Ok" button is pressed.
-                     * @param dialogInterface The dialog interface of the desired AlertDialog
-                     * @param i Position of the button that was clicked
-                     */
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                        popupOpen = false;
-                    }
-                });
-
+                // Simulate maze generation
                 while (progressStatus < 100) {
                     progressStatus++;
                     // Stall the progress bar loading by 50 ms every 1% to simulate actual loading
@@ -140,14 +133,6 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
                             String progress = "Maze generation: " + progressStatus + "%";
                             progressText.setText(progress);
                             mazeProgress.setProgress(progressStatus);
-                            // If a driver was selected before the maze was done generating, send out a warning
-                            // Make sure that no additional warnings are sent if popup is currently open
-                            // or if a warning was previously given
-                            if(driver != null && !popupOpen && !warningGiven) {
-                                popup.show();
-                                popupOpen = true;
-                                warningGiven = true;
-                            }
                         }
                     });
                 }
@@ -203,6 +188,8 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
     /**
      * This method is called whenever a radio button in the "Drivers" radio group, is pressed.
      * Whenever a radio button is pressed, the maze's driver is set to the button's corresponding driver.
+     * If the maze is not finished generating and a driver is selected,
+     * send out a warning message for the use to wait.
      * If the maze is finished generating and a driver is selected,
      * this method starts the corresponding "playing" activity.
      * @param view The current view
@@ -210,7 +197,8 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
     public void checkButton(View view) {
         int radioID = driverGroup.getCheckedRadioButtonId();
         // Set the current driver to the radio button that was checked
-        driverButton = findViewById(radioID);
+        // Radio button representing current driver selected
+        RadioButton driverButton = findViewById(radioID);
         // Set the selected driver based on the button selected
         this.driver = driverButton.getText().toString();
 
@@ -219,13 +207,20 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         // Log message of selected driver, for debugging
         Log.v("GeneratingActivity","Selected Driver: " + this.driver);
 
-        // Reset warning given
-        warningGiven = false;
+        // Set the popup warning message
+        this.popup.setTitle("Warning: Maze Still Generated");
+        this.popup.setMessage("Please wait for the maze to finish generating, before selecting a driver.");
+        // If a driver was selected before the maze was done generating, send out a warning
+        // Make sure that no additional warnings are sent if popup is currently open
+        if(this.progressStatus != 100) {
+            this.popup.show();
+        }
 
         // If the maze is finished generating and a driver is selected,
         // go to the corresponding playing activity.
-        if (progressStatus == 100)
+        else {
             startPlaying();
+        }
     }
 
     /**

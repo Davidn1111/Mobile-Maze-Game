@@ -246,6 +246,8 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
 
         // No previous maze configuration exists
         else {
+            // Toast message displaying maze configuration sent to GeneratingActivity, for debugging purposes
+            Toast.makeText(getApplicationContext(), "Error: No previous maze exists in persistent storage", Toast.LENGTH_SHORT).show();
             Log.e("AMazeActivity", "No Previous Maze Configuration exists");
         }
     }
