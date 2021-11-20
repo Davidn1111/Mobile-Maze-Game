@@ -85,7 +85,7 @@
         app:srcCompat="@android:drawable/btn_plus" />
 
     <ProgressBar
-        android:id="@+id/progressBar2"
+        android:id="@+id/robotEnergyBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="295dp"
         android:layout_height="31dp"
@@ -115,7 +115,7 @@
         android:textColor="@color/black"
         android:textSize="15sp"
         app:layout_constraintStart_toEndOf="@+id/statusText"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar2" />
+        app:layout_constraintTop_toBottomOf="@+id/robotEnergyBar" />
 
     <SeekBar
         android:id="@+id/speedBar"
@@ -123,6 +123,7 @@
         android:layout_height="21dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="0dp"
+        android:max="3"
         app:layout_constraintStart_toEndOf="@+id/relativeLayout"
         app:layout_constraintTop_toBottomOf="@+id/speedText" />
 
@@ -149,7 +150,6 @@
             android:layout_marginBottom="0dp"
             android:contentDescription="Forward Sensor Status"
             app:srcCompat="@android:drawable/btn_dialog"
-            app:tint="@android:color/holo_green_dark"
             tools:layout_editor_absoluteX="60dp"
             tools:layout_editor_absoluteY="536dp" />
 
@@ -161,9 +161,8 @@
             android:layout_alignParentStart="true"
             android:layout_marginStart="0dp"
             android:layout_marginBottom="0dp"
-            android:contentDescription = "Left Sensor Status"
+            android:contentDescription="Left Sensor Status"
             app:srcCompat="@android:drawable/btn_dialog"
-            app:tint="@android:color/holo_green_dark"
             tools:layout_editor_absoluteX="23dp"
             tools:layout_editor_absoluteY="581dp" />
 
@@ -177,9 +176,8 @@
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
             android:layout_toEndOf="@+id/leftSensor"
-            android:contentDescription = "Right Sensor Status"
+            android:contentDescription="Right Sensor Status"
             app:srcCompat="@android:drawable/btn_dialog"
-            app:tint="@android:color/holo_green_dark"
             tools:layout_editor_absoluteX="89dp"
             tools:layout_editor_absoluteY="581dp" />
 
@@ -194,7 +192,7 @@
             android:contentDescription = "Back Sensor Status"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@android:drawable/btn_dialog"
-            app:tint="@android:color/holo_green_dark" />
+            />
 
     </RelativeLayout>
 
@@ -208,7 +206,7 @@
         android:textColor="@color/black"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar2" />
+        app:layout_constraintTop_toBottomOf="@+id/robotEnergyBar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
