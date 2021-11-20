@@ -116,7 +116,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
                 // Toast to show Zoom In button was pressed, for debugging
                 Toast.makeText(getApplicationContext(), "Zooming In", Toast.LENGTH_SHORT).show();
                 // Log message to show Zoom In button was pressed, for debugging
-                Log.v("PlayAnimationActivity", "Zooming in On Map");
+                Log.v("PlayAnimationActivity", "Zooming in on Map");
             }
         });
 

@@ -216,7 +216,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
                 // Toast to show Zoom In button was pressed, for debugging
                 Toast.makeText(getApplicationContext(),"Zooming In",Toast.LENGTH_SHORT).show();
                 // Log message to show Zoom In button was pressed, for debugging
-                Log.v("PlayManuallyActivity", "Zooming in On Map");
+                Log.v("PlayManuallyActivity", "Zooming in on Map");
             }
         });
 

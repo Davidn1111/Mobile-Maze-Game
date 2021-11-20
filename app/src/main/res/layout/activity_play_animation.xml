@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background = "@drawable/sky"
     tools:context=".PlayManuallyActivity">
 
     <ToggleButton
@@ -53,6 +54,7 @@
         android:layout_height="wrap_content"
         android:text="Show Map"
         android:textColor="@color/black"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.292"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,12 +66,12 @@
         android:layout_height="55dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/black"
         android:contentDescription="Zoom out of Map While Automatic Play Occurs"
         android:scaleType="fitCenter"
+        android:background ="@drawable/minus"
         app:layout_constraintStart_toEndOf="@id/animMapButton"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/btn_minus" />
+        />
 
     <ImageButton
         android:id="@+id/animZoomInButton"
@@ -77,12 +79,12 @@
         android:layout_height="55dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/black"
         android:contentDescription="Zoom into Map While Automatic Play Occurs"
         android:scaleType="fitCenter"
+        android:background ="@drawable/plus"
         app:layout_constraintStart_toEndOf="@+id/animZoomOutButton"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/btn_plus" />
+        />
 
     <ProgressBar
         android:id="@+id/robotEnergyBar"
