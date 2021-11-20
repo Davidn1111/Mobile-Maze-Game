@@ -200,7 +200,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         // Toast message displaying maze configuration sent to GeneratingActivity, for debugging purposes
         Toast.makeText(getApplicationContext(), "Sent maze configuration (" + this.seed + "," + this.size + "," + this.generationMethod+ "," + this.rooms + ") for generating", Toast.LENGTH_SHORT).show();
         // Log message that displays the maze configuration sent to GeneratingActivity, for debugging purposes
-        Log.v("AMazeActivity","Send the following information to GeneratingActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Algorithm: " + this.generationMethod + ", Rooms: " + this.rooms);
+        Log.v("AMazeActivity","Sent the following information to GeneratingActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Algorithm: " + this.generationMethod + ", Rooms: " + this.rooms);
 
         // Send maze configuration to GeneratingActivity using intent
         Intent intent = new Intent(this, GeneratingActivity.class);
@@ -233,7 +233,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
             // Toast message displaying maze configuration sent to GeneratingActivity, for debugging purposes
             Toast.makeText(getApplicationContext(), "Sent maze configuration (" + this.seed + "," + this.size + "," + this.generationMethod+ "," + this.rooms + ") for generating", Toast.LENGTH_SHORT).show();
             // Log message that displays the maze configuration sent to GeneratingActivity, for debugging purposes
-            Log.v("AMazeActivity","Send the following information to GeneratingActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Algorithm: " + this.generationMethod + ", Rooms: " + this.rooms);
+            Log.v("AMazeActivity","Sent the following information to GeneratingActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Algorithm: " + this.generationMethod + ", Rooms: " + this.rooms);
 
             // Send maze configuration to GeneratingActivity using intent
             Intent intent = new Intent(this, GeneratingActivity.class);

@@ -13,8 +13,9 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class PlayManuallyActivity extends AppCompatActivity {
-    // TODO get info about maze from GeneratingActivity
-    // private Maze maze;
+    // TODO set maze to be a Maze object in P7
+    // maze generated in GeneratingActivity.
+    Object maze = GeneratingActivity.maze;
 
     // Length of the path taken by the player
     private int pathLength = 0;
@@ -30,7 +31,12 @@ public class PlayManuallyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_manually);
 
-        // TODO use intent listener to get maze from GeneratingActivity
+        if (this.maze != null) {
+            // Toast to show that GeneratingActivity global maze reference exists, for debugging purposes
+            Toast.makeText(getApplicationContext(), "Received Global Maze Reference from GeneratingActivity\nMaze: " + this.maze, Toast.LENGTH_SHORT).show();
+            // Log message to show that GeneratingActivity global maze reference exists, for debugging purposes
+            Log.v("PlayManuallyActivity", "Global Maze Reference from GeneratingActivity not null");
+        }
 
         // Toggle button for showing solution
         solutionButton=findViewById(R.id.manualSolutionButton);
@@ -244,10 +250,6 @@ public class PlayManuallyActivity extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                // Toast that you won the game, for debugging purposes
-                Toast.makeText(getApplicationContext(),"Going to WinningActivity",Toast.LENGTH_SHORT).show();
-                // Log message to show you won the game, for debugging purposes
-                Log.v("PlayManuallyActivity", "Going to WinningActivity");
                 goToWinning(100);
             }
         });
@@ -259,6 +261,14 @@ public class PlayManuallyActivity extends AppCompatActivity {
      * @param shortestPath Shortest possible path (without jumping) to beat the maze.
      */
     private void goToWinning(int shortestPath) {
+        // Toast that you won the game, for debugging purposes
+        Toast.makeText(getApplicationContext(),"Going to WinningActivity",Toast.LENGTH_SHORT).show();
+        // Log message to show you won the game, for debugging purposes
+        Log.v("PlayManuallyActivity", "Going to WinningActivity");
+        // Log message to show what journey information was sent to WinningActivity, for debugging purposes
+        Log.v("PlayManuallyActivity", "Sent the following information to WinningActivity:\nPath length: " + pathLength + ", Shortest Path: "
+                + shortestPath);
+
         // Send journey information to WinningActivity
         Intent intent = new Intent(this, WinningActivity.class);
         intent.putExtra("PathLength", this.pathLength);

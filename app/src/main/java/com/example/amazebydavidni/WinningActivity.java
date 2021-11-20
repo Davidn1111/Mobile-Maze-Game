@@ -31,6 +31,6 @@ public class WinningActivity extends AppCompatActivity {
         // Toast message displaying journey information received from playing activity, for debugging purposes
         Toast.makeText(getApplicationContext(), "You won the game with \nPath Length: " + this.pathLength+ ", ShortestPath: " + this.shortestPath + ",energyConsumption: " + this.energyConsumption, Toast.LENGTH_SHORT).show();
         // Log message that displays journey information received from playing activity, for debugging purposes
-        Log.v("WinningActivity","Received the following information\nPath Length: " + this.pathLength+ ", ShortestPath: " + this.shortestPath + ",energyConsumption: " + this.energyConsumption);
+        Log.v("WinningActivity","Received the following information:\nPath Length: " + this.pathLength+ ", ShortestPath: " + this.shortestPath + ",energyConsumption: " + this.energyConsumption);
     }
 }

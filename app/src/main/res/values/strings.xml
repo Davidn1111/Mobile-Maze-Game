@@ -4,7 +4,7 @@
     <string name="skillLevelMsg">Skill Level </string>
     <string name="mazeGenMsg">Maze Generator</string>
     <string name="genSpinnerContent">Select Generation Method</string>
-    <string name="roomCheckBoxMsg">Generate with Rooms</string>
+    <string name="roomCheckBoxMsg">Play with Rooms</string>
     <string name="revisit">Revisit</string>
     <string name="explore">Explore</string>
 

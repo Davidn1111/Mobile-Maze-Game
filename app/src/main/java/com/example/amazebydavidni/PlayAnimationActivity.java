@@ -13,8 +13,10 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class PlayAnimationActivity extends AppCompatActivity {
-    // TODO get info about maze from GeneratingActivity
-    // private Maze maze;
+    // TODO set maze to be a Maze object in P7
+    // maze generated in GeneratingActivity.
+    Object maze = GeneratingActivity.maze;
+
     // Driver for traversing maze
     private String driver;
     // Robot sensor configuration
@@ -33,7 +35,19 @@ public class PlayAnimationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_animation);
 
-        // TODO use intent listener to get maze from GeneratingActivity
+        // Get drive and robot configuration from GeneratingActivity
+        Intent intent = getIntent();
+        this.driver = intent.getStringExtra("Driver");
+        this.robotConfig = intent.getStringExtra("robotConfig");
+        // Log message that displays driver and robot configuration received from GeneratingActivity, for debugging purposes
+        Log.v("PlayAnimationActivity","Received the following information from GeneratingActivity:\nDriver: " + driver + ", Robot Configuration: " + robotConfig);
+
+        if (this.maze != null) {
+            // Toast message displaying info received from GeneratingActivity, for debugging purposes
+            Toast.makeText(getApplicationContext(), "Received Driver: " + this.driver + " ,Robot Configuration: " + this.robotConfig + " ,and non-null maze reference from GeneratingActivity", Toast.LENGTH_SHORT).show();
+            // Log message to show that GeneratingActivity global maze reference exists, for debugging purposes
+            Log.v("PlayAnimationActivity", "Global Maze Reference from GeneratingActivity not null");
+        }
 
         // Toggle button for showing map (whole maze with solution and visible walls) during animation/automatic play
         mapButton = findViewById(R.id.animMapButton);
@@ -123,10 +137,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                // Toast that you won the game, for debugging purposes
-                Toast.makeText(getApplicationContext(),"Going to WinningActivity",Toast.LENGTH_SHORT).show();
-                // Log message to show you won the game, for debugging purposes
-                Log.v("PlayAnimationActivity", "Going to WinningActivity");
                 goToWinning(100,200,300);
             }
         });
@@ -145,10 +155,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                // Toast that you won the game, for debugging purposes
-                Toast.makeText(getApplicationContext(),"Going to LosingActivity",Toast.LENGTH_SHORT).show();
-                // Log message to show you won the game, for debugging purposes
-                Log.v("PlayAnimationActivity", "Going to LosingActivity");
                 goToLosing(400,500,600);
             }
         });
@@ -162,6 +168,14 @@ public class PlayAnimationActivity extends AppCompatActivity {
      * @param energyConsumed Energy consumed by the robot during its journey.
      */
     private void goToLosing(int pathLength, int shortestPath,int energyConsumed) {
+        // Toast that you won the game, for debugging purposes
+        Toast.makeText(getApplicationContext(),"Going to LosingActivity",Toast.LENGTH_SHORT).show();
+        // Log message to show you won the game, for debugging purposes
+        Log.v("PlayAnimationActivity", "Going to LosingActivity");
+        // Log message to show what journey information was sent to LosingActivity, for debugging purposes
+        Log.v("PlayAnimationActivity", "Sent the following information to LosingActivity:\nPath length: " + pathLength + ", Shortest Path: "
+                + shortestPath + ", Energy Consumption: " + energyConsumed);
+
         // Send journey information to WinningActivity
         Intent intent = new Intent(this, LosingActivity.class);
         intent.putExtra("PathLength", pathLength);
@@ -178,6 +192,15 @@ public class PlayAnimationActivity extends AppCompatActivity {
      * @param energyConsumed Energy consumed by the robot during its journey.
      */
     private void goToWinning(int pathLength, int shortestPath,int energyConsumed) {
+        // Toast that you won the game, for debugging purposes
+        Toast.makeText(getApplicationContext(),"Going to WinningActivity",Toast.LENGTH_SHORT).show();
+        // Log message to show you won the game, for debugging purposes
+        Log.v("PlayAnimationActivity", "Going to WinningActivity");
+        // Log message to show what journey information was sent to WinningActivity, for debugging purposes
+        Log.v("PlayAnimationActivity", "Sent the following information to WinningActivity:\nPath length: " + pathLength + ", Shortest Path: "
+                + shortestPath + ", Energy Consumption: " + energyConsumed);
+
+
         // Send journey information to WinningActivity
         Intent intent = new Intent(this, WinningActivity.class);
         intent.putExtra("PathLength", pathLength);
