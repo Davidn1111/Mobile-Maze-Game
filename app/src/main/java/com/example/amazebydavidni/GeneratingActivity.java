@@ -132,7 +132,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
                          */
                         @Override
                         public void run() {
-                            String progress = "Maze generation: " + progressStatus + "%";
+                            String progress = "Building Maze: " + progressStatus + "%";
                             progressText.setText(progress);
                             mazeProgress.setProgress(progressStatus);
                         }

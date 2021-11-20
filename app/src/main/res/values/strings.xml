@@ -8,7 +8,7 @@
     <string name="revisit">Revisit</string>
     <string name="explore">Explore</string>
 
-    <string name="genMsg">Generating Maze</string>
+    <string name="genMsg">Building Maze</string>
     <string name="robotConfigMsg">Robot Configuration: </string>
     <string name="driverSelectMsg">Select a Driver: </string>
     <string name="driverSpinnerContent">Select Driver</string>

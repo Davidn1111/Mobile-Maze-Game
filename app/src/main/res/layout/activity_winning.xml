@@ -1,9 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background ="@drawable/winscreen"
     tools:context=".WinningActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Length of Path Taken: "
+        android:layout_gravity = "center"
+        android:layout_marginTop = "230dp"
+        android:textColor = "@color/white"
+        android:background="@color/squidPink"
+        android:textSize = "23sp"
+        android:id = "@+id/pathLengthText"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Length of Shortest Path: "
+        android:layout_gravity = "center"
+        android:layout_marginTop = "50dp"
+        android:textColor = "@color/white"
+        android:background="@color/squidPink"
+        android:textSize = "23sp"
+        android:id = "@+id/shortestPathText"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Energy Consumed: "
+        android:layout_gravity = "center"
+        android:layout_marginTop = "50dp"
+        android:textColor = "@color/white"
+        android:background="@color/squidPink"
+        android:textSize = "23sp"
+        android:id = "@+id/energyConsumptionText"
+        />
+
+</LinearLayout>
