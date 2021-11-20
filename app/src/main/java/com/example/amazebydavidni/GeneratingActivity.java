@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -173,6 +174,8 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
      */
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+        ((TextView) adapterView.getChildAt(0)).setTextSize(18);
         // Set robot configuration to the selected value
         this.robotConfig = adapterView.getItemAtPosition(position).toString();
         // Toast selected robot configuration, for debugging
