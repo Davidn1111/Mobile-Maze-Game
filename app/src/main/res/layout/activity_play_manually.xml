@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background = "@drawable/sky"
     tools:context=".PlayManuallyActivity">
 
     <ToggleButton
@@ -100,48 +101,47 @@
         android:layout_width="78dp"
         android:layout_height="75dp"
         android:layout_marginTop="20dp"
-        android:backgroundTint="@color/purple_500"
+        android:background ="@drawable/up"
         android:scaleType="fitCenter"
         android:contentDescription="Move Up in Maze Game"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.324"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ShortCut"
-        app:srcCompat="@android:drawable/ic_menu_gallery" />
+        />
 
     <ImageButton
         android:id="@+id/leftButton"
         android:layout_width="78dp"
         android:layout_height="75dp"
         android:layout_marginStart="30dp"
-        android:backgroundTint="@color/design_default_color_secondary"
+        android:background ="@drawable/left"
         android:scaleType="fitCenter"
         android:contentDescription="Move Left in Maze Game"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/upButton"
-        app:srcCompat="@android:drawable/ic_menu_gallery" />
+        />
 
     <ImageButton
         android:id="@+id/rightButton"
         android:layout_width="78dp"
         android:layout_height="75dp"
-        android:backgroundTint="@color/cardview_dark_background"
+        android:background ="@drawable/right"
         android:scaleType="fitCenter"
         android:contentDescription="Move Right in Maze Game"
         app:layout_constraintStart_toEndOf="@+id/jumpButton"
         app:layout_constraintTop_toBottomOf="@+id/upButton"
-        app:srcCompat="@android:drawable/ic_menu_gallery" />
+         />
 
     <ImageButton
         android:id="@+id/jumpButton"
         android:layout_width="78dp"
         android:layout_height="75dp"
-        android:backgroundTint="@color/purple_200"
         android:scaleType="fitCenter"
         android:contentDescription="Jump in Maze Game"
         app:layout_constraintStart_toEndOf="@+id/leftButton"
         app:layout_constraintTop_toBottomOf="@+id/upButton"
-        app:srcCompat="@android:drawable/ic_menu_gallery" />
+        android:background ="@drawable/jump" />
 
     <ImageButton
         android:id="@+id/zoomOutButton"
@@ -152,9 +152,9 @@
         android:contentDescription="Zoom out of Map"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
-        android:backgroundTint="@color/black"
+        android:background ="@drawable/minus"
         app:layout_constraintTop_toBottomOf="@+id/zoomInButton"
-        app:srcCompat="@android:drawable/btn_minus" />
+        />
 
     <ImageButton
         android:id="@+id/zoomInButton"
@@ -165,9 +165,9 @@
         android:contentDescription="Zoom into Map"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
-        android:backgroundTint="@color/black"
+        android:background ="@drawable/plus"
         app:layout_constraintTop_toBottomOf="@+id/ShortCut"
-        app:srcCompat="@android:drawable/btn_plus" />
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
