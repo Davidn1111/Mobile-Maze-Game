@@ -152,9 +152,14 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
                     public void run() {
                         // If no driver has been selected, send out a warning.
                         if (driver == null) {
-                            popup.setTitle("Reminder: No Driver Selected");
-                            popup.setMessage("Maze has finished generating.\nPlease select a driver to start the maze game.");
-                            popup.show();
+                            try{
+                                popup.setTitle("Reminder: No Driver Selected");
+                                popup.setMessage("Maze has finished generating.\nPlease select a driver to start the maze game.");
+                                popup.show();
+                            }
+                            catch (Exception e){
+                                Log.v("GeneratingActivity", "Maze Generation Thread Killed");
+                            }
                         }
                         // If the maze is finished generating and a driver is selected,
                         // go to the corresponding playing activity.
