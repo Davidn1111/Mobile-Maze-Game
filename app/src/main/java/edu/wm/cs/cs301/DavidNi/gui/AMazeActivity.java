@@ -150,7 +150,9 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
              */
             @Override
             public void onClick(View view) {
-                sendOldMazeData();
+                sendNewMazeData();
+                //TODO replace sendNewMazeData with commented method below for P7 (to use persistent storage)
+                //sendOldMazeData();
             }
         });
 
@@ -197,7 +199,8 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         Random rand = new Random();
         this.seed = rand.nextInt();
         // Write maze configuration to file
-        writeFile(this.seed,this.size,this.generationMethod,this.rooms);
+        // TODO uncomment writeFile for P7 (to use persistent storage)
+        //writeFile(this.seed,this.size,this.generationMethod,this.rooms);
 
         // Toast message displaying maze configuration sent to GeneratingActivity, for debugging purposes
         Toast.makeText(getApplicationContext(), "Sent maze configuration (" + this.seed + "," + this.size + "," + this.generationMethod+ "," + this.rooms + ") for generating", Toast.LENGTH_SHORT).show();
