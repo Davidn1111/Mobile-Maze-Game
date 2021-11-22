@@ -35,7 +35,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
 
         if (this.maze != null) {
             // Toast to show that GeneratingActivity global maze reference exists, for debugging purposes
-            Toast.makeText(getApplicationContext(), "Received Global Maze Reference from GeneratingActivity\nMaze: " + this.maze, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Received non-null Global Maze Reference from GeneratingActivity", Toast.LENGTH_SHORT).show();
             // Log message to show that GeneratingActivity global maze reference exists, for debugging purposes
             Log.v("PlayManuallyActivity", "Global Maze Reference from GeneratingActivity not null");
         }
@@ -285,8 +285,10 @@ public class PlayManuallyActivity extends AppCompatActivity {
      * @param shortestPath Shortest possible path (without jumping) to beat the maze.
      */
     private void goToWinning(int shortestPath) {
-        // Toast that you won the game, for debugging purposes
+        // Toasts that you won the game, for debugging purposes
         Toast.makeText(getApplicationContext(),"Going to WinningActivity",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),"Sent the following information to WinningActivity:\nPath length: " + pathLength + ", Shortest Path: "
+                + shortestPath,Toast.LENGTH_SHORT).show();
         // Log message to show you won the game, for debugging purposes
         Log.v("PlayManuallyActivity", "Going to WinningActivity");
         // Log message to show what journey information was sent to WinningActivity, for debugging purposes

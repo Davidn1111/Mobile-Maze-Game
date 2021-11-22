@@ -315,9 +315,11 @@ public class PlayAnimationActivity extends AppCompatActivity {
      * @param energyConsumed Energy consumed by the robot during its journey.
      */
     private void goToLosing(int pathLength, int shortestPath,int energyConsumed) {
-        // Toast that you won the game, for debugging purposes
+        // Toasts that you lost the game, for debugging purposes
         Toast.makeText(getApplicationContext(),"Going to LosingActivity",Toast.LENGTH_SHORT).show();
-        // Log message to show you won the game, for debugging purposes
+        Toast.makeText(getApplicationContext(),"Sent the following information to LosingActivity:\nPath length: " + pathLength + ", Shortest Path: "
+                + shortestPath + ", Energy Consumption: " + energyConsumed,Toast.LENGTH_SHORT).show();
+        // Log message to show you lost the game, for debugging purposes
         Log.v("PlayAnimationActivity", "Going to LosingActivity");
         // Log message to show what journey information was sent to LosingActivity, for debugging purposes
         Log.v("PlayAnimationActivity", "Sent the following information to LosingActivity:\nPath length: " + pathLength + ", Shortest Path: "
@@ -339,8 +341,10 @@ public class PlayAnimationActivity extends AppCompatActivity {
      * @param energyConsumed Energy consumed by the robot during its journey.
      */
     private void goToWinning(int pathLength, int shortestPath,int energyConsumed) {
-        // Toast that you won the game, for debugging purposes
+        // Toasts that you won the game, for debugging purposes
         Toast.makeText(getApplicationContext(),"Going to WinningActivity",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(),"Sent the following information to WinningActivity:\nPath length: " + pathLength + ", Shortest Path: "
+                + shortestPath + ", Energy Consumption: " + energyConsumed,Toast.LENGTH_SHORT).show();
         // Log message to show you won the game, for debugging purposes
         Log.v("PlayAnimationActivity", "Going to WinningActivity");
         // Log message to show what journey information was sent to WinningActivity, for debugging purposes
