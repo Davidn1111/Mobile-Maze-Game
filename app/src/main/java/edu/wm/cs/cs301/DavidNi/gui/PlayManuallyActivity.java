@@ -1,4 +1,4 @@
-package com.example.amazebydavidni;
+package edu.wm.cs.cs301.DavidNi.gui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +11,8 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import edu.wm.cs.cs301.DavidNi.R;
 
 public class PlayManuallyActivity extends AppCompatActivity {
     // TODO set maze to be a Maze object in P7

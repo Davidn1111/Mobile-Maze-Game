@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.amazebydavidni">
+    package="edu.wm.cs.cs301.DavidNi">
 
     <application
         android:allowBackup="true"
@@ -10,27 +10,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AMazeByDavidNi">
         <activity
-            android:name=".LosingActivity"
+            android:name=".gui.LosingActivity"
             android:exported="false"
-            android:parentActivityName=".AMazeActivity" />
+            android:parentActivityName=".gui.AMazeActivity" />
         <activity
-            android:name=".WinningActivity"
+            android:name=".gui.WinningActivity"
             android:exported="false"
-            android:parentActivityName=".AMazeActivity" />
+            android:parentActivityName=".gui.AMazeActivity" />
         <activity
-            android:name=".PlayAnimationActivity"
+            android:name=".gui.PlayAnimationActivity"
             android:exported="false"
-            android:parentActivityName=".AMazeActivity" />
+            android:parentActivityName=".gui.AMazeActivity" />
         <activity
-            android:name=".PlayManuallyActivity"
+            android:name=".gui.PlayManuallyActivity"
             android:exported="false"
-            android:parentActivityName=".AMazeActivity" />
+            android:parentActivityName=".gui.AMazeActivity" />
         <activity
-            android:name=".GeneratingActivity"
+            android:name=".gui.GeneratingActivity"
             android:exported="false"
-            android:parentActivityName=".AMazeActivity" />
+            android:parentActivityName=".gui.AMazeActivity" />
         <activity
-            android:name=".AMazeActivity"
+            android:name=".gui.AMazeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

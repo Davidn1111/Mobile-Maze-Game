@@ -1,4 +1,4 @@
-package com.example.amazebydavidni;
+package edu.wm.cs.cs301.DavidNi.gui;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +18,8 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import edu.wm.cs.cs301.DavidNi.R;
 
 public class GeneratingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     // Seed of the maze
