@@ -11,24 +11,19 @@
         android:theme="@style/Theme.AMazeByDavidNi">
         <activity
             android:name=".gui.LosingActivity"
-            android:exported="false"
-            android:parentActivityName=".gui.AMazeActivity" />
+            android:exported="false" />
         <activity
             android:name=".gui.WinningActivity"
-            android:exported="false"
-            android:parentActivityName=".gui.AMazeActivity" />
+            android:exported="false" />
         <activity
             android:name=".gui.PlayAnimationActivity"
-            android:exported="false"
-            android:parentActivityName=".gui.AMazeActivity" />
+            android:exported="false" />
         <activity
             android:name=".gui.PlayManuallyActivity"
-            android:exported="false"
-            android:parentActivityName=".gui.AMazeActivity" />
+            android:exported="false" />
         <activity
             android:name=".gui.GeneratingActivity"
-            android:exported="false"
-            android:parentActivityName=".gui.AMazeActivity" />
+            android:exported="false" />
         <activity
             android:name=".gui.AMazeActivity"
             android:exported="true">

@@ -7,44 +7,56 @@
     android:background = "@drawable/sky"
     tools:context=".gui.PlayManuallyActivity">
 
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="82dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="4dp"
+        android:text="Back"
+        app:layout_constraintBottom_toTopOf="@+id/mazeButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
     <ToggleButton
         android:id="@+id/manualSolutionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:contentDescription="Shows Solution"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.073" />
+        app:layout_constraintVertical_bias="0.089" />
 
     <ToggleButton
         android:id="@+id/mazeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
-        android:contentDescription = "Shows Maze"
+        android:contentDescription="Shows Maze"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/manualSolutionButton"
         app:layout_constraintHorizontal_bias="0.943"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.073" />
+        app:layout_constraintVertical_bias="0.089" />
 
     <ToggleButton
         android:id="@+id/wallButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:contentDescription = "Shows Walls"
+        android:contentDescription="Shows Walls"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.055"
         app:layout_constraintStart_toEndOf="@id/manualSolutionButton"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.073" />
+        app:layout_constraintVertical_bias="0.089" />
 
     <Button
         android:id="@+id/ShortCut"
@@ -103,15 +115,14 @@
         android:id="@+id/upButton"
         android:layout_width="78dp"
         android:layout_height="75dp"
-        android:layout_marginTop="20dp"
-        android:background ="@drawable/up"
-        android:scaleType="fitCenter"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/up"
         android:contentDescription="Move Up in Maze Game"
+        android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.324"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ShortCut"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/ShortCut" />
 
     <ImageButton
         android:id="@+id/leftButton"

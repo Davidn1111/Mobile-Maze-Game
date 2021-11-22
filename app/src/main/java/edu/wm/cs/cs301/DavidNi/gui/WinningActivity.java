@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,5 +57,27 @@ public class WinningActivity extends AppCompatActivity {
         else {
             energyConsumptionText.setText("");
         }
+
+        // Back button to title
+        Button back = findViewById(R.id.backButton);
+        // Listener for back button
+        back.setOnClickListener(new View.OnClickListener() {
+            /**
+             * This method listens if the "Back" button was pressed.
+             * If the "Back" button was pressed return to the title screen.
+             * @param view The view that was clicked
+             */
+            @Override
+            public void onClick(View view) {
+                // Toast for returning to title
+                Toast.makeText(getApplicationContext(), "Returning to Title", Toast.LENGTH_SHORT).show();
+                // Log message for returning to title
+                Log.v("WinningActivity","Returning to Title");
+
+                // Return to title
+                Intent intent = new Intent(getApplicationContext(), AMazeActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

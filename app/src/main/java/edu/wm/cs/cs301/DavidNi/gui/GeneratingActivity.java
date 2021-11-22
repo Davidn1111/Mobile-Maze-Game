@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -87,6 +88,28 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         // Text displaying progress status
         progressText = findViewById(R.id.progressText);
 
+        // Back button to title
+        Button back = findViewById(R.id.backButton);
+        // Listener for back button
+        back.setOnClickListener(new View.OnClickListener() {
+            /**
+             * This method listens if the "Back" button was pressed.
+             * If the "Back" button was pressed return to the title screen.
+             * @param view The view that was clicked
+             */
+            @Override
+            public void onClick(View view) {
+                // Toast for returning to title
+                Toast.makeText(getApplicationContext(), "Returning to Title", Toast.LENGTH_SHORT).show();
+                // Log message for returning to title
+                Log.v("GeneratingActivity","Returning to Title");
+
+                // Return to title
+                Intent intent = new Intent(getApplicationContext(), AMazeActivity.class);
+                startActivity(intent);
+            }
+        });
+
         // Create a popup builder
         // Popup Dialog Box
         popup = new AlertDialog.Builder(GeneratingActivity.this);
@@ -158,7 +181,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
                                 popup.show();
                             }
                             catch (Exception e){
-                                Log.v("GeneratingActivity", "Maze Generation Thread Killed");
+                                Log.v("GeneratingActivity", "Killed thread");
                             }
                         }
                         // If the maze is finished generating and a driver is selected,
