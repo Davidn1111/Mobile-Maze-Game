@@ -264,19 +264,22 @@ public class PlayManuallyActivity extends AppCompatActivity {
 
         // ImageButton (ShortCut) for going to the win activity. Placeholder for maze game.
         // For P6 Only
-        Button goToWin = findViewById(R.id.ShortCut);
+        //Button goToWin = findViewById(R.id.ShortCut);
         // Listener for goToWin button
-        goToWin.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Method listens if the "ShortCut" button (placeholder for the maze game) is pressed.
-             * Communicates journey information to WinningActivity before starting it.
-             * Hardcoded shortest path length of 100 used.
+        //goToWin.setOnClickListener(new View.OnClickListener() {
+            /*
+              Method listens if the "ShortCut" button (placeholder for the maze game) is pressed.
+              Communicates journey information to WinningActivity before starting it.
+              Hardcoded shortest path length of 100 used.
              */
+            /*
             @Override
             public void onClick(View view) {
                 goToWinning(100);
             }
         });
+        TODO uncomment
+             */
     }
 
     /**

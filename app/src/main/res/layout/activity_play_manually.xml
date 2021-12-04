@@ -10,7 +10,7 @@
     <Button
         android:id="@+id/backButton"
         android:layout_width="82dp"
-        android:layout_height="40dp"
+        android:layout_height="48dp"
         android:layout_marginStart="52dp"
         android:layout_marginTop="4dp"
         android:text="Home"
@@ -58,15 +58,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.089" />
 
-    <Button
-        android:id="@+id/ShortCut"
+
+    <edu.wm.cs.cs301.DavidNi.gui.MazePanel
+        android:id="@+id/Maze"
         android:layout_width="310dp"
         android:layout_height="284dp"
-        android:layout_marginTop="30dp"
-        android:backgroundTint="@color/black"
-        android:text="Short cut to win."
-        android:textColor="@color/white"
-        android:textSize="30sp"
+        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +76,7 @@
         android:text="Show Maze"
         android:textColor="@color/black"
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/ShortCut"
+        app:layout_constraintBottom_toTopOf="@+id/Maze"
         app:layout_constraintEnd_toStartOf="@+id/solutionText"
         app:layout_constraintHorizontal_bias="0.651"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +101,7 @@
         android:text="Show Walls"
         android:textSize="15sp"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/ShortCut"
+        app:layout_constraintBottom_toTopOf="@+id/Maze"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.348"
         app:layout_constraintStart_toEndOf="@+id/solutionText"
@@ -122,7 +119,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.324"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ShortCut" />
+        app:layout_constraintTop_toBottomOf="@+id/Maze" />
 
     <ImageButton
         android:id="@+id/leftButton"
@@ -180,7 +177,7 @@
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         android:background ="@drawable/plus"
-        app:layout_constraintTop_toBottomOf="@+id/ShortCut"
+        app:layout_constraintTop_toBottomOf="@+id/Maze"
         />
 
 
