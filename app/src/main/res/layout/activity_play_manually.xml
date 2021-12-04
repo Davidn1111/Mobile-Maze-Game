@@ -63,9 +63,9 @@
         android:id="@+id/Maze"
         android:layout_width="310dp"
         android:layout_height="284dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/solutionText" />
 
@@ -112,7 +112,7 @@
         android:id="@+id/upButton"
         android:layout_width="78dp"
         android:layout_height="75dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/up"
         android:contentDescription="Move Up in Maze Game"
         android:scaleType="fitCenter"

@@ -5,13 +5,16 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
+import android.graphics.Path;
+import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
-import edu.wm.cs.cs301.DavidNi.gui.P5PanelF21.P5RenderingHints;
 
 public class MazePanel extends View implements P5PanelF21{
 
+    final int viewWidth = 1000;
+    final int viewHeight = 1000;
     // Current Color used by View
     private int color;
     // The Bitmap of the MazePanel
@@ -30,12 +33,12 @@ public class MazePanel extends View implements P5PanelF21{
      */
     public MazePanel (Context context, AttributeSet attributeSet){
         super(context,attributeSet);
-        // Create a new paint with default color red
-        this.mpPaint = new Paint();
-        this.color = Color.RED;
+        // Create a new paint with default color white
+        mpPaint = new Paint();
+        color = Color.WHITE;
         mpPaint.setColor(color);
         // Initialize bitmap
-        mpBitmap = Bitmap.createBitmap(310,284,Bitmap.Config.ARGB_8888);
+        mpBitmap = Bitmap.createBitmap(viewWidth,viewHeight,Bitmap.Config.ARGB_8888);
         // Initialize canvas
         mpCanvas = new Canvas(mpBitmap);
     }
@@ -47,19 +50,20 @@ public class MazePanel extends View implements P5PanelF21{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        // Draw Red Rectangle for testing
-        Rect test = new Rect(0,0, 100, 100);
-        canvas.drawRect(test,mpPaint);
+        //Draw a red rectangle (for debugging purposes only)
+        this.color = Color.RED;
+        mpPaint.setColor(this.color);
+        addFilledRectangle(0,0,1000,1000);
+
         canvas.drawBitmap(mpBitmap,0,0,mpPaint);
     }
 
     /**
-     * Method to draw the buffer image on a graphics object that is
-     * obtained from the superclass.
-     * Warning: do not override getGraphics() or drawing might fail.
+     * Method to draw the buffer image on given Canvas obtained from the superclass.
      */
     public void update() {
-        //paint(getGraphics());
+        // Force view to be drawn on given Canvas
+        invalidate();
     }
 
     /**
@@ -68,42 +72,29 @@ public class MazePanel extends View implements P5PanelF21{
      */
     @Override
     public void commit() {
-        //update();
+        invalidate();
     }
 
     /**
      * Tells if instance is able to draw.
-     * This ability depends on the MazePanel's graphic existing (not being null).
-     * Substitute for code that checks if graphics object for drawing is not null.
+     * This ability depends on the MazePanel's Canvas existence (not being null).
      * @return true if drawing is possible, false if not.
      */
     @Override
     public boolean isOperational() {
-        //return (graphics != null);
-        return false;
+        return (this.mpCanvas != null);
     }
 
     /**
      * Sets the color for future drawing requests. The color setting
      * will remain in effect till this method is called again
      * with a different color.
-     * Substitute for Graphics.setColor method.
      * @param argb gives the alpha,red,green,and blue encoded value of the color
      */
     @Override
     public void setColor(int argb) {
-        /*
-        // Use bitshift and masking to get argb values from hexcode.
-        int alpha = (argb >> 24) & 0xff;
-        int red = (argb >> 16) & 0xff;
-        int green = (argb >> 8) & 0xff;
-        int blue = argb & 0xff;
-
-        // Set the color of graphics to the color described by given rgb values
-        this.color = new Color(red,green,blue,alpha);
-        this.rgbInt = argb;
-        this.graphics.setColor(color);
-         */
+        this.color = argb;
+        this.mpPaint.setColor(argb);
     }
 
     /**
@@ -112,8 +103,7 @@ public class MazePanel extends View implements P5PanelF21{
      */
     @Override
     public int getColor() {
-        //return rgbInt;
-        return 0;
+        return this.color;
     }
 
     /**
@@ -172,12 +162,17 @@ public class MazePanel extends View implements P5PanelF21{
      * Note that this also erases any previous drawings.
      * The color setting adjusts to the distance to the exit to
      * provide an additional clue for the user.
-     * Colors transition from black to gold and from grey to green.
+     * Upper half blue sky, lower half is tan colored.
      * Substitute for FirstPersonView.drawBackground method.
      * @param percentToExit gives the distance to exit
      */
     @Override
     public void addBackground(float percentToExit) {
+
+        setColor(Color.BLACK);
+        this.addFilledRectangle(0,0,viewWidth,viewHeight/2);
+        setColor(Color.RED);
+        this.addFilledRectangle(0,viewHeight/2,viewWidth,viewHeight);
         /*
         // black rectangle in upper half of screen
         // graphics.setColor(Color.black);
@@ -189,6 +184,7 @@ public class MazePanel extends View implements P5PanelF21{
         // dynamic color setting:
         graphics.setColor(getBackgroundColor(percentToExit, false));
         graphics.fillRect(0, viewHeight/2, viewWidth, viewHeight/2);
+        TODO
         */
     }
 
@@ -205,8 +201,7 @@ public class MazePanel extends View implements P5PanelF21{
      */
     @Override
     public void addFilledRectangle(int x, int y, int width, int height) {
-        //graphics.fillRect(x, y, width, height);
-
+        mpCanvas.drawRect(x,y,width,height,mpPaint);
     }
 
     /**
@@ -225,7 +220,20 @@ public class MazePanel extends View implements P5PanelF21{
      */
     @Override
     public void addFilledPolygon(int[] xPoints, int[] yPoints, int nPoints) {
-        //graphics.fillPolygon(xPoints, yPoints, nPoints);
+        // New path representing polygon
+        Path polyPath = new Path();
+        // Start path at xPoints[0],yPoints[0]
+        polyPath.moveTo(xPoints[0],yPoints[0]);
+        // Draw lines according to given x and y points
+        for(int i = 1; i < xPoints.length;i++) {
+            polyPath.lineTo(xPoints[i],yPoints[i]);
+        }
+        // Finish path by returning to original point
+        polyPath.moveTo(xPoints[0],yPoints[0]);
+        // Set paint style to be FILL for a filled polygon
+        mpPaint.setStyle(Paint.Style.FILL);
+        // Draw polygon on internal canvas
+        mpCanvas.drawPath(polyPath,mpPaint);
     }
 
     /**
@@ -245,7 +253,20 @@ public class MazePanel extends View implements P5PanelF21{
      */
     @Override
     public void addPolygon(int[] xPoints, int[] yPoints, int nPoints) {
-        //graphics.drawPolygon(xPoints, yPoints, nPoints);
+        // New path representing polygon
+        Path polyPath = new Path();
+        // Start path at xPoints[0],yPoints[0]
+        polyPath.moveTo(xPoints[0],yPoints[0]);
+        // Draw lines according to given x and y points
+        for(int i = 1; i < xPoints.length;i++) {
+            polyPath.lineTo(xPoints[i],yPoints[i]);
+        }
+        // Finish path by returning to original point
+        polyPath.moveTo(xPoints[0],yPoints[0]);
+        // Set paint style to be STROKE for an unfilled polygon
+        mpPaint.setStyle(Paint.Style.STROKE);
+        // Draw polygon on internal canvas
+        mpCanvas.drawPath(polyPath,mpPaint);
     }
 
     /**
@@ -260,7 +281,14 @@ public class MazePanel extends View implements P5PanelF21{
      */
     @Override
     public void addLine(int startX, int startY, int endX, int endY) {
-        //graphics.drawLine(startX, startY, endX, endY);
+        // Path representing line
+        Path line = new Path();
+        // Draw line from starting point to endpoint
+        line.moveTo(startX,startY);
+        line.lineTo(endX,endY);
+        mpPaint.setStyle(Paint.Style.STROKE);
+        // Draw line on internal canvas
+        mpCanvas.drawPath(line,mpPaint);
     }
 
     /**
@@ -276,7 +304,10 @@ public class MazePanel extends View implements P5PanelF21{
      */
     @Override
     public void addFilledOval(int x, int y, int width, int height) {
-        //graphics.fillOval(x, y, width, height);
+        // Set the paint style to fill
+        mpPaint.setStyle(Paint.Style.FILL);
+        // Draw oval on internal canvas
+        mpCanvas.drawOval(x,y,width,height,mpPaint);
     }
 
     /**
@@ -293,7 +324,9 @@ public class MazePanel extends View implements P5PanelF21{
      */
     @Override
     public void addArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-        //graphics.drawArc(x, y, width, height, startAngle, arcAngle);
+        mpPaint.setStyle(Paint.Style.STROKE);
+        RectF arc = new RectF(x,y,width,height);
+        mpCanvas.drawArc(arc,startAngle,arcAngle,false,mpPaint);
     }
 
     /**
@@ -320,8 +353,13 @@ public class MazePanel extends View implements P5PanelF21{
         */
     }
 
+    /**
+     * Method prints a Log warning message describing given hint and its value.
+     * @param hintKey the key of the hint to be set.
+     * @param hintValue the value indicating preferences for the specified hint category.
+     */
     @Override
     public void setRenderingHint(P5RenderingHints hintKey, P5RenderingHints hintValue) {
-
+        Log.v("MazePanel", "Hint: " + hintKey + ": " + hintValue);
     }
 }
