@@ -50,11 +50,8 @@ public class MazePanel extends View implements P5PanelF21{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        //Draw a red rectangle (for debugging purposes only)
-        this.color = Color.RED;
-        mpPaint.setColor(this.color);
-        addFilledRectangle(0,0,1000,1000);
-
+        // Draw the Test Image
+        myTestImage(canvas);
         canvas.drawBitmap(mpBitmap,0,0,mpPaint);
     }
 
@@ -281,14 +278,8 @@ public class MazePanel extends View implements P5PanelF21{
      */
     @Override
     public void addLine(int startX, int startY, int endX, int endY) {
-        // Path representing line
-        Path line = new Path();
-        // Draw line from starting point to endpoint
-        line.moveTo(startX,startY);
-        line.lineTo(endX,endY);
         mpPaint.setStyle(Paint.Style.STROKE);
-        // Draw line on internal canvas
-        mpCanvas.drawPath(line,mpPaint);
+        mpCanvas.drawLine(startX,startY,endX,endY,mpPaint);
     }
 
     /**
@@ -361,5 +352,37 @@ public class MazePanel extends View implements P5PanelF21{
     @Override
     public void setRenderingHint(P5RenderingHints hintKey, P5RenderingHints hintValue) {
         Log.v("MazePanel", "Hint: " + hintKey + ": " + hintValue);
+    }
+
+    /**
+     * Method that prints out a static image to test if MazePanel methods are working as intended.
+     * Image consists of a black background, red circle, green oval, yellow rectangle,
+     * blue triangle/3-gon, and several cyan lines.
+     * @param c Given canvas to draw the images
+     */
+    private void myTestImage(Canvas c) {
+        // Black background
+        setColor(Color.BLACK);
+        addFilledRectangle(0,0,1000,1000);
+        // Red circle
+        setColor(Color.RED);
+        addFilledOval(0,0,200,200);
+        // Green oval
+        setColor(Color.GREEN);
+        addFilledOval(350,200,50,50);
+        // Yellow Rectangle
+        setColor(Color.YELLOW);
+        addFilledRectangle(800,800,300,300);
+        // Blue Polygon (triangle)
+        setColor(Color.BLUE);
+        int[] x = {100,700,200};
+        int[] y = {300,850,600};
+        addFilledPolygon(x,y,3);
+        // Cyan lines
+        setColor(Color.CYAN);
+        addLine(0,0,500,1000);
+        addLine(0,0,300,1000);
+        addLine(30,70,500,788);
+        addLine(20,800,400,900);
     }
 }
