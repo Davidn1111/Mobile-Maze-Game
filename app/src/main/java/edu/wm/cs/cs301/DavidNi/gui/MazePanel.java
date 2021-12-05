@@ -57,14 +57,16 @@ public class MazePanel extends View implements P5PanelF21{
         // Draw the Test Image
         myTestImage(canvas);
         canvas.drawBitmap(mpBitmap,0,0,mpPaint);
+        Log.v("MazePanel","MazePanel onDraw called");
     }
 
     /**
      * Method to draw the buffer image on given Canvas obtained from the superclass.
      */
     public void update() {
-        // Force view to be drawn on given Canvas
+        // Force view to be drawn on UI Canvas
         invalidate();
+        Log.v("MazePanel","Committing image to UI");
     }
 
     /**
@@ -73,7 +75,9 @@ public class MazePanel extends View implements P5PanelF21{
      */
     @Override
     public void commit() {
+        // Force view to be drawn on UI Canvas
         invalidate();
+        Log.v("MazePanel","Committing image to UI");
     }
 
     /**
@@ -96,6 +100,7 @@ public class MazePanel extends View implements P5PanelF21{
     public void setColor(int argb) {
         this.color = argb;
         this.mpPaint.setColor(argb);
+        Log.v("MazePanel","Setting color");
     }
 
     /**
@@ -172,6 +177,8 @@ public class MazePanel extends View implements P5PanelF21{
         // dynamic color setting bottom rectangle:
         setColor(getBackgroundColor(percentToExit, false));
         this.addFilledRectangle(0, viewHeight/2, viewWidth, viewHeight);
+
+        Log.v("MazePanel","Drawing background with percent: " + percentToExit);
     }
 
     /**
@@ -188,6 +195,8 @@ public class MazePanel extends View implements P5PanelF21{
     public void addFilledRectangle(int x, int y, int width, int height) {
         mpPaint.setStyle(Paint.Style.FILL);
         mpCanvas.drawRect(x,y,width,height,mpPaint);
+
+        Log.v("MazePanel","Drawing filled rectangle");
     }
 
     /**
@@ -219,6 +228,8 @@ public class MazePanel extends View implements P5PanelF21{
         mpPaint.setStyle(Paint.Style.FILL);
         // Draw polygon on internal canvas
         mpCanvas.drawPath(polyPath,mpPaint);
+
+        Log.v("MazePanel","Drawing filled polygon");
     }
 
     /**
@@ -251,6 +262,8 @@ public class MazePanel extends View implements P5PanelF21{
         mpPaint.setStyle(Paint.Style.STROKE);
         // Draw polygon on internal canvas
         mpCanvas.drawPath(polyPath,mpPaint);
+
+        Log.v("MazePanel","Drawing unfilled polygon");
     }
 
     /**
@@ -266,6 +279,8 @@ public class MazePanel extends View implements P5PanelF21{
     public void addLine(int startX, int startY, int endX, int endY) {
         mpPaint.setStyle(Paint.Style.FILL);
         mpCanvas.drawLine(startX,startY,endX,endY,mpPaint);
+
+        Log.v("MazePanel","Drawing line");
     }
 
     /**
@@ -284,6 +299,8 @@ public class MazePanel extends View implements P5PanelF21{
         mpPaint.setStyle(Paint.Style.FILL);
         // Draw oval on internal canvas
         mpCanvas.drawOval(x,y,width,height,mpPaint);
+
+        Log.v("MazePanel","Drawing oval");
     }
 
     /**
@@ -304,6 +321,8 @@ public class MazePanel extends View implements P5PanelF21{
         RectF arc = new RectF(x,y,width,height);
         // Add arc to internal canvas
         mpCanvas.drawArc(arc,startAngle,arcAngle,false,mpPaint);
+
+        Log.v("MazePanel","Drawing arc");
     }
 
     /**
@@ -317,6 +336,8 @@ public class MazePanel extends View implements P5PanelF21{
         mpPaint.setStyle(Paint.Style.FILL);
         mpPaint.setTextSize(30);
         mpCanvas.drawText(str,x,y,mpPaint);
+
+        Log.v("MazePanel","Adding to canvas, text: "+ str);
     }
 
     /**
@@ -332,32 +353,43 @@ public class MazePanel extends View implements P5PanelF21{
     /**
      * Method that prints out a static image to test if MazePanel methods are working as intended.
      * Image consists of a black background, red circle, green oval, yellow rectangle,
-     * blue triangle/3-gon, and several cyan lines.
+     * blue triangle/3-gon, several cyan lines, and white text "Hello World".
      * @param c Given canvas to draw the images
      */
     private void myTestImage(Canvas c) {
         // Black background
         setColor(Color.BLACK);
         addFilledRectangle(0,0,1000,1000);
+
         // Red circle
         setColor(Color.RED);
         addFilledOval(0,0,200,200);
+
         // Green oval
         setColor(Color.GREEN);
         addFilledOval(350,200,50,50);
+
         // Yellow Rectangle
         setColor(Color.YELLOW);
         addFilledRectangle(800,800,300,300);
+
         // Blue Polygon (triangle)
         setColor(Color.BLUE);
         int[] x = {100,700,200};
         int[] y = {300,850,600};
         addFilledPolygon(x,y,3);
+
         // Cyan lines
         setColor(Color.CYAN);
         addLine(0,0,500,1000);
         addLine(0,0,300,1000);
         addLine(30,70,500,788);
         addLine(20,800,400,900);
+
+        // White text of "Hello World!"
+        setColor(Color.WHITE);
+        addMarker(700,900,"Hello World!");
+
+        Log.v("MazePanel","Drawing test image");
     }
 }
