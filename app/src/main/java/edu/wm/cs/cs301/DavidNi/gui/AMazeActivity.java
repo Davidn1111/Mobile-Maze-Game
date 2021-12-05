@@ -31,7 +31,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
     // Size of the maze, default to 0
     private int size = 0;
     // Generation method of the maze, default Boruvka
-    private String generationMethod = "Boruvka";
+    private String builder = "Boruvka";
     // Flag to check if maze has rooms, default to true
     private boolean rooms = true;
 
@@ -163,9 +163,9 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
      */
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-        this.generationMethod = adapterView.getItemAtPosition(position).toString();
+        this.builder = adapterView.getItemAtPosition(position).toString();
         // Log message of generation method, for debugging
-        Log.v("AMazeActivity","Maze generation method selected: " + this.generationMethod);
+        Log.v("AMazeActivity","Maze generation method selected: " + this.builder);
     }
 
     @Override
@@ -196,13 +196,13 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         //writeFile(this.seed,this.size,this.generationMethod,this.rooms);
 
         // Log message that displays the maze configuration sent to GeneratingActivity, for debugging purposes
-        Log.v("AMazeActivity","Sent the following information to GeneratingActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Algorithm: " + this.generationMethod + ", Rooms: " + this.rooms);
+        Log.v("AMazeActivity","Sent the following information to GeneratingActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Builder: " + this.builder + ", Rooms: " + this.rooms);
 
         // Send maze configuration to GeneratingActivity using intent
         Intent intent = new Intent(this, GeneratingActivity.class);
         intent.putExtra("Seed", this.seed);
         intent.putExtra("Size", this.size);
-        intent.putExtra("Algorithm",this.generationMethod);
+        intent.putExtra("Builder",this.builder);
         intent.putExtra("Rooms", this.rooms);
         startActivity(intent);
     }
@@ -223,17 +223,17 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
             String[] mazeConfigSplit = mazeConfig.split(",");
             this.seed = Integer.parseInt(mazeConfigSplit[0]);
             this.size = Integer.parseInt(mazeConfigSplit[1]);
-            this.generationMethod = mazeConfigSplit[2];
+            this.builder = mazeConfigSplit[2];
             this.rooms = Boolean.parseBoolean(mazeConfigSplit[3]);
 
             // Log message that displays the maze configuration sent to GeneratingActivity, for debugging purposes
-            Log.v("AMazeActivity","Sent the following information to GeneratingActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Algorithm: " + this.generationMethod + ", Rooms: " + this.rooms);
+            Log.v("AMazeActivity","Sent the following information to GeneratingActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Builder: " + this.builder + ", Rooms: " + this.rooms);
 
             // Send maze configuration to GeneratingActivity using intent
             Intent intent = new Intent(this, GeneratingActivity.class);
             intent.putExtra("Seed", this.seed);
             intent.putExtra("Size", this.size);
-            intent.putExtra("Algorithm",this.generationMethod);
+            intent.putExtra("Builder",this.builder);
             intent.putExtra("Rooms", this.rooms);
             startActivity(intent);
         }

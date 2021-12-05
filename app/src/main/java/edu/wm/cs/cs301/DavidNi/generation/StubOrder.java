@@ -16,6 +16,7 @@ public class StubOrder implements Order {
 	private boolean perfect;
 	private int seed;
 	private Maze reference;
+	private int progress;
 	
 	/**
 	 * Constructor for stub order object
@@ -96,7 +97,11 @@ public class StubOrder implements Order {
 	 */
 	@Override
 	public void updateProgress(int percentage) {
-		// TODO Auto-generated method stub
+		this.progress = percentage;
+	}
+
+	public int getProgress() {
+		return this.progress;
 	}
 	
 	/**

@@ -16,7 +16,6 @@ import edu.wm.cs.cs301.DavidNi.R;
 import edu.wm.cs.cs301.DavidNi.generation.Maze;
 
 public class PlayManuallyActivity extends AppCompatActivity {
-    // TODO set maze to be a Maze object in P7
     // maze generated in GeneratingActivity.
     Maze maze = Singleton.getInstance().getMaze();
 

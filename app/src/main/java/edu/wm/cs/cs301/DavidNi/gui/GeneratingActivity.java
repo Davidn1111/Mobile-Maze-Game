@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,16 +17,20 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.os.Handler;
 
 import edu.wm.cs.cs301.DavidNi.R;
+import edu.wm.cs.cs301.DavidNi.generation.MazeFactory;
+import edu.wm.cs.cs301.DavidNi.generation.Order.Builder;
+import edu.wm.cs.cs301.DavidNi.generation.StubOrder;
 
-public class GeneratingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class GeneratingActivity extends AppCompatActivity {
     // Seed of the maze
     private int seed;
     // Size of the maze
     private int size;
     // Generation method of the maze
-    private String generationMethod;
+    private String builder;
     // Flag to check if maze has rooms
     private boolean rooms;
     // Driver for traversing maze, default to null
@@ -35,9 +38,8 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
     // Robot sensor configuration, default Premium
     private String robotConfig = "Premium";
 
-    // TODO set maze to be a Maze object in P7, currently set to string "testMaze" for P6
-    // Global maze object that is generated in this activity.
-    static Object maze = "testMaze";
+    // Global singleton for sharing generated maze
+    public Singleton singleton;
 
     // Builder for pop messages
     AlertDialog.Builder popup;
@@ -53,6 +55,7 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
     // Handler to communicate background thread (which handles maze gen) with this (UI) thread
     final private Handler mazeGenHandler = new Handler();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,11 +65,11 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         Intent intent = getIntent();
         this.seed = intent.getIntExtra("Seed", 13);
         this.size = intent.getIntExtra("Size", 0);
-        this.generationMethod = intent.getStringExtra("Algorithm");
+        this.builder = intent.getStringExtra("Builder");
         this.rooms = intent.getBooleanExtra("Rooms",true);
 
         // Log message that displays the maze configuration received from AMazeActivity, for debugging purposes
-        Log.v("GeneratingActivity","Received the following information from AMazeActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Algorithm: " + this.generationMethod + ", Rooms: " + this.rooms);
+        Log.v("GeneratingActivity","Received the following information from AMazeActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Builder: " + this.builder + ", Rooms: " + this.rooms);
 
         // Radio button for driver selection
         driverGroup = findViewById(R.id.driverRadio);
@@ -78,7 +81,30 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         ArrayAdapter<CharSequence> robotAdapter = ArrayAdapter.createFromResource(this,R.array.robots, android.R.layout.simple_spinner_item);
         robotAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         robotSpinner.setAdapter(robotAdapter);
-        robotSpinner.setOnItemSelectedListener(this);
+        robotSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            /**
+             * This method is used to get the robot configuration selected in the corresponding Spinner (in GeneratingActivity).
+             * Default robot configuration set to premium
+             * Prints Logcat verbose message for debugging purposes.
+             * @param adapterView The AdapterView where selection happened
+             * @param view The view within the AdapterView that was clicked
+             * @param position The position of the view in the adapter
+             * @param id The row id of the item selected
+             */
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
+                ((TextView) adapterView.getChildAt(0)).setTextSize(18);
+                // Set robot configuration to the selected value
+                robotConfig = adapterView.getItemAtPosition(position).toString();
+                // Log message of robot configuration, for debugging
+                Log.v("GeneratingActivity","Selected Robot Configuration: " + robotConfig);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
         // Progress bar of maze generation
         mazeProgress = findViewById(R.id.genProgressBar);
@@ -137,18 +163,22 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
              */
             @Override
             public void run() {
+                MazeFactory factory = new MazeFactory();
+                StubOrder order = new StubOrder(size,getBuilder(),!rooms,seed);
+                factory.order(order);
                 // Simulate maze generation
-                while (progressStatus < 100) {
-                    progressStatus++;
-                    // Stall the progress bar loading by 50 ms every 1% to simulate actual loading
-                    android.os.SystemClock.sleep(50);
+                while (order.getProgress() != 100) {
+                    // Ensure sporadic nature of getProgress doesn't affect progressBar aesthetics
+                    if (order.getProgress() > 100)
+                        progressStatus = 99;
+                    else
+                        progressStatus = order.getProgress();
 
                     // Use handler to communicate back with UI thread
                     mazeGenHandler.post(new Runnable() {
                         /**
                          * This method uses a handler to communicate the maze generation's progress to the UI's progress bar.
                          * Sets the UI's progress bar to display progress of the maze generation.
-                         * This method also displays a warning message, if a driver is selected while maze generation has not yet been completed.
                          */
                         @Override
                         public void run() {
@@ -168,6 +198,14 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
                      */
                     @Override
                     public void run() {
+                        // Set the singleton to reference generated maze
+                        singleton = new Singleton();
+                        singleton.setMaze(order.getMazeReference());
+                        // Set the progress bar to 100% (needed since progress updates are sporadic)
+                        progressStatus = 100;
+                        progressText.setText("Building Maze: 100%");
+                        mazeProgress.setProgress(100);
+
                         // If no driver has been selected, send out a warning.
                         if (driver == null) {
                             try{
@@ -189,28 +227,6 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         }).start();
     }
 
-    /**
-     * This method is used to get the robot configuration selected in the corresponding Spinner (in GeneratingActivity).
-     * Default robot configuration set to premium
-     * Prints Logcat verbose message for debugging purposes.
-     * @param adapterView The AdapterView where selection happened
-     * @param view The view within the AdapterView that was clicked
-     * @param position The position of the view in the adapter
-     * @param id The row id of the item selected
-     */
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-        ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
-        ((TextView) adapterView.getChildAt(0)).setTextSize(18);
-        // Set robot configuration to the selected value
-        this.robotConfig = adapterView.getItemAtPosition(position).toString();
-        // Log message of robot configuration, for debugging
-        Log.v("GeneratingActivity","Selected Robot Configuration: " + this.robotConfig);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-    }
 
     /**
      * This method is called whenever a radio button in the "Drivers" radio group, is pressed.
@@ -276,6 +292,22 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
             intent.putExtra("Driver", this.driver);
             intent.putExtra("robotConfig", this.robotConfig);
             startActivity(intent);
+        }
+    }
+
+    /**
+     * Gives the requested builder algorithm, possible values
+     * are listed in the Builder enum type.
+     * @return the builder algorithm that is expected to be used for building the maze
+     */
+    public Builder getBuilder() {
+        switch(this.builder) {
+            case "Boruvka":
+                return Builder.Boruvka;
+            case "Prim":
+                return Builder.Prim;
+            default:
+                return Builder.DFS;
         }
     }
 }
