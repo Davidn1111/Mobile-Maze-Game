@@ -18,7 +18,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import edu.wm.cs.cs301.DavidNi.R;
 
@@ -66,8 +65,6 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         this.generationMethod = intent.getStringExtra("Algorithm");
         this.rooms = intent.getBooleanExtra("Rooms",true);
 
-        // Toast message displaying maze configuration received from AMazeActivity, for debugging purposes
-        Toast.makeText(getApplicationContext(), "Received maze configuration (" + this.seed + "," + this.size + "," + this.generationMethod+ "," + this.rooms + ") for generating", Toast.LENGTH_SHORT).show();
         // Log message that displays the maze configuration received from AMazeActivity, for debugging purposes
         Log.v("GeneratingActivity","Received the following information from AMazeActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Algorithm: " + this.generationMethod + ", Rooms: " + this.rooms);
 
@@ -99,8 +96,6 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
              */
             @Override
             public void onClick(View view) {
-                // Toast for returning to title
-                Toast.makeText(getApplicationContext(), "Returning to Title", Toast.LENGTH_SHORT).show();
                 // Log message for returning to title
                 Log.v("GeneratingActivity","Returning to Title");
 
@@ -209,8 +204,6 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         ((TextView) adapterView.getChildAt(0)).setTextSize(18);
         // Set robot configuration to the selected value
         this.robotConfig = adapterView.getItemAtPosition(position).toString();
-        // Toast selected robot configuration, for debugging
-        Toast.makeText(adapterView.getContext(),"Selected Robot Configuration: " + this.robotConfig, Toast.LENGTH_SHORT).show();
         // Log message of robot configuration, for debugging
         Log.v("GeneratingActivity","Selected Robot Configuration: " + this.robotConfig);
     }
@@ -236,8 +229,6 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
         // Set the selected driver based on the button selected
         this.driver = driverButton.getText().toString();
 
-        // Toast selected driver, for debugging
-        Toast.makeText(this,"Selected Driver: " + this.driver,Toast.LENGTH_SHORT).show();
         // Log message of selected driver, for debugging
         Log.v("GeneratingActivity","Selected Driver: " + this.driver);
 
@@ -265,8 +256,6 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
      */
     private void startPlaying() {
         if (this.driver.equals("Manual")) {
-            // Toast to showing app is moving to PlayManuallyActivity, for debugging
-            Toast.makeText(this,"Starting PlayManuallyActivity",Toast.LENGTH_SHORT).show();
             // Log message to show that app is moving to PlayManuallyActivity, for debugging.
             Log.v("GeneratingActivity", "Starting PlayManuallyActivity");
 
@@ -277,8 +266,6 @@ public class GeneratingActivity extends AppCompatActivity implements AdapterView
             startActivity(intent);
         }
         else{
-            // Toast to show that app is moving to PlayAnimationActivity with given driver (Wizard or WallFollower), for debugging
-            Toast.makeText(this,"Starting PlayAnimationActivity with Driver: " + driver,Toast.LENGTH_SHORT).show();
             // Log message to show that app is moving to PlayAnimationActivity with given driver (Wizard or WallFollower), for debugging
             Log.v("GeneratingActivity","Starting PlayAnimationActivity with Driver: " + driver);
             // Log message displaying maze, driver, and robotConfiguration sent PlayAnimationActivity, for debugging

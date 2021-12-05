@@ -13,7 +13,6 @@ import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -101,16 +100,12 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
                 // If the CheckBox is checked
                 if(roomCheck.isChecked()) {
                     rooms = true;
-                    // Toast that checkbox was checked, for debugging
-                    Toast.makeText(getApplicationContext(), "Perfect Checked", Toast.LENGTH_SHORT).show();
                     // Log message of room checkbox being unchecked, for debugging
                     Log.v("AMazeActivity","Rooms is checked");
                 }
                 // If the CheckBox is unchecked
                 else {
                     rooms = false;
-                    // Toast that checkbox was unchecked, for debugging
-                    Toast.makeText(getApplicationContext(), "Perfect Unchecked", Toast.LENGTH_SHORT).show();
                     // Log message of room checkbox being unchecked, for debugging
                     Log.v("AMazeActivity","Rooms is unchecked");
                 }
@@ -169,8 +164,6 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
         this.generationMethod = adapterView.getItemAtPosition(position).toString();
-        // Toast selected generation method, for debugging
-        Toast.makeText(adapterView.getContext(),"Maze generation method selected: " + this.generationMethod, Toast.LENGTH_SHORT).show();
         // Log message of generation method, for debugging
         Log.v("AMazeActivity","Maze generation method selected: " + this.generationMethod);
     }
@@ -202,8 +195,6 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         // TODO uncomment writeFile for P7 (to use persistent storage)
         //writeFile(this.seed,this.size,this.generationMethod,this.rooms);
 
-        // Toast message displaying maze configuration sent to GeneratingActivity, for debugging purposes
-        Toast.makeText(getApplicationContext(), "Sent maze configuration (" + this.seed + "," + this.size + "," + this.generationMethod+ "," + this.rooms + ") for generating", Toast.LENGTH_SHORT).show();
         // Log message that displays the maze configuration sent to GeneratingActivity, for debugging purposes
         Log.v("AMazeActivity","Sent the following information to GeneratingActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Algorithm: " + this.generationMethod + ", Rooms: " + this.rooms);
 
@@ -235,8 +226,6 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
             this.generationMethod = mazeConfigSplit[2];
             this.rooms = Boolean.parseBoolean(mazeConfigSplit[3]);
 
-            // Toast message displaying maze configuration sent to GeneratingActivity, for debugging purposes
-            Toast.makeText(getApplicationContext(), "Sent maze configuration (" + this.seed + "," + this.size + "," + this.generationMethod+ "," + this.rooms + ") for generating", Toast.LENGTH_SHORT).show();
             // Log message that displays the maze configuration sent to GeneratingActivity, for debugging purposes
             Log.v("AMazeActivity","Sent the following information to GeneratingActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Algorithm: " + this.generationMethod + ", Rooms: " + this.rooms);
 
@@ -251,8 +240,6 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
 
         // No previous maze configuration exists
         else {
-            // Toast message displaying maze configuration sent to GeneratingActivity, for debugging purposes
-            Toast.makeText(getApplicationContext(), "Error: No previous maze exists in persistent storage", Toast.LENGTH_SHORT).show();
             Log.e("AMazeActivity", "No Previous Maze Configuration exists");
         }
     }
