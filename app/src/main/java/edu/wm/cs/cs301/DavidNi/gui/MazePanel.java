@@ -10,9 +10,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-
 import androidx.core.content.ContextCompat;
-
 import edu.wm.cs.cs301.DavidNi.R;
 
 

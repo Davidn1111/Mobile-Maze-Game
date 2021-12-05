@@ -216,11 +216,12 @@ public class PlayAnimationActivity extends AppCompatActivity {
         // Toast message about the animation speed selected on the SeekBar, for debugging
         Toast.makeText(getApplicationContext(), "Testing Sensor UI, with all Sensors Operational", Toast.LENGTH_SHORT).show();
 
+        /*
         // ImageButton for going to the win activity. Placeholder for maze game.
         Button goToWin = findViewById(R.id.Go2Winning);
         // Listener for goToWin button
         goToWin.setOnClickListener(new View.OnClickListener() {
-            /**
+            /*
              * Method listens if the "Go2Winning" button (placeholder for the maze game) is pressed.
              * Communicates journey information to WinningActivity before starting it.
              * Journey information uses hardcoded:
@@ -228,17 +229,21 @@ public class PlayAnimationActivity extends AppCompatActivity {
              * shortest path length = 200,
              * energy consumption = 300
              */
+        /*
             @Override
             public void onClick(View view) {
                 goToWinning(100,200,300);
             }
         });
+        TODO remove?
+        */
 
+        /*
         // ImageButton for going to the win activity. Placeholder for maze game.
         Button goToLoss = findViewById(R.id.Go2Losing);
         // Listener for goToWin button
         goToLoss.setOnClickListener(new View.OnClickListener() {
-            /**
+            /*
              * Method listens if the "Go2Losing" button (placeholder for the maze game) is pressed.
              * Communicates journey information to LosingActivity before starting it.
              * Journey information uses hardcoded:
@@ -246,11 +251,14 @@ public class PlayAnimationActivity extends AppCompatActivity {
              * shortest path length = 500,
              * energy consumption = 600
              */
+        /*
             @Override
             public void onClick(View view) {
                 goToLosing(400,500,600);
             }
         });
+        TODO remove?
+        */
     }
 
     /**

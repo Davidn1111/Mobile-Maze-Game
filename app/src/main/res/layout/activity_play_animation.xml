@@ -20,33 +20,15 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023" />
 
-    <Button
-        android:id="@+id/Go2Winning"
-        android:layout_width="143dp"
-        android:layout_height="278dp"
-        android:layout_marginStart="64dp"
+    <edu.wm.cs.cs301.DavidNi.gui.MazePanel
+        android:id="@+id/activityMaze"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_marginTop="12dp"
-        android:backgroundTint="@color/black"
-        android:text="Click to Win"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/animMapText" />
-
-    <Button
-        android:id="@+id/Go2Losing"
-        android:layout_width="143dp"
-        android:layout_height="278dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="12dp"
-        android:backgroundTint="@color/black"
-        android:text="Click to Lose"
-        android:textColor="@color/white"
-        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@id/Go2Winning"
-        app:layout_constraintTop_toBottomOf="@+id/animMapText" />
+        app:layout_constraintHorizontal_bias="0.6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/animMapText"/>
 
     <TextView
         android:id="@+id/animMapText"
@@ -56,7 +38,7 @@
         android:textColor="@color/black"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintHorizontal_bias="0.429"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/animMapButton" />
 
@@ -106,7 +88,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Go2Winning" />
+        app:layout_constraintTop_toBottomOf="@+id/activityMaze" />
 
     <TextView
         android:id="@+id/speedText"
