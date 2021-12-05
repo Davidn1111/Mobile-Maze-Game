@@ -13,11 +13,12 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import edu.wm.cs.cs301.DavidNi.R;
+import edu.wm.cs.cs301.DavidNi.generation.Maze;
 
 public class PlayManuallyActivity extends AppCompatActivity {
     // TODO set maze to be a Maze object in P7
     // maze generated in GeneratingActivity.
-    Object maze = GeneratingActivity.maze;
+    Maze maze = Singleton.getInstance().getMaze();
 
     // Length of the path taken by the player
     private int pathLength = 0;
@@ -278,7 +279,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
                 goToWinning(100);
             }
         });
-        TODO uncomment
+        TODO remove?
              */
     }
 

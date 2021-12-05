@@ -22,7 +22,6 @@ import edu.wm.cs.cs301.DavidNi.R;
 public class PlayAnimationActivity extends AppCompatActivity {
     // TODO set maze to be a Maze object in P7
     // maze generated in GeneratingActivity.
-    Object maze = GeneratingActivity.maze;
 
     // Driver for traversing maze
     private String driver;
@@ -67,12 +66,15 @@ public class PlayAnimationActivity extends AppCompatActivity {
         // Log message that displays driver and robot configuration received from GeneratingActivity, for debugging purposes
         Log.v("PlayAnimationActivity","Received the following information from GeneratingActivity:\nDriver: " + driver + ", Robot Configuration: " + robotConfig);
 
+        /*
+        TODO fix
         if (this.maze != null) {
             // Toast message displaying info received from GeneratingActivity, for debugging purposes
             Toast.makeText(getApplicationContext(), "Received Driver: " + this.driver + " ,Robot Configuration: " + this.robotConfig + " ,and non-null maze reference from GeneratingActivity", Toast.LENGTH_SHORT).show();
             // Log message to show that GeneratingActivity global maze reference exists, for debugging purposes
             Log.v("PlayAnimationActivity", "Global Maze Reference from GeneratingActivity not null");
         }
+        */
 
         // Toggle button for showing map (whole maze with solution and visible walls) during animation/automatic play
         mapButton = findViewById(R.id.animMapButton);
