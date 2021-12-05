@@ -100,6 +100,10 @@ public class StubOrder implements Order {
 		this.progress = percentage;
 	}
 
+	/**
+	 * Method to get progress of maze generation.
+	 * Used in GeneratingActivity to update progress bar.
+	 */
 	public int getProgress() {
 		return this.progress;
 	}

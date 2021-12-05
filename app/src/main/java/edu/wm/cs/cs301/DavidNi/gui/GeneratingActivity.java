@@ -147,11 +147,11 @@ public class GeneratingActivity extends AppCompatActivity {
             }
         });
 
-        // Background Thread for P6 meant to simulate maze generation thread progress
+        // Background Thread of maze generation
         new Thread(new Runnable() {
             /**
-             * This method runs a background thread simulating maze generation.
-             * The thread stalls every 50 ms to simulate the maze loading.
+             * Background thread that generates a maze using MazeFactory and StubOrder.
+             * Updates progress bar to reflect maze generation progress.
              *
              * Sends popup warnings for the following issues:
              * A driver is selected before maze generation is complete.
@@ -296,9 +296,8 @@ public class GeneratingActivity extends AppCompatActivity {
     }
 
     /**
-     * Gives the requested builder algorithm, possible values
-     * are listed in the Builder enum type.
-     * @return the builder algorithm that is expected to be used for building the maze
+     * Converts builder algorithm specified from AMazeActivity as a Builder enumerated type.
+     * @return the builder algorithm from AMazeActivity as a Builder enumerated type.
      */
     public Builder getBuilder() {
         switch(this.builder) {
