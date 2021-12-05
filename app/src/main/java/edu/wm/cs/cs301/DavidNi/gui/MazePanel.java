@@ -11,10 +11,16 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import androidx.core.content.ContextCompat;
+
+import edu.wm.cs.cs301.DavidNi.R;
+
+
 public class MazePanel extends View implements P5PanelF21{
 
-    final int viewWidth = 1000;
-    final int viewHeight = 1000;
+    // Constant width and height shared among MazePanels
+    final int viewWidth = 1050;
+    final int viewHeight = 1050;
     // Current Color used by View
     private int color;
     // The Bitmap of the MazePanel
@@ -113,16 +119,14 @@ public class MazePanel extends View implements P5PanelF21{
      * @param top is true for the top rectangle, false for the bottom
      * @return the color to use for the background rectangle
      */
-    private Color getBackgroundColor(float percentToExit, boolean top) {
-        /*
-        final Color greenWM = Color.decode("#115740");
-        final Color goldWM = Color.decode("#916f41");
-        final Color yellowWM = Color.decode("#FFFF99");
+    private int getBackgroundColor(float percentToExit, boolean top) {
+        // Colors for compass are set in color
+        Color greenWM = Color.valueOf(ContextCompat.getColor(getContext(), R.color.greenWM));
+        Color goldWM = Color.valueOf(ContextCompat.getColor(getContext(), R.color.goldWM));
+        Color yellowWM = Color.valueOf(ContextCompat.getColor(getContext(), R.color.yellowWM));
 
         return top? blend(yellowWM, goldWM, percentToExit) :
-                blend(Color.lightGray, greenWM, percentToExit);
-         */
-        return Color.valueOf(0xffff0000);
+                blend(Color.valueOf(Color.LTGRAY), greenWM, percentToExit);
     }
 
     /**
@@ -138,20 +142,20 @@ public class MazePanel extends View implements P5PanelF21{
      * @param weightFstColor is the weight of fstColor, {@code 0.0 <= weightFstColor <= 1.0}
      * @return blend of both colors as weighted average of their rgb values
      */
-    private Color blend(Color fstColor, Color sndColor, double weightFstColor) {
-        /*
+    private int blend(Color fstColor, Color sndColor, float weightFstColor) {
         if (weightFstColor < 0.1)
-            return sndColor;
+            return sndColor.toArgb();
         if (weightFstColor > 0.95)
-            return fstColor;
-        double r = weightFstColor * fstColor.getRed() + (1-weightFstColor) * sndColor.getRed();
-        double g = weightFstColor * fstColor.getGreen() + (1-weightFstColor) * sndColor.getGreen();
-        double b = weightFstColor * fstColor.getBlue() + (1-weightFstColor) * sndColor.getBlue();
-        double a = Math.max(fstColor.getAlpha(), sndColor.getAlpha());
+            return fstColor.toArgb();
+        float r = weightFstColor * fstColor.red() + (1-weightFstColor) * sndColor.red();
+        float g = weightFstColor * fstColor.green() + (1-weightFstColor) * sndColor.green();
+        float b = weightFstColor * fstColor.blue() + (1-weightFstColor) * sndColor.blue();
+        float a = Math.max(fstColor.alpha(), sndColor.alpha());
 
-        return new Color((int) r, (int) g, (int) b, (int) a);
-        */
-        return Color.valueOf(0xffff0000);
+        // Create mix color used calculated argb values
+        Color mix = Color.valueOf(r,g,b,a);
+        // Return the argb value of the mixed color
+        return mix.toArgb();
     }
 
     /**
@@ -159,30 +163,17 @@ public class MazePanel extends View implements P5PanelF21{
      * Note that this also erases any previous drawings.
      * The color setting adjusts to the distance to the exit to
      * provide an additional clue for the user.
-     * Upper half blue sky, lower half is tan colored.
-     * Substitute for FirstPersonView.drawBackground method.
+     * Colors transition from black to gold and from grey to green.
      * @param percentToExit gives the distance to exit
      */
     @Override
     public void addBackground(float percentToExit) {
-
-        setColor(Color.BLACK);
-        this.addFilledRectangle(0,0,viewWidth,viewHeight/2);
-        setColor(Color.RED);
-        this.addFilledRectangle(0,viewHeight/2,viewWidth,viewHeight);
-        /*
-        // black rectangle in upper half of screen
-        // graphics.setColor(Color.black);
-        // dynamic color setting:
-        graphics.setColor(getBackgroundColor(percentToExit, true));
-        graphics.fillRect(0, 0, viewWidth, viewHeight/2);
-        // grey rectangle in lower half of screen
-        // graphics.setColor(Color.darkGray);
-        // dynamic color setting:
-        graphics.setColor(getBackgroundColor(percentToExit, false));
-        graphics.fillRect(0, viewHeight/2, viewWidth, viewHeight/2);
-        TODO
-        */
+        // dynamic color setting top rectangle:
+        setColor(getBackgroundColor(percentToExit, true));
+        this.addFilledRectangle(0, 0, viewWidth, viewHeight/2);
+        // dynamic color setting bottom rectangle:
+        setColor(getBackgroundColor(percentToExit, false));
+        this.addFilledRectangle(0, viewHeight/2, viewWidth, viewHeight);
     }
 
     /**
@@ -190,7 +181,6 @@ public class MazePanel extends View implements P5PanelF21{
      * The rectangle is specified with the {@code (x,y)} coordinates
      * of the upper left corner and then its width for the
      * x-axis and the height for the y-axis.
-     * Substitute for Graphics.fillRect() method
      * @param x is the x-coordinate of the top left corner
      * @param y is the y-coordinate of the top left corner
      * @param width is the width of the rectangle
@@ -198,6 +188,7 @@ public class MazePanel extends View implements P5PanelF21{
      */
     @Override
     public void addFilledRectangle(int x, int y, int width, int height) {
+        mpPaint.setStyle(Paint.Style.FILL);
         mpCanvas.drawRect(x,y,width,height,mpPaint);
     }
 
@@ -210,7 +201,6 @@ public class MazePanel extends View implements P5PanelF21{
      * same length n. The order of points in the arrays
      * matter as lines will be drawn from one point to the next
      * as given by the order in the array.
-     * Substitute for Graphics.fillPolygon() method
      * @param xPoints are the x-coordinates of points for the polygon
      * @param yPoints are the y-coordinates of points for the polygon
      * @param nPoints is the number of points, the length of the arrays
@@ -243,7 +233,6 @@ public class MazePanel extends View implements P5PanelF21{
      * same length n. The order of points in the arrays
      * matter as lines will be drawn from one point to the next
      * as given by the order in the array.
-     * Substitute for Graphics.drawPolygon method
      * @param xPoints are the x-coordinates of points for the polygon
      * @param yPoints are the y-coordinates of points for the polygon
      * @param nPoints is the number of points, the length of the arrays
@@ -270,7 +259,6 @@ public class MazePanel extends View implements P5PanelF21{
      * Adds a line.
      * A line is described by {@code (x,y)} coordinates for its
      * starting point and its end point.
-     * Substitute for Graphics.drawLine method
      * @param startX is the x-coordinate of the starting point
      * @param startY is the y-coordinate of the starting point
      * @param endX is the x-coordinate of the end point
@@ -278,7 +266,7 @@ public class MazePanel extends View implements P5PanelF21{
      */
     @Override
     public void addLine(int startX, int startY, int endX, int endY) {
-        mpPaint.setStyle(Paint.Style.STROKE);
+        mpPaint.setStyle(Paint.Style.FILL);
         mpCanvas.drawLine(startX,startY,endX,endY,mpPaint);
     }
 
@@ -287,7 +275,6 @@ public class MazePanel extends View implements P5PanelF21{
      * The oval is specified with the {@code (x,y)} coordinates
      * of the upper left corner and then its width for the
      * x-axis and the height for the y-axis.
-     * Substitute for Graphics.fillOval method
      * @param x is the x-coordinate of the top left corner
      * @param y is the y-coordinate of the top left corner
      * @param width is the width of the oval
@@ -305,7 +292,6 @@ public class MazePanel extends View implements P5PanelF21{
      * Adds the outline of a circular or elliptical arc covering the specified rectangle.
      * The resulting arc begins at startAngle and extends for arcAngle degrees,
      * using the current color.
-     * Substitute for Graphics.drawArc method
      * @param x the x coordinate of the upper-left corner of the arc to be drawn.
      * @param y the y coordinate of the upper-left corner of the arc to be drawn.
      * @param width the width of the arc to be drawn.
@@ -316,32 +302,23 @@ public class MazePanel extends View implements P5PanelF21{
     @Override
     public void addArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
         mpPaint.setStyle(Paint.Style.STROKE);
+        // Create RectF to represent arc
         RectF arc = new RectF(x,y,width,height);
+        // Add arc to internal canvas
         mpCanvas.drawArc(arc,startAngle,arcAngle,false,mpPaint);
     }
 
     /**
-     * Adds a string at the given position using font "Serif-PLAIN-16".
-     * Substitute for CompassRose.drawMarker method
+     * Adds a string at the given position using default android font at size 30
      * @param x the x coordinate
      * @param y the y coordinate
      * @param str the string
      */
     @Override
     public void addMarker(float x, float y, String str) {
-        /*
-        // Create a markerFont, always set to "Serif-PLAIN-16"
-        Font markerFont = Font.decode("Serif-PLAIN-16");
-
-        GlyphVector gv = markerFont.createGlyphVector(graphics.getFontRenderContext(), str);
-        Rectangle2D rect = gv.getVisualBounds();
-        // need to update x, y by half of rectangle width, height
-        // to serve as x, y coordinates for drawing a GlyphVector
-        x -= rect.getWidth() / 2;
-        y += rect.getHeight() / 2;
-
-        graphics.drawGlyphVector(gv, x, y);
-        */
+        mpPaint.setStyle(Paint.Style.FILL);
+        mpPaint.setTextSize(30);
+        mpCanvas.drawText(str,x,y,mpPaint);
     }
 
     /**

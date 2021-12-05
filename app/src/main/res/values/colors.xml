@@ -11,4 +11,8 @@
     <color name="squidPink">#ec3c7c</color>
     <color name="squidGreen">#066656</color>
     <color name="squidDarkGreen">#035648</color>
+
+    <color name= "greenWM">#115740</color>
+    <color name= "goldWM">#916f41</color>
+    <color name= "yellowWM">#FFFF99</color>
 </resources>

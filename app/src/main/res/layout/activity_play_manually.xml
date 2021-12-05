@@ -61,8 +61,8 @@
 
     <edu.wm.cs.cs301.DavidNi.gui.MazePanel
         android:id="@+id/Maze"
-        android:layout_width="310dp"
-        android:layout_height="284dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_marginTop="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"
@@ -112,7 +112,7 @@
         android:id="@+id/upButton"
         android:layout_width="78dp"
         android:layout_height="75dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:background="@drawable/up"
         android:contentDescription="Move Up in Maze Game"
         android:scaleType="fitCenter"
