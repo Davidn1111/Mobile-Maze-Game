@@ -152,6 +152,7 @@ public class GeneratingActivity extends AppCompatActivity {
             }
         });
 
+        // Start maze generation thread
         mazeGeneration = new mazeGenerationThread();
         mazeGeneration.start();
     }
@@ -190,11 +191,12 @@ public class GeneratingActivity extends AppCompatActivity {
                     return;
                 }
 
-                // Ensure sporadic nature of getProgress doesn't affect progressBar aesthetics
-                if (order.getProgress() > 100)
+                // Set progress status based on order progress
+                progressStatus = order.getProgress();
+                // Order progress is sporadic and values can be over 100 when almost done generating
+                // Default these values to 99
+                if (progressStatus > 100)
                     progressStatus = 99;
-                else
-                    progressStatus = order.getProgress();
 
                 // Use handler to communicate back with UI thread
                 mazeGenHandler.post(new Runnable() {
@@ -220,7 +222,9 @@ public class GeneratingActivity extends AppCompatActivity {
                  */
                 @Override
                 public void run() {
+                    //Debugging message when maze generation is done
                     Log.v("GeneratingActivity","Maze generation done");
+
                     // Set the singleton to reference generated maze
                     singleton = new Singleton();
                     singleton.setMaze(order.getMazeReference());
@@ -235,6 +239,8 @@ public class GeneratingActivity extends AppCompatActivity {
                             popup.setTitle("Reminder: No Driver Selected");
                             popup.setMessage("Maze has finished generating.\nPlease select a driver to start the maze game.");
                             popup.show();
+                            //Debugging message for warning when no driver is selected but maze is done generating.
+                            Log.v("GeneratingActivity","Reminder: No Driver selected and maze generation finished.");
                         }
                         catch (Exception e){
                             Log.v("GeneratingActivity", "Killed thread");
@@ -276,6 +282,8 @@ public class GeneratingActivity extends AppCompatActivity {
         // Make sure that no additional warnings are sent if popup is currently open
         if(this.progressStatus != 100) {
             this.popup.show();
+            //Debugging message for warning when driver is selected before maze is done generating.
+            Log.v("GeneratingActivity","Warning: Driver selected while maze still generating.");
         }
 
         // If the maze is finished generating and a driver is selected,
