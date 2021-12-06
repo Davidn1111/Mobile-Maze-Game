@@ -54,6 +54,8 @@ public class GeneratingActivity extends AppCompatActivity {
     private int progressStatus = 0;
     // Handler to communicate background thread (which handles maze gen) with this (UI) thread
     final private Handler mazeGenHandler = new Handler();
+    // private instance of maze generation thread
+    private mazeGenerationThread mazeGeneration;
 
 
     @Override
@@ -125,6 +127,9 @@ public class GeneratingActivity extends AppCompatActivity {
                 // Log message for returning to title
                 Log.v("GeneratingActivity","Returning to Title");
 
+                // Interrupt maze generation thread
+                mazeGeneration.interrupt();
+
                 // Return to title
                 Intent intent = new Intent(getApplicationContext(), AMazeActivity.class);
                 startActivity(intent);
@@ -147,86 +152,102 @@ public class GeneratingActivity extends AppCompatActivity {
             }
         });
 
-        // Background Thread of maze generation
-        new Thread(new Runnable() {
-            /**
-             * Background thread that generates a maze using MazeFactory and StubOrder.
-             * Updates progress bar to reflect maze generation progress.
-             *
-             * Sends popup warnings for the following issues:
-             * A driver is selected before maze generation is complete.
-             * A driver is not selected after maze generation is complete.
-             * <P>
-             *     If the maze is done generating, and a driver was selected,
-             *     this method starts the corresponding "playing" activity.
-             * </P>
-             */
-            @Override
-            public void run() {
-                MazeFactory factory = new MazeFactory();
-                StubOrder order = new StubOrder(size,getBuilder(),!rooms,seed);
-                factory.order(order);
-                // Simulate maze generation
-                while (order.getProgress() != 100) {
-                    // Ensure sporadic nature of getProgress doesn't affect progressBar aesthetics
-                    if (order.getProgress() > 100)
-                        progressStatus = 99;
-                    else
-                        progressStatus = order.getProgress();
+        mazeGeneration = new mazeGenerationThread();
+        mazeGeneration.start();
+    }
 
-                    // Use handler to communicate back with UI thread
-                    mazeGenHandler.post(new Runnable() {
-                        /**
-                         * This method uses a handler to communicate the maze generation's progress to the UI's progress bar.
-                         * Sets the UI's progress bar to display progress of the maze generation.
-                         */
-                        @Override
-                        public void run() {
-                            String progress = "Building Maze: " + progressStatus + "%";
-                            progressText.setText(progress);
-                            mazeProgress.setProgress(progressStatus);
-                        }
-                    });
+    /**
+     * Private thread class that runs maze generation.
+     * Maze generation progress is reflected in UI progress bar.
+     * @author David Ni
+     */
+    private class mazeGenerationThread extends Thread implements Runnable{
+        /**
+         * This method runs the maze generation thread.
+         * Maze generation is preformed by MazeFactory.order().
+         * This method updates progress bar to reflect maze generation progress.
+         *
+         * Sends popup warnings for the following issues:
+         * A driver is selected before maze generation is complete.
+         * A driver is not selected after maze generation is complete.
+         * <P>
+         *     If the maze is done generating, and a driver was selected,
+         *     this method starts the corresponding "playing" activity.
+         * </P>
+         */
+        @Override
+        public void run() {
+            MazeFactory factory = new MazeFactory();
+            StubOrder order = new StubOrder(size,getBuilder(),!rooms,seed);
+            factory.order(order);
+            // Simulate maze generation
+            while (order.getProgress() != 100) {
+                // Code used to kill thread when back button is called
+                try {
+                    mazeGenerationThread.sleep(0);
                 }
+                catch (InterruptedException e){
+                    return;
+                }
+
+                // Ensure sporadic nature of getProgress doesn't affect progressBar aesthetics
+                if (order.getProgress() > 100)
+                    progressStatus = 99;
+                else
+                    progressStatus = order.getProgress();
+
+                // Use handler to communicate back with UI thread
                 mazeGenHandler.post(new Runnable() {
                     /**
-                     * This method uses a handler to communicate to the UI that maze generation has finished.
-                     * If no driver had been selected when maze generation is completed,
-                     * this method displays a reminder to select a driver.
-                     * If a driver has been selected when maze generation is completed,
-                     * this method starts the corresponding "playing" activity.
+                     * This method uses a handler to communicate the maze generation's progress to the UI's progress bar.
+                     * Sets the UI's progress bar to display progress of the maze generation.
                      */
                     @Override
                     public void run() {
-                        // Set the singleton to reference generated maze
-                        singleton = new Singleton();
-                        singleton.setMaze(order.getMazeReference());
-                        // Set the progress bar to 100% (needed since progress updates are sporadic)
-                        progressStatus = 100;
-                        progressText.setText("Building Maze: 100%");
-                        mazeProgress.setProgress(100);
-
-                        // If no driver has been selected, send out a warning.
-                        if (driver == null) {
-                            try{
-                                popup.setTitle("Reminder: No Driver Selected");
-                                popup.setMessage("Maze has finished generating.\nPlease select a driver to start the maze game.");
-                                popup.show();
-                            }
-                            catch (Exception e){
-                                Log.v("GeneratingActivity", "Killed thread");
-                            }
-                        }
-                        // If the maze is finished generating and a driver is selected,
-                        // go to the corresponding playing activity.
-                        else
-                            startPlaying();
+                        String progress = "Building Maze: " + progressStatus + "%";
+                        progressText.setText(progress);
+                        mazeProgress.setProgress(progressStatus);
                     }
                 });
             }
-        }).start();
-    }
+            mazeGenHandler.post(new Runnable() {
+                /**
+                 * This method uses a handler to communicate to the UI that maze generation has finished.
+                 * If no driver had been selected when maze generation is completed,
+                 * this method displays a reminder to select a driver.
+                 * If a driver has been selected when maze generation is completed,
+                 * this method starts the corresponding "playing" activity.
+                 */
+                @Override
+                public void run() {
+                    Log.v("GeneratingActivity","Maze generation done");
+                    // Set the singleton to reference generated maze
+                    singleton = new Singleton();
+                    singleton.setMaze(order.getMazeReference());
+                    // Set the progress bar to 100% (needed since progress updates are sporadic)
+                    progressStatus = 100;
+                    progressText.setText("Building Maze: 100%");
+                    mazeProgress.setProgress(100);
 
+                    // If no driver has been selected, send out a warning.
+                    if (driver == null) {
+                        try{
+                            popup.setTitle("Reminder: No Driver Selected");
+                            popup.setMessage("Maze has finished generating.\nPlease select a driver to start the maze game.");
+                            popup.show();
+                        }
+                        catch (Exception e){
+                            Log.v("GeneratingActivity", "Killed thread");
+                        }
+                    }
+                    // If the maze is finished generating and a driver is selected,
+                    // go to the corresponding playing activity.
+                    else
+                        startPlaying();
+                }
+            });
+        }
+    }
 
     /**
      * This method is called whenever a radio button in the "Drivers" radio group, is pressed.
