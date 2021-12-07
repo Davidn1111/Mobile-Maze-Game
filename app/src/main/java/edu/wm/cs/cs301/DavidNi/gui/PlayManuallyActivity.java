@@ -15,9 +15,13 @@ import android.widget.ToggleButton;
 import edu.wm.cs.cs301.DavidNi.R;
 import edu.wm.cs.cs301.DavidNi.generation.Maze;
 
-public class PlayManuallyActivity extends AppCompatActivity {
-    // maze generated in GeneratingActivity.
-    Maze maze = Singleton.getInstance().getMaze();
+public class PlayManuallyActivity extends AppCompatActivity implements PlayingActivity{
+    // Maze generated in GeneratingActivity.
+    private Maze maze;
+    // StatePlaying corresponding to this activity
+    private StatePlaying statePlaying;
+    // MazePanel in Activity used to display maze game
+    private MazePanel panel;
 
     // Length of the path taken by the player
     private int pathLength = 0;
@@ -32,6 +36,18 @@ public class PlayManuallyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_manually);
+
+        // Get the generated maze
+        maze = Singleton.getInstance().getMaze();
+        Singleton.getInstance().setMaze(null);
+
+        // Panel that statePlaying draws
+        panel = findViewById(R.id.Maze);
+
+        // Initialize StatePlaying to play maze game.
+        statePlaying = new StatePlaying(this);
+        statePlaying.setMazeConfiguration(this.maze);
+        statePlaying.start(panel);
 
         if (this.maze != null) {
             // Toast to show that GeneratingActivity global maze reference exists, for debugging purposes
@@ -305,4 +321,8 @@ public class PlayManuallyActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void goToWinning() {
+        //TODO Adjust so correct info sent to winning state
+    }
 }

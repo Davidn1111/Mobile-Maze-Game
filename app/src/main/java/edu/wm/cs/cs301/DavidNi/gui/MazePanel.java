@@ -54,8 +54,6 @@ public class MazePanel extends View implements P5PanelF21{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        // Draw the Test Image
-        myTestImage(canvas);
         canvas.drawBitmap(mpBitmap,0,0,mpPaint);
         Log.v("MazePanel","MazePanel onDraw called");
     }
