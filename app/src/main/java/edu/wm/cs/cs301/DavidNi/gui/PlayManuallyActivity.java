@@ -239,6 +239,7 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
             public void onClick(View view) {
                 // Log message to show Zoom In button was pressed, for debugging
                 Log.v("PlayManuallyActivity", "Zooming in on Map");
+                statePlaying.keyDown(UserInput.ZOOMIN);
             }
         });
 
@@ -255,6 +256,7 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
             public void onClick(View view) {
                 // Log message to show Zoom Out button was pressed, for debugging
                 Log.v("PlayManuallyActivity", "Zooming out on Map");
+                statePlaying.keyDown(UserInput.ZOOMOUT);
             }
         });
     }
