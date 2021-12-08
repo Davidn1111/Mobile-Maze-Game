@@ -17,12 +17,8 @@ import edu.wm.cs.cs301.DavidNi.R;
 import edu.wm.cs.cs301.DavidNi.generation.Maze;
 
 public class PlayManuallyActivity extends AppCompatActivity implements PlayingActivity{
-    // Maze generated in GeneratingActivity.
-    private Maze maze;
     // StatePlaying corresponding to this activity
     private StatePlaying statePlaying;
-    // MazePanel in Activity used to display maze game
-    private MazePanel panel;
     // Shortest path out of maze.
     private int shortestPath;
 
@@ -39,21 +35,23 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
         setContentView(R.layout.activity_play_manually);
 
         // Get the generated maze
-        maze = Singleton.getInstance().getMaze();
+        // Maze generated in GeneratingActivity.
+        Maze maze = Singleton.getInstance().getMaze();
         Singleton.getInstance().releaseMaze();
 
         // Get the shortest path out of maze (without jumping)
-        shortestPath = maze.getDistanceToExit(maze.getStartingPosition()[0],maze.getStartingPosition()[1]);
+        shortestPath = maze.getDistanceToExit(maze.getStartingPosition()[0], maze.getStartingPosition()[1]);
 
         // Panel that statePlaying draws
-        panel = findViewById(R.id.Maze);
+        // MazePanel in Activity used to display maze game
+        MazePanel panel = findViewById(R.id.Maze);
 
         // Initialize StatePlaying to play maze game.
         statePlaying = new StatePlaying(this);
-        statePlaying.setMazeConfiguration(this.maze);
+        statePlaying.setMazeConfiguration(maze);
         statePlaying.start(panel);
 
-        if (this.maze != null) {
+        if (maze != null) {
             // Log message to show that GeneratingActivity global maze reference exists, for debugging purposes
             Log.v("PlayManuallyActivity", "Global Maze Reference from GeneratingActivity not null");
         }

@@ -19,21 +19,20 @@ import android.widget.ToggleButton;
 import edu.wm.cs.cs301.DavidNi.R;
 import edu.wm.cs.cs301.DavidNi.generation.Maze;
 import edu.wm.cs.cs301.DavidNi.gui.Constants.UserInput;
+import edu.wm.cs.cs301.DavidNi.gui.Robot.Direction;
 
 public class PlayAnimationActivity extends AppCompatActivity implements PlayingActivity{
     // Maze generated in GeneratingActivity.
     private Maze maze;
     // StatePlaying corresponding to this activity
     private StatePlaying statePlaying;
-    // MazePanel in Activity used to display maze game
-    private MazePanel panel;
     // Shortest path out of maze.
     private int shortestPath;
 
     // Driver for traversing maze
-    private String driver;
-    // Robot sensor configuration
-    private String robotConfig;
+    private RobotDriver driver;
+    // Robot used to play animation
+    private Robot robot;
 
     // Speed of the animation, defaulted to 0
     private int speed = 0;
@@ -71,24 +70,28 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
         Singleton.getInstance().releaseMaze();
 
         // Get the shortest path out of maze (without jumping)
-        shortestPath = maze.getDistanceToExit(maze.getStartingPosition()[0],maze.getStartingPosition()[1]);
+        shortestPath = maze.getDistanceToExit(maze.getStartingPosition()[0], maze.getStartingPosition()[1]);
 
         // Panel that statePlaying draws
-        panel = findViewById(R.id.animationMaze);
+        // MazePanel in Activity used to display maze game
+        MazePanel panel = findViewById(R.id.animationMaze);
 
         // Initialize StatePlaying to play maze game.
         statePlaying = new StatePlaying(this);
-        statePlaying.setMazeConfiguration(this.maze);
+        statePlaying.setMazeConfiguration(maze);
         statePlaying.start(panel);
 
-        // Get drive and robot configuration from GeneratingActivity
+        // Robot for traversing maze
+        this.robot = new UnreliableRobot();
+
+        // Intent for getting robot and driver configurations from GeneratingActivity
         Intent intent = getIntent();
-        this.driver = intent.getStringExtra("Driver");
-        this.robotConfig = intent.getStringExtra("robotConfig");
+        // Set driver based on given intent
+        setDriver(intent.getStringExtra("Driver"));
 
         // Log message that displays driver and robot configuration received from GeneratingActivity, for debugging purposes
-        Log.v("PlayAnimationActivity","Received the following information from GeneratingActivity:\nDriver: " + driver + ", Robot Configuration: " + robotConfig);
-        if (this.maze != null) {
+        Log.v("PlayAnimationActivity","Received the following information from GeneratingActivity:\nDriver: " + intent.getStringExtra("Driver") + ", Robot Configuration: " + intent.getStringExtra("robotConfig"));
+        if (maze != null) {
             // Log message to show that GeneratingActivity global maze reference exists, for debugging purposes
             Log.v("PlayAnimationActivity", "Global Maze Reference from GeneratingActivity not null");
         }
@@ -328,6 +331,23 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
         intent.putExtra("ShortestPath", shortestPath);
         intent.putExtra("energyConsumption", energyConsumed);
         startActivity(intent);
+    }
 
+    /**
+     * This method sets PlayAnimationActivity's driver to the driver specified in GeneratingActivity.
+     * @param Driver string specifying the type of robot driver used in PlayAnimationActivity
+     */
+    private void setDriver(String Driver) {
+        switch(Driver) {
+            case "WallFollower":
+                this.driver = new WallFollower();
+                break;
+            case "Wizard":
+                this.driver = new Wizard();
+                break;
+            default:
+                this.driver = null;
+                break;
+        }
     }
 }

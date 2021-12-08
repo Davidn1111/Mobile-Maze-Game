@@ -334,6 +334,7 @@ public class GeneratingActivity extends AppCompatActivity {
                 return Builder.Boruvka;
             case "Prim":
                 return Builder.Prim;
+            // Default builder is DFS
             default:
                 return Builder.DFS;
         }
