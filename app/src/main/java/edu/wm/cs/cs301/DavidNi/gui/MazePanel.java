@@ -54,7 +54,6 @@ public class MazePanel extends View implements P5PanelF21{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        myTestImage(canvas);
         canvas.drawBitmap(mpBitmap,0,0,mpPaint);
         Log.v("MazePanel","MazePanel onDraw called");
     }
@@ -325,7 +324,8 @@ public class MazePanel extends View implements P5PanelF21{
     }
 
     /**
-     * Adds a string at the given position using default android font at size 30
+     * Adds a string at the given position using default android font at size 40.
+     * Used to label compass directions for maze game.
      * @param x the x coordinate
      * @param y the y coordinate
      * @param str the string
@@ -333,8 +333,9 @@ public class MazePanel extends View implements P5PanelF21{
     @Override
     public void addMarker(float x, float y, String str) {
         mpPaint.setStyle(Paint.Style.FILL);
-        mpPaint.setTextSize(30);
-        mpCanvas.drawText(str,x,y,mpPaint);
+        mpPaint.setTextSize(40);
+        // Adjust placement due to centering issue for compass
+        mpCanvas.drawText(str,x-13,y+13,mpPaint);
 
         Log.v("MazePanel","Adding to canvas, text: "+ str);
     }

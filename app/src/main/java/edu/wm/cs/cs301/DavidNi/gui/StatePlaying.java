@@ -96,7 +96,7 @@ public class StatePlaying {
         // configure compass rose
         cr = new CompassRose();
         cr.setPositionAndSize(Constants.VIEW_WIDTH/2,
-        		(int)(0.1*Constants.VIEW_HEIGHT),35);
+        		(int)(0.1*Constants.VIEW_HEIGHT),92);
 
         if (panel != null) {
         	startDrawer();
@@ -144,10 +144,9 @@ public class StatePlaying {
      * Method requires {@link #start(MazePanel) start} to be
      * called before.
      * @param key provides the feature the user selected
-     * @param value is not used, exists only for consistency across State classes
      * @return false if not started yet otherwise true
      */
-    public boolean keyDown(UserInput key, int value) {
+    public boolean keyDown(UserInput key) {
         if (!started)
             return false;
 
@@ -300,7 +299,7 @@ public class StatePlaying {
      * @return true if there is no wall in this direction
      */
     protected boolean checkMove(int dir) {
-        CardinalDirection cd = null;
+        CardinalDirection cd;
         switch (dir) {
         case 1: // forward
             cd = getCurrentDirection();
