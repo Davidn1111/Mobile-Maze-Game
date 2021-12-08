@@ -192,7 +192,7 @@ public class MazePanel extends View implements P5PanelF21{
     @Override
     public void addFilledRectangle(int x, int y, int width, int height) {
         mpPaint.setStyle(Paint.Style.FILL);
-        mpCanvas.drawRect(x,y,width,height,mpPaint);
+        mpCanvas.drawRect(x,y,x+width,y+height,mpPaint);
 
         Log.v("MazePanel","Drawing filled rectangle");
     }
@@ -296,7 +296,7 @@ public class MazePanel extends View implements P5PanelF21{
         // Set the paint style to fill
         mpPaint.setStyle(Paint.Style.FILL);
         // Draw oval on internal canvas
-        mpCanvas.drawOval(x,y,width,height,mpPaint);
+        mpCanvas.drawOval(x,y,x+width,y+height,mpPaint);
 
         Log.v("MazePanel","Drawing oval");
     }
@@ -316,7 +316,7 @@ public class MazePanel extends View implements P5PanelF21{
     public void addArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
         mpPaint.setStyle(Paint.Style.STROKE);
         // Create RectF to represent arc
-        RectF arc = new RectF(x,y,width,height);
+        RectF arc = new RectF(x,y,x+width,y+height);
         // Add arc to internal canvas
         mpCanvas.drawArc(arc,startAngle,arcAngle,false,mpPaint);
 
