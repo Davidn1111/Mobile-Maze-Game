@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import edu.wm.cs.cs301.DavidNi.R;
@@ -50,8 +49,6 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
         statePlaying.start(panel);
 
         if (this.maze != null) {
-            // Toast to show that GeneratingActivity global maze reference exists, for debugging purposes
-            Toast.makeText(getApplicationContext(), "Received non-null Global Maze Reference from GeneratingActivity", Toast.LENGTH_SHORT).show();
             // Log message to show that GeneratingActivity global maze reference exists, for debugging purposes
             Log.v("PlayManuallyActivity", "Global Maze Reference from GeneratingActivity not null");
         }
@@ -67,8 +64,6 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
              */
             @Override
             public void onClick(View view) {
-                // Toast for returning to title
-                Toast.makeText(getApplicationContext(), "Returning to Title", Toast.LENGTH_SHORT).show();
                 // Log message for returning to title
                 Log.v("PlayManuallyActivity","Returning to Title");
 
@@ -91,15 +86,11 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 // Show solution if button is toggled on
                 if(solutionButton.isChecked()){
-                    // Toast to show solution button was toggled on, for debugging
-                    Toast.makeText(getApplicationContext(),"Showing Solution",Toast.LENGTH_SHORT).show();
                     // Log message to show solution button was toggled on, for debugging
                     Log.v("PlayManuallyActivity", "Toggled Solution Button: ON");
                 }
                 // Do not show solution if button is toggled off
                 else{
-                    // Toast to show solution button was toggled off, for debugging
-                    Toast.makeText(getApplicationContext(),"No Longer Showing Solution",Toast.LENGTH_SHORT).show();
                     // Log message to show solution button was toggled off, for debugging
                     Log.v("PlayManuallyActivity", "Toggled Solution Button: OFF");
                 }
@@ -119,15 +110,11 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 // Show map of maze if button is toggled on
                 if(mazeButton.isChecked()){
-                    // Toast to show maze button was toggled on, for debugging
-                    Toast.makeText(getApplicationContext(),"Showing Map of Maze",Toast.LENGTH_SHORT).show();
                     // Log message to show maze button was toggled on, for debugging
                     Log.v("PlayManuallyActivity", "Toggled Show Maze Button: ON");
                 }
                 // Do not show map of maze if button is toggled off
                 else{
-                    // Toast to show maze button was toggled off, for debugging
-                    Toast.makeText(getApplicationContext(),"No Longer Showing Map of Maze",Toast.LENGTH_SHORT).show();
                     // Log message to show maze button was toggled off, for debugging
                     Log.v("PlayManuallyActivity", "Toggled Show Maze Button: OFF");
                 }
@@ -147,15 +134,11 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 // Show map of maze if button is toggled on
                 if(wallsButton.isChecked()){
-                    // Toast to show walls button was toggled on, for debugging
-                    Toast.makeText(getApplicationContext(),"Showing Visible Walls",Toast.LENGTH_SHORT).show();
                     // Log message to show walls button was toggled on, for debugging
                     Log.v("PlayManuallyActivity", "Toggled Show Walls Button: ON");
                 }
                 // Do not show map of maze if button is toggled off
                 else{
-                    // Toast to show walls button was toggled off, for debugging
-                    Toast.makeText(getApplicationContext(),"No Longer Showing Visible Walls",Toast.LENGTH_SHORT).show();
                     // Log message to show walls button was toggled off, for debugging
                     Log.v("PlayManuallyActivity", "Toggled Show Walls Button: OFF");
                 }
@@ -175,8 +158,6 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
             @Override
             public void onClick(View view) {
                 pathLength++;
-                // Toast to show Up button was pressed, for debugging
-                Toast.makeText(getApplicationContext(),"Up Button Pressed \nPathLength Now: " + pathLength,Toast.LENGTH_SHORT).show();
                 // Log message to show Up button was pressed, for debugging
                 Log.v("PlayManuallyActivity", "Up Button Pressed");
                 // Log message showing updated path length after Up button was pressed, for debugging.
@@ -197,8 +178,6 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
             @Override
             public void onClick(View view) {
                 pathLength++;
-                // Toast to show Jump button was pressed, for debugging
-                Toast.makeText(getApplicationContext(),"Jump Button Pressed \nPathLength Now: " + pathLength,Toast.LENGTH_SHORT).show();
                 // Log message to show Jump button was pressed, for debugging
                 Log.v("PlayManuallyActivity", "Jump Button Pressed");
                 // Log message showing updated path length after Jump button was pressed, for debugging.
@@ -217,8 +196,6 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
              */
             @Override
             public void onClick(View view) {
-                // Toast to show Left button was pressed, for debugging
-                Toast.makeText(getApplicationContext(),"Rotating Left",Toast.LENGTH_SHORT).show();
                 // Log message to show Left button was pressed, for debugging
                 Log.v("PlayManuallyActivity", "Left Button Pressed");
             }
@@ -235,8 +212,6 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
              */
             @Override
             public void onClick(View view) {
-                // Toast to show Left button was pressed, for debugging
-                Toast.makeText(getApplicationContext(),"Rotating Right",Toast.LENGTH_SHORT).show();
                 // Log message to show Left button was pressed, for debugging
                 Log.v("PlayManuallyActivity", "Right Button Pressed");
             }
@@ -253,8 +228,6 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
              */
             @Override
             public void onClick(View view) {
-                // Toast to show Zoom In button was pressed, for debugging
-                Toast.makeText(getApplicationContext(),"Zooming In",Toast.LENGTH_SHORT).show();
                 // Log message to show Zoom In button was pressed, for debugging
                 Log.v("PlayManuallyActivity", "Zooming in on Map");
             }
@@ -271,8 +244,6 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
              */
             @Override
             public void onClick(View view) {
-                // Toast to show Zoom Out button was pressed, for debugging
-                Toast.makeText(getApplicationContext(),"Zooming Out",Toast.LENGTH_SHORT).show();
                 // Log message to show Zoom Out button was pressed, for debugging
                 Log.v("PlayManuallyActivity", "Zooming out on Map");
             }
@@ -304,10 +275,6 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
      * @param shortestPath Shortest possible path (without jumping) to beat the maze.
      */
     private void goToWinning(int shortestPath) {
-        // Toasts that you won the game, for debugging purposes
-        Toast.makeText(getApplicationContext(),"Going to WinningActivity",Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(),"Sent the following information to WinningActivity:\nPath length: " + pathLength + ", Shortest Path: "
-                + shortestPath,Toast.LENGTH_SHORT).show();
         // Log message to show you won the game, for debugging purposes
         Log.v("PlayManuallyActivity", "Going to WinningActivity");
         // Log message to show what journey information was sent to WinningActivity, for debugging purposes
