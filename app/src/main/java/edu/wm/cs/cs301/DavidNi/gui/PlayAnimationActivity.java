@@ -18,6 +18,7 @@ import android.widget.ToggleButton;
 
 import edu.wm.cs.cs301.DavidNi.R;
 import edu.wm.cs.cs301.DavidNi.generation.Maze;
+import edu.wm.cs.cs301.DavidNi.gui.Constants.UserInput;
 
 public class PlayAnimationActivity extends AppCompatActivity implements PlayingActivity{
     // Maze generated in GeneratingActivity.
@@ -67,7 +68,7 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
 
         // Get the generated maze
         maze = Singleton.getInstance().getMaze();
-        Singleton.getInstance().setMaze(null);
+        Singleton.getInstance().releaseMaze();
 
         // Get the shortest path out of maze (without jumping)
         shortestPath = maze.getDistanceToExit(maze.getStartingPosition()[0],maze.getStartingPosition()[1]);
@@ -84,9 +85,9 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
         Intent intent = getIntent();
         this.driver = intent.getStringExtra("Driver");
         this.robotConfig = intent.getStringExtra("robotConfig");
+
         // Log message that displays driver and robot configuration received from GeneratingActivity, for debugging purposes
         Log.v("PlayAnimationActivity","Received the following information from GeneratingActivity:\nDriver: " + driver + ", Robot Configuration: " + robotConfig);
-
         if (this.maze != null) {
             // Log message to show that GeneratingActivity global maze reference exists, for debugging purposes
             Log.v("PlayAnimationActivity", "Global Maze Reference from GeneratingActivity not null");
@@ -108,11 +109,17 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
                 if (mapButton.isChecked()) {
                     // Log message to show button was toggled on, for debugging
                     Log.v("PlayAnimationActivity", "Toggled Show Map Button: ON");
+                    statePlaying.keyDown(UserInput.TOGGLEFULLMAP);
+                    statePlaying.keyDown(UserInput.TOGGLESOLUTION);
+                    statePlaying.keyDown(UserInput.TOGGLELOCALMAP);
                 }
                 // Do not show map of maze if button is toggled off
                 else {
                     // Log message to show button was toggled off, for debugging
                     Log.v("PlayAnimationActivity", "Toggled Show Map Button: OFF");
+                    statePlaying.keyDown(UserInput.TOGGLEFULLMAP);
+                    statePlaying.keyDown(UserInput.TOGGLESOLUTION);
+                    statePlaying.keyDown(UserInput.TOGGLELOCALMAP);
                 }
             }
         });
@@ -131,6 +138,7 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
             public void onClick(View view) {
                 // Log message to show Zoom In button was pressed, for debugging
                 Log.v("PlayAnimationActivity", "Zooming in on Map");
+                statePlaying.keyDown(UserInput.ZOOMIN);
             }
         });
 
@@ -148,6 +156,7 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
             public void onClick(View view) {
                 // Log message to show Zoom Out button was pressed, for debugging
                 Log.v("PlayAnimationActivity", "Zooming out on Map");
+                statePlaying.keyDown(UserInput.ZOOMOUT);
             }
         });
 

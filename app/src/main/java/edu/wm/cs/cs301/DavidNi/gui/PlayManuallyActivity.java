@@ -40,7 +40,7 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
 
         // Get the generated maze
         maze = Singleton.getInstance().getMaze();
-        Singleton.getInstance().setMaze(null);
+        Singleton.getInstance().releaseMaze();
 
         // Get the shortest path out of maze (without jumping)
         shortestPath = maze.getDistanceToExit(maze.getStartingPosition()[0],maze.getStartingPosition()[1]);

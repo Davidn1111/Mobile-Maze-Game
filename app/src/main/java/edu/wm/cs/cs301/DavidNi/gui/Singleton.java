@@ -33,4 +33,13 @@ public class Singleton {
     public Maze getMaze(){
         return this.maze;
     }
+
+    /**
+     * Method to set static maze reference to null and then remove from memory using garbage collection.
+     * Intended to be called once a playing activity obtains a reference to maze generated in GeneratingActivity.
+     */
+    public void releaseMaze(){
+        this.maze = null;
+        System.gc();
+    }
 }
