@@ -54,6 +54,9 @@ public class StatePlaying {
     Floorplan seenCells; // a matrix with cells to memorize which cells are visible from the current point of view
     // the FirstPersonView obtains this information and the Map uses it for highlighting currently visible walls on the map
     private CompassRose cr; // compass rose to show current direction
+
+    // Path length of current play session
+    private int pathLength = 0;
     
     // debug stuff
     //private boolean deepdebug = false;
@@ -159,6 +162,7 @@ public class StatePlaying {
             break;
         case UP: // move forward
             walk(1);
+            pathLength++;
             // check termination, did we leave the maze?
             if (isOutside(px,py)) {
                 playActivity.goToWinning();
@@ -172,6 +176,7 @@ public class StatePlaying {
             break;
         case DOWN: // move backward
             walk(-1);
+            pathLength++;
             // check termination, did we leave the maze?
             if (isOutside(px,py)) {
                 playActivity.goToWinning();
@@ -423,6 +428,15 @@ public class StatePlaying {
     			mazeConfig.hasWall(px, py, getCurrentDirection()) &&
     			mazeConfig.hasWall(px, py, getCurrentDirection().oppositeDirection().rotateClockwise()) &&
     			mazeConfig.hasWall(px, py, getCurrentDirection().rotateClockwise()));
+    }
+
+    /**
+     * This method gets the path length taken during the current play session.
+     * Intended use: Get path length taken during manual play, for winning activity.
+     * @return Path length taken so far
+     */
+    public int getPathLength() {
+        return this.pathLength;
     }
     /////////////////////// Methods for debugging ////////////////////////////////
     /*

@@ -21,9 +21,9 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
     private StatePlaying statePlaying;
     // MazePanel in Activity used to display maze game
     private MazePanel panel;
+    // Shortest path out of maze.
+    private int shortestPath;
 
-    // Length of the path taken by the player
-    private int pathLength = 0;
     // Toggle button to show solution
     private ToggleButton solutionButton;
     // Toggle button to show map of maze
@@ -39,6 +39,9 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
         // Get the generated maze
         maze = Singleton.getInstance().getMaze();
         Singleton.getInstance().setMaze(null);
+
+        // Get the shortest path out of maze (without jumping)
+        shortestPath = maze.getDistanceToExit(maze.getStartingPosition()[0],maze.getStartingPosition()[1]);
 
         // Panel that statePlaying draws
         panel = findViewById(R.id.Maze);
@@ -157,11 +160,8 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
              */
             @Override
             public void onClick(View view) {
-                pathLength++;
                 // Log message to show Up button was pressed, for debugging
                 Log.v("PlayManuallyActivity", "Up Button Pressed");
-                // Log message showing updated path length after Up button was pressed, for debugging.
-                Log.v("PlayManuallyActivity", "Path Length Now: " + pathLength);
                 statePlaying.keyDown(Constants.UserInput.UP);
             }
         });
@@ -178,11 +178,8 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
              */
             @Override
             public void onClick(View view) {
-                pathLength++;
                 // Log message to show Jump button was pressed, for debugging
                 Log.v("PlayManuallyActivity", "Jump Button Pressed");
-                // Log message showing updated path length after Jump button was pressed, for debugging.
-                Log.v("PlayManuallyActivity", "Path Length Now: " + pathLength);
                 statePlaying.keyDown(Constants.UserInput.JUMP);
             }
         });
@@ -252,48 +249,24 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
                 Log.v("PlayManuallyActivity", "Zooming out on Map");
             }
         });
-
-        // ImageButton (ShortCut) for going to the win activity. Placeholder for maze game.
-        // For P6 Only
-        //Button goToWin = findViewById(R.id.ShortCut);
-        // Listener for goToWin button
-        //goToWin.setOnClickListener(new View.OnClickListener() {
-            /*
-              Method listens if the "ShortCut" button (placeholder for the maze game) is pressed.
-              Communicates journey information to WinningActivity before starting it.
-              Hardcoded shortest path length of 100 used.
-             */
-            /*
-            @Override
-            public void onClick(View view) {
-                goToWinning(100);
-            }
-        });
-        TODO remove?
-             */
     }
 
+
     /**
-     * Helper method called after beating the maze game.
+     * Helper method called after beating the maze game by statePlaying.
      * Communicates journey information (path length and shortest possible path) to WinningActivity before starting it.
-     * @param shortestPath Shortest possible path (without jumping) to beat the maze.
      */
-    private void goToWinning(int shortestPath) {
+    @Override
+    public void goToWinning() {
         // Log message to show you won the game, for debugging purposes
         Log.v("PlayManuallyActivity", "Going to WinningActivity");
         // Log message to show what journey information was sent to WinningActivity, for debugging purposes
-        Log.v("PlayManuallyActivity", "Sent the following information to WinningActivity:\nPath length: " + pathLength + ", Shortest Path: "
+        Log.v("PlayManuallyActivity", "Sent the following information to WinningActivity:\nPath length: " + statePlaying.getPathLength() + ", Shortest Path: "
                 + shortestPath);
-
         // Send journey information to WinningActivity
         Intent intent = new Intent(this, WinningActivity.class);
-        intent.putExtra("PathLength", this.pathLength);
+        intent.putExtra("PathLength", statePlaying.getPathLength());
         intent.putExtra("ShortestPath", shortestPath);
         startActivity(intent);
-    }
-
-    @Override
-    public void goToWinning() {
-        //TODO Adjust so correct info sent to winning state
     }
 }
