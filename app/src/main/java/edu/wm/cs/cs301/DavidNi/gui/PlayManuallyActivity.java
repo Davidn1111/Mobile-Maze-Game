@@ -1,5 +1,7 @@
 package edu.wm.cs.cs301.DavidNi.gui;
 
+import static edu.wm.cs.cs301.DavidNi.gui.Constants.UserInput;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -91,11 +93,13 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
                 if(solutionButton.isChecked()){
                     // Log message to show solution button was toggled on, for debugging
                     Log.v("PlayManuallyActivity", "Toggled Solution Button: ON");
+                    statePlaying.keyDown(UserInput.TOGGLESOLUTION);
                 }
                 // Do not show solution if button is toggled off
                 else{
                     // Log message to show solution button was toggled off, for debugging
                     Log.v("PlayManuallyActivity", "Toggled Solution Button: OFF");
+                    statePlaying.keyDown(UserInput.TOGGLESOLUTION);
                 }
             }
         });
@@ -115,11 +119,13 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
                 if(mazeButton.isChecked()){
                     // Log message to show maze button was toggled on, for debugging
                     Log.v("PlayManuallyActivity", "Toggled Show Maze Button: ON");
+                    statePlaying.keyDown(UserInput.TOGGLELOCALMAP);
                 }
                 // Do not show map of maze if button is toggled off
                 else{
                     // Log message to show maze button was toggled off, for debugging
                     Log.v("PlayManuallyActivity", "Toggled Show Maze Button: OFF");
+                    statePlaying.keyDown(UserInput.TOGGLELOCALMAP);
                 }
             }
         });
@@ -139,11 +145,13 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
                 if(wallsButton.isChecked()){
                     // Log message to show walls button was toggled on, for debugging
                     Log.v("PlayManuallyActivity", "Toggled Show Walls Button: ON");
+                    statePlaying.keyDown(UserInput.TOGGLEFULLMAP);
                 }
                 // Do not show map of maze if button is toggled off
                 else{
                     // Log message to show walls button was toggled off, for debugging
                     Log.v("PlayManuallyActivity", "Toggled Show Walls Button: OFF");
+                    statePlaying.keyDown(UserInput.TOGGLEFULLMAP);
                 }
             }
         });
@@ -162,7 +170,7 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
             public void onClick(View view) {
                 // Log message to show Up button was pressed, for debugging
                 Log.v("PlayManuallyActivity", "Up Button Pressed");
-                statePlaying.keyDown(Constants.UserInput.UP);
+                statePlaying.keyDown(UserInput.UP);
             }
         });
 
@@ -180,7 +188,7 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
             public void onClick(View view) {
                 // Log message to show Jump button was pressed, for debugging
                 Log.v("PlayManuallyActivity", "Jump Button Pressed");
-                statePlaying.keyDown(Constants.UserInput.JUMP);
+                statePlaying.keyDown(UserInput.JUMP);
             }
         });
 
@@ -197,7 +205,7 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
             public void onClick(View view) {
                 // Log message to show Left button was pressed, for debugging
                 Log.v("PlayManuallyActivity", "Left Button Pressed");
-                statePlaying.keyDown(Constants.UserInput.LEFT);
+                statePlaying.keyDown(UserInput.LEFT);
             }
         });
 
@@ -214,7 +222,7 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
             public void onClick(View view) {
                 // Log message to show Left button was pressed, for debugging
                 Log.v("PlayManuallyActivity", "Right Button Pressed");
-                statePlaying.keyDown(Constants.UserInput.RIGHT);
+                statePlaying.keyDown(UserInput.RIGHT);
             }
         });
 
