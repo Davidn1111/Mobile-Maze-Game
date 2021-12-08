@@ -19,9 +19,15 @@ import android.widget.ToggleButton;
 import edu.wm.cs.cs301.DavidNi.R;
 import edu.wm.cs.cs301.DavidNi.generation.Maze;
 
-public class PlayAnimationActivity extends AppCompatActivity {
-    // maze generated in GeneratingActivity.
-    Maze maze = Singleton.getInstance().getMaze();
+public class PlayAnimationActivity extends AppCompatActivity implements PlayingActivity{
+    // Maze generated in GeneratingActivity.
+    private Maze maze;
+    // StatePlaying corresponding to this activity
+    private StatePlaying statePlaying;
+    // MazePanel in Activity used to display maze game
+    private MazePanel panel;
+    // Shortest path out of maze.
+    private int shortestPath;
 
     // Driver for traversing maze
     private String driver;
@@ -58,6 +64,21 @@ public class PlayAnimationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_animation);
+
+        // Get the generated maze
+        maze = Singleton.getInstance().getMaze();
+        Singleton.getInstance().setMaze(null);
+
+        // Get the shortest path out of maze (without jumping)
+        shortestPath = maze.getDistanceToExit(maze.getStartingPosition()[0],maze.getStartingPosition()[1]);
+
+        // Panel that statePlaying draws
+        panel = findViewById(R.id.animationMaze);
+
+        // Initialize StatePlaying to play maze game.
+        statePlaying = new StatePlaying(this);
+        statePlaying.setMazeConfiguration(this.maze);
+        statePlaying.start(panel);
 
         // Get drive and robot configuration from GeneratingActivity
         Intent intent = getIntent();
@@ -198,50 +219,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
         // TODO P7 have sensors call updateSensorImages during game instead of using one time call (currently used for debugging P6)
         // Check if updateSensorImages correctly sets sensors to green if they are operational
         updateSensorImages();
-
-        /*
-        // ImageButton for going to the win activity. Placeholder for maze game.
-        Button goToWin = findViewById(R.id.Go2Winning);
-        // Listener for goToWin button
-        goToWin.setOnClickListener(new View.OnClickListener() {
-            /*
-             * Method listens if the "Go2Winning" button (placeholder for the maze game) is pressed.
-             * Communicates journey information to WinningActivity before starting it.
-             * Journey information uses hardcoded:
-             * path length = 100,
-             * shortest path length = 200,
-             * energy consumption = 300
-             */
-        /*
-            @Override
-            public void onClick(View view) {
-                goToWinning(100,200,300);
-            }
-        });
-        TODO remove?
-        */
-
-        /*
-        // ImageButton for going to the win activity. Placeholder for maze game.
-        Button goToLoss = findViewById(R.id.Go2Losing);
-        // Listener for goToWin button
-        goToLoss.setOnClickListener(new View.OnClickListener() {
-            /*
-             * Method listens if the "Go2Losing" button (placeholder for the maze game) is pressed.
-             * Communicates journey information to LosingActivity before starting it.
-             * Journey information uses hardcoded:
-             * path length = 400,
-             * shortest path length = 500,
-             * energy consumption = 600
-             */
-        /*
-            @Override
-            public void onClick(View view) {
-                goToLosing(400,500,600);
-            }
-        });
-        TODO remove?
-        */
     }
 
     /**
@@ -304,6 +281,9 @@ public class PlayAnimationActivity extends AppCompatActivity {
      * @param energyConsumed Energy consumed by the robot during its journey.
      */
     private void goToLosing(int pathLength, int shortestPath,int energyConsumed) {
+        // TODO call goToLosing when robot runs out of energy
+        // Refactor code so that journey info comes from robot
+
         // Log message to show you lost the game, for debugging purposes
         Log.v("PlayAnimationActivity", "Going to LosingActivity");
         // Log message to show what journey information was sent to LosingActivity, for debugging purposes
@@ -319,19 +299,19 @@ public class PlayAnimationActivity extends AppCompatActivity {
     }
 
     /**
-     * Helper method called after robots beats the maze game.
-     * Communicates robot's journey information (path length,shortest possible path, and energy consumption) to WinningActivity before starting it.
-     * @param pathLength Path length travelled by robot during its journey.
-     * @param shortestPath Shortest possible path (without jumping) to beat the maze.
-     * @param energyConsumed Energy consumed by the robot during its journey.
+     * Helper method called after beating the maze game by statePlaying.
+     * Communicates journey information (path length,shortest possible path, and energy consumption) to WinningActivity before starting it.
      */
-    private void goToWinning(int pathLength, int shortestPath,int energyConsumed) {
+    @Override
+    public void goToWinning() {
+        //TODO get path length from robot
+        int pathLength = 0;
+
         // Log message to show you won the game, for debugging purposes
         Log.v("PlayAnimationActivity", "Going to WinningActivity");
         // Log message to show what journey information was sent to WinningActivity, for debugging purposes
         Log.v("PlayAnimationActivity", "Sent the following information to WinningActivity:\nPath length: " + pathLength + ", Shortest Path: "
                 + shortestPath + ", Energy Consumption: " + energyConsumed);
-
 
         // Send journey information to WinningActivity
         Intent intent = new Intent(this, WinningActivity.class);
@@ -339,5 +319,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
         intent.putExtra("ShortestPath", shortestPath);
         intent.putExtra("energyConsumption", energyConsumed);
         startActivity(intent);
+
     }
 }

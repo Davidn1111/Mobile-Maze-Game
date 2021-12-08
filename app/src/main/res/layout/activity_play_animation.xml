@@ -21,7 +21,7 @@
         app:layout_constraintVertical_bias="0.023" />
 
     <edu.wm.cs.cs301.DavidNi.gui.MazePanel
-        android:id="@+id/activityMaze"
+        android:id="@+id/animationMaze"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_marginTop="12dp"
@@ -88,7 +88,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activityMaze" />
+        app:layout_constraintTop_toBottomOf="@+id/animationMaze" />
 
     <TextView
         android:id="@+id/speedText"

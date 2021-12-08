@@ -118,7 +118,7 @@ public class StatePlaying {
 		firstPersonView = new FirstPersonView(Constants.VIEW_WIDTH,
 				Constants.VIEW_HEIGHT, Constants.MAP_UNIT,
 				Constants.STEP_SIZE, seenCells, mazeConfig.getRootnode()) ;
-		mapView = new Map(seenCells, 126, mazeConfig) ;
+		mapView = new Map(seenCells, 105, mazeConfig) ;
 		// draw the initial screen for this state
 		draw();
 	}
