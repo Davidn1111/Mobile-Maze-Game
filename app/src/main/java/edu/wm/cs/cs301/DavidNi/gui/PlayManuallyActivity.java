@@ -162,6 +162,7 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
                 Log.v("PlayManuallyActivity", "Up Button Pressed");
                 // Log message showing updated path length after Up button was pressed, for debugging.
                 Log.v("PlayManuallyActivity", "Path Length Now: " + pathLength);
+                statePlaying.keyDown(Constants.UserInput.UP);
             }
         });
 
@@ -182,6 +183,7 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
                 Log.v("PlayManuallyActivity", "Jump Button Pressed");
                 // Log message showing updated path length after Jump button was pressed, for debugging.
                 Log.v("PlayManuallyActivity", "Path Length Now: " + pathLength);
+                statePlaying.keyDown(Constants.UserInput.JUMP);
             }
         });
 
@@ -198,6 +200,7 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
             public void onClick(View view) {
                 // Log message to show Left button was pressed, for debugging
                 Log.v("PlayManuallyActivity", "Left Button Pressed");
+                statePlaying.keyDown(Constants.UserInput.LEFT);
             }
         });
 
@@ -214,6 +217,7 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
             public void onClick(View view) {
                 // Log message to show Left button was pressed, for debugging
                 Log.v("PlayManuallyActivity", "Right Button Pressed");
+                statePlaying.keyDown(Constants.UserInput.RIGHT);
             }
         });
 
