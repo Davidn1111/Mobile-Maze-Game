@@ -54,6 +54,7 @@ public class MazePanel extends View implements P5PanelF21{
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        myTestImage(canvas);
         canvas.drawBitmap(mpBitmap,0,0,mpPaint);
         Log.v("MazePanel","MazePanel onDraw called");
     }
@@ -357,7 +358,7 @@ public class MazePanel extends View implements P5PanelF21{
     private void myTestImage(Canvas c) {
         // Black background
         setColor(Color.BLACK);
-        addFilledRectangle(0,0,1000,1000);
+        addFilledRectangle(0,0,viewWidth,viewHeight);
 
         // Red circle
         setColor(Color.RED);
@@ -369,7 +370,7 @@ public class MazePanel extends View implements P5PanelF21{
 
         // Yellow Rectangle
         setColor(Color.YELLOW);
-        addFilledRectangle(800,800,300,300);
+        addFilledRectangle(400,500,300,300);
 
         // Blue Polygon (triangle)
         setColor(Color.BLUE);
