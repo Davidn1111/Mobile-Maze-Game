@@ -30,7 +30,7 @@ import edu.wm.cs.cs301.DavidNi.generation.Maze;
 public class Map {
 
 	// keep local copies of values determined for UI appearance
-	final int viewWidth;  // set to Constants.VIEW_WIDTH, 
+	final int viewWidth;  // set to Constants.VIEW_WIDTH,
 	final int viewHeight; // set to Constants.VIEW_HEIGHT
 	final int mapUnit;    // set to Constants.MAP_UNIT
 	final int stepSize;  // set to Constants.STEP_SIZE, typical value: map_unit/4
@@ -59,7 +59,7 @@ public class Map {
 	final Maze maze ;
 
 	/**
-	 * Constructor 
+	 * Constructor
 	 * @param width of display
 	 * @param height of display
 	 * @param mapUnit gives the map unit
@@ -75,7 +75,7 @@ public class Map {
 		this.mapUnit = mapUnit ;
 		this.stepSize = stepSize ;
 		this.seenWalls = seenWalls ;
-		this.mapScale = mapScale >= 1 ? mapScale: 1 ; // 1 <= map_scale
+		this.mapScale = mapScale >= 21 ? mapScale: 21 ; // 21 <= map_scale
 		this.maze = maze ;
 		// correctness considerations
 		assert maze != null : "Map: maze configuration can't be null at instantiation!" ;
@@ -98,16 +98,16 @@ public class Map {
 	 * Make the map being drawn bigger on the screen
 	 */
 	public void incrementMapScale() {
-		mapScale += 1 ;
+		mapScale += 21;
 	}
 	
 	/**
 	 * Make the map being drawn smaller on the screen
 	 */
 	public void decrementMapScale() {
-		mapScale -= 1 ;
-		if (1 > mapScale)
-			mapScale = 1 ;
+		mapScale -= 21;
+		if (21 > mapScale)
+			mapScale = 21 ;
 	}
 
 	/**

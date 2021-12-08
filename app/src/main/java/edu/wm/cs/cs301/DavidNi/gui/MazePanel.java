@@ -268,6 +268,7 @@ public class MazePanel extends View implements P5PanelF21{
      * Adds a line.
      * A line is described by {@code (x,y)} coordinates for its
      * starting point and its end point.
+     * Uses stroke width of 4.
      * @param startX is the x-coordinate of the starting point
      * @param startY is the y-coordinate of the starting point
      * @param endX is the x-coordinate of the end point
@@ -276,7 +277,9 @@ public class MazePanel extends View implements P5PanelF21{
     @Override
     public void addLine(int startX, int startY, int endX, int endY) {
         mpPaint.setStyle(Paint.Style.FILL);
+        mpPaint.setStrokeWidth(4f);
         mpCanvas.drawLine(startX,startY,endX,endY,mpPaint);
+        mpPaint.setStrokeWidth(0f);
 
         Log.v("MazePanel","Drawing line");
     }
