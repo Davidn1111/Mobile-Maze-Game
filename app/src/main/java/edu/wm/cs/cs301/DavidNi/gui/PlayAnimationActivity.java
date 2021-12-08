@@ -88,6 +88,10 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
         Intent intent = getIntent();
         // Set driver based on given intent
         setDriver(intent.getStringExtra("Driver"));
+        // Set robot configuration based on given intent
+        setSensors(this.robot, intent.getStringExtra("robotConfig"));
+        // Start robot sensor processes
+        startSensors(this.robot);
 
         // Log message that displays driver and robot configuration received from GeneratingActivity, for debugging purposes
         Log.v("PlayAnimationActivity","Received the following information from GeneratingActivity:\nDriver: " + intent.getStringExtra("Driver") + ", Robot Configuration: " + intent.getStringExtra("robotConfig"));
@@ -348,6 +352,77 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
             default:
                 this.driver = null;
                 break;
+        }
+    }
+
+    /**
+     * This method sets the sensors of the given robot based on the given robot configuration.
+     * Robot configuration is expected to be provided by GeneratingActivity.
+     * 4 types of robot configurations: Premium (all sensors reliable), Mediocre (front and back sensors reliable), SoSo (left and right sensors reliable),
+     * and Shaky (all unreliable sensors).
+     * Default sensor configuration is Premium.
+     * @param robot robot that will have its sensors set
+     * @param robotConfig Desired robot configuration
+     */
+    private void setSensors(Robot robot, String robotConfig){
+        switch(robotConfig) {
+            // Front and back sensors reliable, unreliable left and right sensors
+            case "Mediocre":
+                for (Direction dir : Direction.values()) {
+                    DistanceSensor sensor;
+                    if (dir == Direction.FORWARD || dir == Direction.BACKWARD)
+                        sensor = new ReliableSensor();
+                    else
+                        sensor = new UnreliableSensor();
+                    sensor.setMaze(this.maze);
+                    robot.addDistanceSensor(sensor, dir);
+                }
+                break;
+            // Left and right sensors reliable, unreliable front and back sensors
+            case "SoSo":
+                for (Direction dir : Direction.values()) {
+                    DistanceSensor sensor;
+                    if (dir == Direction.LEFT || dir == Direction.RIGHT)
+                        sensor = new ReliableSensor();
+                    else
+                        sensor = new UnreliableSensor();
+                    sensor.setMaze(this.maze);
+                    robot.addDistanceSensor(sensor, dir);
+                }
+                break;
+            // All sensors unreliable
+            case "Shaky":
+                for (Direction dir : Direction.values()) {
+                    DistanceSensor sensor = new UnreliableSensor();
+                    sensor.setMaze(this.maze);
+                    robot.addDistanceSensor(sensor, dir);
+                }
+                break;
+            // Default robot configuration is premium (all reliable sensors)
+            default:
+                for (Direction dir : Direction.values()) {
+                    DistanceSensor sensor = new ReliableSensor();
+                    sensor.setMaze(this.maze);
+                    robot.addDistanceSensor(sensor, dir);
+                }
+                break;
+        }
+    }
+
+    /**
+     * This method starts all Failure and Repair processes for a given robot.
+     * @param robot robot that will have all its sensor processes started
+     */
+    private void startSensors(Robot robot){
+        for (Direction dir : Direction.values()) {
+            try {
+                // Sensor repair process (4 sec operational, 2 sec broken)
+                robot.startFailureAndRepairProcess(dir, 4000, 2000);
+                // Wait 1.3 seconds before starting next Failure and Repair Process.
+                Thread.sleep(1300);
+            }
+            catch (Exception e) {
+            }
         }
     }
 }
