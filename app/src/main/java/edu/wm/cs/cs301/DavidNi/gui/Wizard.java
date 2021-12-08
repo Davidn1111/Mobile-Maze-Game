@@ -101,195 +101,55 @@ public class Wizard implements RobotDriver {
 	 */
 	@Override
 	public boolean drive1Step2Exit() throws Exception {
-		
 		//Assert that wizard was previously given robot and maze reference to use (cannot work otherwise)
 		assert(robot != null);
 		assert(maze != null);
-		
+
 		//x and y coordinates of the robot's current position.
 		int x = robot.getCurrentPosition()[0];
 		int y = robot.getCurrentPosition()[1];
-		
-		// Flag to tell the robot jump it should jump in the desired direction.
-		boolean jump = false;
-		
-		// The coordinates of the robot's closest neighbor
-		int[] neighborCoord = maze.getNeighborCloserToExit(x, y);
-		// Distance from closest neighbor to the exit.
-		int neighborDistance = maze.getDistanceToExit(neighborCoord[0], neighborCoord[1]);
-		
-		// Direction robot should be facing to get to the desired cell
-		CardinalDirection desiredDirection = null;
-		
-		// x and y coordinates of the desired cell for robot to move to
-		// Defaulted to be coordinates of closest neighbor
+		//x and y coordinates of the robot's closest neighbor (the desired cell for robot to move to)
 		int desiredX = maze.getNeighborCloserToExit(x, y)[0];
 		int desiredY = maze.getNeighborCloserToExit(x, y)[1];
-		
-		// Smallest distance to the exit so far
-		// Defaulted to be infinity
-		int minDistance = Integer.MAX_VALUE;	
-		
-		// BONUS: Determine if any of the neighboring cells are worth jumping to:
-		// Check if it is worth jumping to the North Cell
-		try {
-			int savedDistance = (neighborDistance - maze.getDistanceToExit(x, y-1));
-			// If the north cell is closer to the exit than the closest neighbor
-			if (savedDistance > 0) {
-				// If this is smallest saved distance we have seen so far
-				if (savedDistance < minDistance) {
-					// Update the smallest saved distance
-					minDistance = savedDistance;
-					// If the robot saves energy by jumping to the North Cell
-					if ((savedDistance * robot.getEnergyForStepForward()) > 40) {
-						// Tell the robot that it should jump
-						jump = true;
-						// Set desired coordinates to the North cell
-						desiredX = x;
-						desiredY = y -1;
-					}
-				}
-			}
-		}
-		// Catch exception if North neighbor is out of bounds
-		catch (Exception e) {
-		}
-		
-		// Check if it is worth jumping to the South Cell
-		try {
-			int savedDistance = (neighborDistance - maze.getDistanceToExit(x, y+1));
-			// If the South cell is closer to the exit than the closest neighbor
-			if (savedDistance > 0) {
-				// If this is smallest saved distance we have seen so far
-				if (savedDistance < minDistance) {
-					// Update the smallest saved distance
-					minDistance = savedDistance;
-					// If the robot saves energy by jumping to the South Cell
-					if ((savedDistance * robot.getEnergyForStepForward()) > 40) {
-						// Tell the robot that it should jump
-						jump = true;
-						// Set desired coordinates to the South cell
-						desiredX = x;
-						desiredY = y + 1;
-					}
-				}
-			}
-		}
-		// Catch exception if North neighbor is out of bounds
-		catch (Exception e) {
-		}
-		
-		// Check if it is worth jumping to the East Cell
-		try {
-			int savedDistance = (neighborDistance - maze.getDistanceToExit(x+1, y));
-			// If the East cell is closer to the exit than the closest neighbor
-			if (savedDistance > 0) {
-				// If this is smallest saved distance we have seen so far
-				if (savedDistance < minDistance) {
-					// Update the smallest saved distance
-					minDistance = savedDistance;
-					// If the robot saves energy by jumping to the East Cell
-					if ((savedDistance * robot.getEnergyForStepForward()) > 40) {
-						// Tell the robot that it should jump
-						jump = true;
-						// Set desired coordinates to the East cell
-						desiredX = x+1;
-						desiredY = y;
-					}
-				}
-			}
-		}
-		// Catch exception if North neighbor is out of bounds
-		catch (Exception e) {
-		}
-		
-		// Check if it is worth jumping to the West Cell
-		try {
-			int savedDistance = (neighborDistance - maze.getDistanceToExit(x-1, y));
-			// If the West cell is closer to the exit than the closest neighbor
-			if (savedDistance > 0) {
-				// If this is smallest saved distance we have seen so far
-				if (savedDistance < minDistance) {
-					// Update the smallest saved distance
-					minDistance = savedDistance;
-					// If the robot saves energy by jumping to the West Cell
-					if ((savedDistance * robot.getEnergyForStepForward()) > 40) {
-						// Tell the robot that it should jump
-						jump = true;
-						// Set desired coordinates to the West cell
-						desiredX = x-1;
-						desiredY = y;
-					}
-				}
-			}
-		}
-		// Catch exception if North neighbor is out of bounds
-		catch (Exception e) {
-		}
-		
+		//Direction robot should be facing to get to the desired cell
+		CardinalDirection desiredDirection = null;
+
 		//Find the desired direction for robot
 		//Desired position is to the west of robot
 		if(desiredX - x == -1)
 			desiredDirection = CardinalDirection.West;
-		//Desired position is to the east of robot
+			//Desired position is to the east of robot
 		else if(desiredX - x == 1)
 			desiredDirection = CardinalDirection.East;
-		//desired position is to the north of robot
+			//desired position is to the north of robot
 		else if(desiredY - y == -1)
 			desiredDirection = CardinalDirection.North;
-		//desired position is to the south of robot
+			//desired position is to the south of robot
 		else if(desiredY - y == 1)
 			desiredDirection = CardinalDirection.South;
-		
-		// Move the robot to the desired cell
-		// If robot is facing the desired cell
+
+		//Move the robot to the desired cell
+		//If robot is facing the desired cell
 		if(desiredDirection == robot.getCurrentDirection())
-			// If the robot should jump
-			if (jump)
-				// Jump forward
-				robot.jump();
-			else
-				// Move forward otherwise
-				robot.move(1);
-		//If robot is facing the opposite direction of the desired cell
+			//move forward
+			robot.move(1);
+			//If robot is facing the opposite direction of the desired cell
 		else if(desiredDirection == robot.getCurrentDirection().oppositeDirection()) {
 			//Turn robot around and move one
 			robot.rotate(Turn.AROUND);
-			// If the robot should jump
-			if (jump)
-				// Jump forward
-				robot.jump();
-			else
-				// Move forward otherwise
-				robot.move(1);
+			robot.move(1);
 		}
 		//If desired cell is to the right (90 degrees clockwise from front) of the robot
 		else if(desiredDirection == robot.getCurrentDirection().rotateClockwise()) {
 			robot.rotate(Turn.RIGHT);
-			// If the robot should jump
-			if (jump)
-				// Jump forward
-				robot.jump();
-			else
-				// Move forward otherwise
-				robot.move(1);
+			robot.move(1);
 		}
 		//If desired cell is to the left (90 degrees clockwise from front) of the robot
 		else if(desiredDirection == robot.getCurrentDirection().rotateClockwise().oppositeDirection()) {
 			robot.rotate(Turn.LEFT);
-			// If the robot should jump
-			if (jump)
-				// Jump forward
-				robot.jump();
-			else
-				// Move forward otherwise
-				robot.move(1);
+			robot.move(1);
 		}
-		
-		// For debugging,print out when jump is used.
-		if (jump)
-			System.out.println("Jumping to Save Energy");
-		
+
 		//Assert robot is closer to the exit after moving.
 		//Since the wizard is a cheater, every move it makes should always get closer to the exit
 		if(!robot.hasStopped()) {
@@ -299,11 +159,11 @@ public class Wizard implements RobotDriver {
 			int currentDistance = maze.getDistanceToExit(robot.getCurrentPosition()[0], robot.getCurrentPosition()[1]);
 			assert(currentDistance < previousDistance);
 		}
-		
+
 		//Throw exception if robot has stopped (due to lack of energy, crashing, etc)
 		if(robot.hasStopped())
 			throw new Exception("Robot has stopped");
-		
+
 		//Return if wizard successfully moved robot to desired cell
 		return (robot.getCurrentPosition()[0] == desiredX && robot.getCurrentPosition()[1] == desiredY);
 	}
@@ -330,7 +190,7 @@ public class Wizard implements RobotDriver {
 	public int getPathLength() {
 		return this.robot.getOdometerReading();
 	}
-	
+
 	/**
 	 * This helper method handles sensor scanning if the sensor in the given direction doesn't work.
 	 * Initially, the method will try to find a working replacement sensor by rotating to the left 
@@ -412,14 +272,15 @@ public class Wizard implements RobotDriver {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Given that the robot is at the exit cell, this helper method rotates and moves the robot accordingly to step out of the exit.
 	 * Intended to be used by drive2Exit() if robot successfully reaches the exit cell. 
 	 * @return true if robot could step out of the maze, false otherwise.
 	 * @throws Exception thrown if robot stopped due to some problem, e.g. lack of energy
 	 */
-	protected boolean stepOutExit() throws Exception {
+	@Override
+	public boolean stepOutExit() throws Exception {
 		// Direction of exit relative to robot's forward position
 		Direction exitDirection = null;
 		// Assume robot is implemented with sensors in all four directions.

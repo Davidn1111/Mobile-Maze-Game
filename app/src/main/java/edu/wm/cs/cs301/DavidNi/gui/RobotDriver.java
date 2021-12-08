@@ -79,6 +79,14 @@ public interface RobotDriver {
 	 * @return the total length of the journey in number of cells traversed
 	 */
 	int getPathLength();
+
+	/**
+	 * Given that the robot is at the exit cell, this helper method rotates and moves the robot accordingly to step out of the exit.
+	 * Intended to be used by drive2Exit() if robot successfully reaches the exit cell.
+	 * @return true if robot could step out of the maze, false otherwise.
+	 * @throws Exception thrown if robot stopped due to some problem, e.g. lack of energy
+	 */
+	boolean stepOutExit() throws Exception;
 	
 }
 
