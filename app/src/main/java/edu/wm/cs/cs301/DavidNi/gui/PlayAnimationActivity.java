@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import edu.wm.cs.cs301.DavidNi.R;
@@ -68,8 +67,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
         Log.v("PlayAnimationActivity","Received the following information from GeneratingActivity:\nDriver: " + driver + ", Robot Configuration: " + robotConfig);
 
         if (this.maze != null) {
-            // Toast to show that GeneratingActivity global maze reference exists, for debugging purposes
-            Toast.makeText(getApplicationContext(), "Received non-null Global Maze Reference from GeneratingActivity", Toast.LENGTH_SHORT).show();
             // Log message to show that GeneratingActivity global maze reference exists, for debugging purposes
             Log.v("PlayAnimationActivity", "Global Maze Reference from GeneratingActivity not null");
         }
@@ -88,15 +85,11 @@ public class PlayAnimationActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                 // Show map of maze if button is toggled on
                 if (mapButton.isChecked()) {
-                    // Toast to show button was toggled on, for debugging
-                    Toast.makeText(getApplicationContext(), "Showing Map of Maze", Toast.LENGTH_SHORT).show();
                     // Log message to show button was toggled on, for debugging
                     Log.v("PlayAnimationActivity", "Toggled Show Map Button: ON");
                 }
                 // Do not show map of maze if button is toggled off
                 else {
-                    // Toast to show button was toggled off, for debugging
-                    Toast.makeText(getApplicationContext(), "No Longer Showing Map of Maze", Toast.LENGTH_SHORT).show();
                     // Log message to show button was toggled off, for debugging
                     Log.v("PlayAnimationActivity", "Toggled Show Map Button: OFF");
                 }
@@ -115,8 +108,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                // Toast to show Zoom In button was pressed, for debugging
-                Toast.makeText(getApplicationContext(), "Zooming In", Toast.LENGTH_SHORT).show();
                 // Log message to show Zoom In button was pressed, for debugging
                 Log.v("PlayAnimationActivity", "Zooming in on Map");
             }
@@ -134,8 +125,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                // Toast to show Zoom Out button was pressed, for debugging
-                Toast.makeText(getApplicationContext(), "Zooming Out", Toast.LENGTH_SHORT).show();
                 // Log message to show Zoom Out button was pressed, for debugging
                 Log.v("PlayAnimationActivity", "Zooming out on Map");
             }
@@ -152,8 +141,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                // Toast for returning to title
-                Toast.makeText(getApplicationContext(), "Returning to Title", Toast.LENGTH_SHORT).show();
                 // Log message for returning to title
                 Log.v("PlayAnimationActivity","Returning to Title");
 
@@ -182,8 +169,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 String output = "Set Speed: " + progress;
                 speedText.setText(output);
-                // Toast message about the animation speed selected on the SeekBar, for debugging
-                Toast.makeText(getApplicationContext(), "Speed now: " + progress, Toast.LENGTH_SHORT).show();
                 // Log message about the animation speed selected on the SeekBar, for debugging
                 Log.v("PlayAnimationActivity","Speed set to : " + progress);
                 speed = progress;
@@ -213,8 +198,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
         // TODO P7 have sensors call updateSensorImages during game instead of using one time call (currently used for debugging P6)
         // Check if updateSensorImages correctly sets sensors to green if they are operational
         updateSensorImages();
-        // Toast message about the animation speed selected on the SeekBar, for debugging
-        Toast.makeText(getApplicationContext(), "Testing Sensor UI, with all Sensors Operational", Toast.LENGTH_SHORT).show();
 
         /*
         // ImageButton for going to the win activity. Placeholder for maze game.
@@ -309,8 +292,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
         float percentage =  (((float)this.initialEnergy - this.energyConsumed)/(float)this.initialEnergy)* 100;
         this.energyProgress.setProgress((int)percentage);
 
-        // Toast message of robot's energy bar changing, used for debugging
-        Toast.makeText(getApplicationContext(), "Test Setting Robot's energy bar set to : " + (int)percentage + "%", Toast.LENGTH_SHORT).show();
         // Log message of robot's energy bar percentage changing, used for debugging
         Log.v("PlayAnimationActivity","Robot's energy bar set to : " + (int)percentage + "%");
     }
@@ -323,10 +304,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
      * @param energyConsumed Energy consumed by the robot during its journey.
      */
     private void goToLosing(int pathLength, int shortestPath,int energyConsumed) {
-        // Toasts that you lost the game, for debugging purposes
-        Toast.makeText(getApplicationContext(),"Going to LosingActivity",Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(),"Sent the following information to LosingActivity:\nPath length: " + pathLength + ", Shortest Path: "
-                + shortestPath + ", Energy Consumption: " + energyConsumed,Toast.LENGTH_SHORT).show();
         // Log message to show you lost the game, for debugging purposes
         Log.v("PlayAnimationActivity", "Going to LosingActivity");
         // Log message to show what journey information was sent to LosingActivity, for debugging purposes
@@ -349,10 +326,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
      * @param energyConsumed Energy consumed by the robot during its journey.
      */
     private void goToWinning(int pathLength, int shortestPath,int energyConsumed) {
-        // Toasts that you won the game, for debugging purposes
-        Toast.makeText(getApplicationContext(),"Going to WinningActivity",Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(),"Sent the following information to WinningActivity:\nPath length: " + pathLength + ", Shortest Path: "
-                + shortestPath + ", Energy Consumption: " + energyConsumed,Toast.LENGTH_SHORT).show();
         // Log message to show you won the game, for debugging purposes
         Log.v("PlayAnimationActivity", "Going to WinningActivity");
         // Log message to show what journey information was sent to WinningActivity, for debugging purposes
