@@ -23,7 +23,7 @@ public class Singleton {
      * @param mazeConfig shared maze configuration
      */
     public void setMaze(Maze mazeConfig){
-        this.maze = mazeConfig;
+        Singleton.maze = mazeConfig;
     }
 
     /**
@@ -31,7 +31,7 @@ public class Singleton {
      * @return Maze generated in generatingActivity
      */
     public Maze getMaze(){
-        return this.maze;
+        return Singleton.maze;
     }
 
     /**
@@ -39,7 +39,7 @@ public class Singleton {
      * Intended to be called once a playing activity obtains a reference to maze generated in GeneratingActivity.
      */
     public void releaseMaze(){
-        this.maze = null;
+        Singleton.maze = null;
         System.gc();
     }
 }
