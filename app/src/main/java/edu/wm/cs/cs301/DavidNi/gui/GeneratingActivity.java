@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,9 +38,6 @@ public class GeneratingActivity extends AppCompatActivity {
     private String robotConfig = "Premium";
     // Maze factory for making maze
     MazeFactory factory;
-
-    // Global singleton for sharing generated maze
-    public Singleton singleton;
 
     // Builder for pop messages
     AlertDialog.Builder popup;
@@ -97,8 +93,6 @@ public class GeneratingActivity extends AppCompatActivity {
              */
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                ((TextView) adapterView.getChildAt(0)).setTextColor(Color.WHITE);
-                ((TextView) adapterView.getChildAt(0)).setTextSize(18);
                 // Set robot configuration to the selected value
                 robotConfig = adapterView.getItemAtPosition(position).toString();
                 // Log message of robot configuration, for debugging
@@ -229,14 +223,11 @@ public class GeneratingActivity extends AppCompatActivity {
                 public void run() {
                     //Debugging message when maze generation is done
                     Log.v("GeneratingActivity","Maze generation done");
-
-                    // Set the singleton to reference generated maze
-                    singleton = new Singleton();
-                    singleton.setMaze(order.getMazeReference());
                     // Set the progress bar to 100% (needed since progress updates are sporadic)
                     progressStatus = 100;
                     progressText.setText("Building Maze: 100%");
                     mazeProgress.setProgress(100);
+                    // MazeFactory/StubOrder delivers maze to Singleton when order.getProgress() = 100
 
                     // If no driver has been selected, send out a warning.
                     if (driver == null) {

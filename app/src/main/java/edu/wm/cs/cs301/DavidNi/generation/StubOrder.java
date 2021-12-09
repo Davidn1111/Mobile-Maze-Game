@@ -3,6 +3,8 @@
  */
 package edu.wm.cs.cs301.DavidNi.generation;
 
+import edu.wm.cs.cs301.DavidNi.gui.Singleton;
+
 /**
  * @author David
  * 
@@ -17,6 +19,7 @@ public class StubOrder implements Order {
 	private int seed;
 	private Maze reference;
 	private int progress;
+
 	
 	/**
 	 * Constructor for stub order object
@@ -84,7 +87,8 @@ public class StubOrder implements Order {
 	 */
 	@Override
 	public void deliver(Maze mazeConfig) {
-		this.reference = mazeConfig;
+		Singleton.getInstance().releaseMaze();
+		Singleton.getInstance().setMaze(mazeConfig);
 	}
 
 	/**
@@ -106,14 +110,6 @@ public class StubOrder implements Order {
 	 */
 	public int getProgress() {
 		return this.progress;
-	}
-	
-	/**
-	 * Method gets maze reference made by factory
-	 * @return reference Maze that is delivered by the factory
-	 */
-	public Maze getMazeReference() {
-		return reference;
 	}
 
 }
