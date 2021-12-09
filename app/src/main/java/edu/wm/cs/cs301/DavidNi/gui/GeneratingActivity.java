@@ -339,4 +339,14 @@ public class GeneratingActivity extends AppCompatActivity {
                 return Builder.DFS;
         }
     }
+
+    /**
+     * Override onDestroy, so Handler for maze generation properly
+     * stops thread if GeneratingActivity is close.
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mazeGenHandler.removeCallbacks(mazeGeneration);
+    }
 }

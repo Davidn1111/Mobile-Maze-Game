@@ -231,11 +231,6 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
         });
 
         /*
-        // Progress bar representing robot's energy
-        energyProgress = findViewById(R.id.robotEnergyBar);
-        // TODO P7: Have energy bar update along with game instead of one time call (currently used for debugging P6)
-        updateEnergyBar();
-
         // TODO Write code such that sensor images change color to reflect status
         // ImageViews representing operational status of robot's sensors
         this.fSensor = findViewById(R.id.fSensor);
@@ -301,7 +296,8 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
                      */
                     @Override
                     public void run() {
-                        //TODO add GUI methods
+                        // TODO add GUI methods
+                        updateEnergyBar();
                     }
                 });
             }
@@ -367,9 +363,13 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
         float energyConsumed = this.driver.getEnergyConsumption();
         // Initial energy of robot always 3500
         float initialEnergy = 3500;
+        // Get percentage to display energy
         float percentage =  ((initialEnergy - energyConsumed)/initialEnergy)* 100;
+        // Due to rounding, display 1% if percentage < 1 (for aesthetics only)
         if (percentage < 1 && percentage != 0)
             percentage = 1;
+
+        // Display energy on energy bar
         this.energyProgress.setProgress((int)percentage);
 
         // Log message of robot's energy bar percentage changing, used for debugging
