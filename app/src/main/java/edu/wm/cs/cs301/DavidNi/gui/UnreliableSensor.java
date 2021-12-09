@@ -236,19 +236,10 @@ public class UnreliableSensor extends ReliableSensor {
 	
 	/**
 	 * This method gets the sensor's operational status.
-	 * Intended for testing and debugging purposes only.
 	 * @return true if sensor is operational, false otherwise.
 	 */
-	public boolean getOpStatus() {
-		return this.opStatus;
-	}
-	
-	/**
-	 * This method sets the sensor's operational status to a given status.
-	 * Intended for testing and debugging purposes only.
-	 * @param status new operational status of the sensor.
-	 */
-	public void setOpStatus(boolean status) {
-		this.opStatus = status;
+	@Override
+	public boolean getStatus() {
+		return opStatus;
 	}
 }

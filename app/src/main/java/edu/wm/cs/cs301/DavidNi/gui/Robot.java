@@ -50,7 +50,8 @@ import edu.wm.cs.cs301.DavidNi.generation.CardinalDirection;
  *
  */
 public interface Robot {
-	/** 
+
+    /**
 	 * Describes all possible turns that a robot can do when it rotates on the spot.
 	 * Left is 90 degrees left, right is 90 degrees right, turn around is 180 degrees.
 	 */
@@ -307,4 +308,10 @@ public interface Robot {
 	 * @throws UnsupportedOperationException if method not supported
 	 */
 	void stopFailureAndRepairProcess(Direction direction) throws UnsupportedOperationException;
+
+	/**
+	 * This method returns the status of a Robot's sensor.
+	 * @param dir Direction of the sensor
+	 */
+	boolean getSensorStatus(Direction dir);
 }

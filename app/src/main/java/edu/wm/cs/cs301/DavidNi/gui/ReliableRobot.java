@@ -577,4 +577,25 @@ public class ReliableRobot implements Robot {
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * This method returns the status of a Robot's sensor.
+	 * Assumes that robots are always initialized with 4 sensors.
+	 * @param dir Direction of the sensor
+	 * @return true if sensor is operation, false otherwise
+	 */
+	@Override
+	public boolean getSensorStatus(Direction dir) {
+		switch(dir){
+			case LEFT:
+				return (lSensor.getStatus());
+			case RIGHT:
+				return (rSensor.getStatus());
+			case FORWARD:
+				return (fSensor.getStatus());
+			case BACKWARD:
+				return (bSensor.getStatus());
+			default:
+				return false;
+		}
+	}
 }

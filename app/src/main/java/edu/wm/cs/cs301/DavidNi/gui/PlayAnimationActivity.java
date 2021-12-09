@@ -52,19 +52,14 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
     // Toggle button for showing map (whole maze with solution and visible walls) during animation/automatic play
     private ToggleButton mapButton;
     // Images representing robot's sensors (green = operational and red = non-operational)
-    // Flags representing robot's operational status (true if operational, false otherwise)
     // Forward sensor
     ImageView fSensor;
-    boolean fSensorStatus = true;
     // Back sensor
     ImageView bSensor;
-    boolean bSensorStatus = true;
     // Left sensor
     ImageView lSensor;
-    boolean lSensorStatus = true;
     // Right sensor
     ImageView rSensor;
-    boolean rSensorStatus = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +90,12 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
         setDriver(intent.getStringExtra("Driver"));
         // Set robot configuration based on given intent
         setSensors(this.robot, intent.getStringExtra("robotConfig"));
+
+        // Image views corresponding to sensors, updated based on robot status
+        this.fSensor = findViewById(R.id.fSensor);
+        this.bSensor = findViewById(R.id.bSensor);
+        this.lSensor = findViewById(R.id.leftSensor);
+        this.rSensor = findViewById(R.id.rightSensor);
 
         //Start animation
         animation = new animationThread();
@@ -190,6 +191,10 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
 
                 // Stop the animation
                 flag = false;
+                // Kill the handler
+                animationHandler.removeCallbacks(animation);
+                // Kill all sensor threads
+                stopSensors(robot);
 
                 // Return to title
                 Intent intent = new Intent(getApplicationContext(), AMazeActivity.class);
@@ -241,19 +246,6 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
-
-        /*
-        // TODO Write code such that sensor images change color to reflect status
-        // ImageViews representing operational status of robot's sensors
-        this.fSensor = findViewById(R.id.fSensor);
-        this.bSensor = findViewById(R.id.bSensor);
-        this.lSensor = findViewById(R.id.leftSensor);
-        this.rSensor = findViewById(R.id.rightSensor);
-
-        // TODO P7 have sensors call updateSensorImages during game instead of using one time call (currently used for debugging P6)
-        // Check if updateSensorImages correctly sets sensors to green if they are operational
-        updateSensorImages();
-        */
     }
 
     /**
@@ -284,20 +276,6 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
 
             // Loop that drives robot one step closer to exit,
             while (!robot.isAtExit() && !robotStopped && flag) {
-                // Set delay between each step based on animation speed set by user
-                try {
-                    animationThread.sleep(speed);
-                }
-                catch (InterruptedException e) {
-                    return;
-                }
-
-                try {
-                    driver.drive1Step2Exit();
-                }
-                catch (Exception e){
-                    robotStopped = true;
-                }
 
                 // Handler used to update graphics after each step
                 animationHandler.post(new Runnable() {
@@ -308,12 +286,28 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
                      */
                     @Override
                     public void run() {
-                        // TODO add GUI methods
+                        updateSensorImages();
                         updateEnergyBar();
                     }
                 });
+
+                // Drive one step forward
+                try {
+                    driver.drive1Step2Exit();
+                }
+                catch (Exception e){
+                    robotStopped = true;
+                }
+
+                // Set delay between each step based on animation speed set by user
+                try {
+                    animationThread.sleep(speed);
+                }
+                catch (InterruptedException e) {
+                    return;
+                }
             }
-            // If robot has not stopped
+            // If robot has not stopped try to go through exit
             if (robot.isAtExit() && !robotStopped && flag) {
                 try {
                     driver.stepOutExit();
@@ -322,8 +316,11 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
                 }
             }
 
+            // If robot has stopped go to losing screen
             if(robotStopped && flag) {
-                //TODO stop sensors
+                // Kill all sensor threads
+                stopSensors(robot);
+                // Go to losing screen
                 goToLosing();
             }
         }
@@ -335,36 +332,35 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
      * If a sensor is operational, its UI representation will be given a green tint.
      */
     private void updateSensorImages() {
-        // TODO fix this
+        for (Direction dir : Direction.values()) {
+            ImageView currSensor;
+            // Set currSensor based on direction
+            switch(dir){
+                case LEFT:
+                    currSensor = lSensor;
+                    break;
+                case RIGHT:
+                    currSensor = rSensor;
+                    break;
+                case FORWARD:
+                    currSensor = fSensor;
+                    break;
+                case BACKWARD:
+                    currSensor = bSensor;
+                    break;
+                default:
+                    currSensor = null;
+                    break;
+            }
+
+            if (robot.getSensorStatus(dir)) {
+                currSensor.setColorFilter(Color.argb(255, 80, 220, 100)); // Green Tint
+            }
+            else
+                currSensor.setColorFilter(Color.argb(255, 255, 36, 0)); // Red Tint
+        }
+
         Log.v("PlayAnimationActivity","Updating sensor UI color to represent operational status");
-        // Set forward sensor color
-        if (this.fSensorStatus) {
-            this.fSensor.setColorFilter(Color.argb(255, 80, 220, 100)); // Green Tint
-        }
-        else {
-            this.fSensor.setColorFilter(Color.argb(255, 255, 36, 0)); // Red Tint
-        }
-        // Set backwards sensor color
-        if (this.bSensorStatus) {
-            this.bSensor.setColorFilter(Color.argb(255, 80, 220, 100)); // Green Tint
-        }
-        else {
-            this.bSensor.setColorFilter(Color.argb(255, 255, 36, 0)); // Red Tint
-        }
-        // Set left sensor color
-        if (this.lSensorStatus) {
-            this.lSensor.setColorFilter(Color.argb(255, 80, 220, 100)); // Green Tint
-        }
-        else {
-            this.lSensor.setColorFilter(Color.argb(255, 255, 36, 0)); // Red Tint
-        }
-        // Set right sensor color
-        if (this.rSensorStatus) {
-            this.rSensor.setColorFilter(Color.argb(255, 80, 220, 100)); // Green Tint
-        }
-        else {
-            this.rSensor.setColorFilter(Color.argb(255, 255, 36, 0)); // Red Tint
-        }
     }
 
     /**
@@ -516,6 +512,20 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
                 robot.startFailureAndRepairProcess(dir, 4000, 2000);
                 // Wait 1.3 seconds before starting next Failure and Repair Process.
                 Thread.sleep(1300);
+            }
+            catch (Exception e) {
+            }
+        }
+    }
+
+    /**
+     * This method stops all Failure and Repair processes for a given robot.
+     * @param robot robot that will have all its sensor processes started
+     */
+    private void stopSensors(Robot robot){
+        for (Direction dir : Direction.values()) {
+            try {
+                robot.stopFailureAndRepairProcess(dir);
             }
             catch (Exception e) {
             }

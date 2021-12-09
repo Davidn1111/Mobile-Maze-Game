@@ -146,7 +146,11 @@ public interface DistanceSensor {
 	 * @throws UnsupportedOperationException if method not supported
 	 */
 	void stopFailureAndRepairProcess() throws UnsupportedOperationException;
-	
-	
 
+
+	/**
+	 * This method gets the sensor's operational status.
+	 * @return true if sensor is operational, false otherwise.
+	 */
+    boolean getStatus();
 }

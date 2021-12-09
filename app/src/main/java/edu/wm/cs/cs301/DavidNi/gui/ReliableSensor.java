@@ -199,4 +199,13 @@ public class ReliableSensor implements DistanceSensor {
 		throw new UnsupportedOperationException();
 	}
 
+	/**
+	 * This method gets the sensor's operational status.
+	 * @return true if sensor is operational, false otherwise.
+	 */
+	@Override
+	public boolean getStatus() {
+		return true;
+	}
+
 }

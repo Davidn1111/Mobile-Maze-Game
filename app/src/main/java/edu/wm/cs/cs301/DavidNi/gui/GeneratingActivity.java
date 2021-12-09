@@ -37,10 +37,10 @@ public class GeneratingActivity extends AppCompatActivity {
     // Robot sensor configuration, default Premium
     private String robotConfig = "Premium";
     // Maze factory for making maze
-    MazeFactory factory;
+    private MazeFactory factory;
 
     // Builder for pop messages
-    AlertDialog.Builder popup;
+    private AlertDialog.Builder popup;
 
     // Radio group for driver selection
     private RadioGroup driverGroup;
