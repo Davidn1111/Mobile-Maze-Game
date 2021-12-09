@@ -43,6 +43,8 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
     private animationThread animation;
     // Flag to tell animation thread to stop
     private boolean flag = true;
+    // Flag to tell when animation is paused
+    private boolean paused = false;
 
     // Speed of the animation, defaulted to 0 delay
     private int speed = 0;
@@ -202,6 +204,36 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
             }
         });
 
+        // Start/Stop button
+        Button stopButton = findViewById(R.id.stopButton);
+        // Listener for stop button
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            /**
+             * This method listens if the "Start/Stop" button was pressed.
+             * If the "Start/Stop" button was pressed and the animation is paused,
+             * reverse the value of the "paused" tag.
+             * The animation stalls with a while loop as long as the paused tag is true.
+             * @param view The view that was clicked
+             */
+            @Override
+            public void onClick(View view) {
+                // Reverse the value of the paused tag.
+                paused = !paused;
+
+                // Change text on button
+                if (paused){
+                    stopButton.setText("Start");
+                    // Log message that animation was paused
+                    Log.v("PlayAnimationActivity","Stopping Animation");
+                }
+                else {
+                    stopButton.setText("Stop");
+                    // Log message that animation started again
+                    Log.v("PlayAnimationActivity","Starting Animation");
+                }
+            }
+        });
+
         // SeekBar for animation speed
         SeekBar speedSeekBar = findViewById(R.id.speedBar);
         TextView speedText = findViewById(R.id.speedText);
@@ -276,6 +308,9 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
 
             // Loop that drives robot one step closer to exit,
             while (!robot.isAtExit() && !robotStopped && flag) {
+
+                while(paused){
+                }
 
                 // Handler used to update graphics after each step
                 animationHandler.post(new Runnable() {
