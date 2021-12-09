@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,8 @@ import edu.wm.cs.cs301.DavidNi.gui.Robot.Direction;
 public class PlayAnimationActivity extends AppCompatActivity implements PlayingActivity{
     // Maze generated in GeneratingActivity.
     private Maze maze;
+    // MazePanel in Activity used to display maze game
+    MazePanel panel;
     // StatePlaying corresponding to this activity
     private StatePlaying statePlaying;
     // Shortest path out of maze.
@@ -34,12 +37,15 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
     // Robot used to play animation
     private Robot robot;
 
+    // Handler to communicate background thread (which handles playing animation) with this (UI) thread
+    final private Handler animationHandler = new Handler();
+    // private instance of "play animation" thread
+    private animationThread animation;
+    // Flag to tell animation thread to stop
+    private boolean flag = true;
+
     // Speed of the animation, defaulted to 0
     private int speed = 0;
-    // Starting energy of the robot, defaulted to 3500
-    private int initialEnergy = 3500;
-    // Current energy consumed by the robot
-    private int energyConsumed;
 
     // ProgressBar displaying the robot's energy
     private ProgressBar energyProgress;
@@ -73,8 +79,7 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
         shortestPath = maze.getDistanceToExit(maze.getStartingPosition()[0], maze.getStartingPosition()[1]);
 
         // Panel that statePlaying draws
-        // MazePanel in Activity used to display maze game
-        MazePanel panel = findViewById(R.id.animationMaze);
+        panel = findViewById(R.id.animationMaze);
 
         // Initialize StatePlaying to play maze game.
         statePlaying = new StatePlaying(this);
@@ -90,8 +95,10 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
         setDriver(intent.getStringExtra("Driver"));
         // Set robot configuration based on given intent
         setSensors(this.robot, intent.getStringExtra("robotConfig"));
-        // Start robot sensor processes
-        startSensors(this.robot);
+
+        //Start animation
+        animation = new animationThread();
+        animation.start();
 
         // Log message that displays driver and robot configuration received from GeneratingActivity, for debugging purposes
         Log.v("PlayAnimationActivity","Received the following information from GeneratingActivity:\nDriver: " + intent.getStringExtra("Driver") + ", Robot Configuration: " + intent.getStringExtra("robotConfig"));
@@ -181,6 +188,9 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
                 // Log message for returning to title
                 Log.v("PlayAnimationActivity","Returning to Title");
 
+                // Stop the animation
+                flag = false;
+
                 // Return to title
                 Intent intent = new Intent(getApplicationContext(), AMazeActivity.class);
                 startActivity(intent);
@@ -208,7 +218,7 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
                 speedText.setText(output);
                 // Log message about the animation speed selected on the SeekBar, for debugging
                 Log.v("PlayAnimationActivity","Speed set to : " + progress);
-                speed = progress;
+                speed = progress*100;
             }
 
             @Override
@@ -220,6 +230,7 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
             }
         });
 
+        /*
         // Progress bar representing robot's energy
         energyProgress = findViewById(R.id.robotEnergyBar);
         // TODO P7: Have energy bar update along with game instead of one time call (currently used for debugging P6)
@@ -235,6 +246,79 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
         // TODO P7 have sensors call updateSensorImages during game instead of using one time call (currently used for debugging P6)
         // Check if updateSensorImages correctly sets sensors to green if they are operational
         updateSensorImages();
+        */
+    }
+
+    /**
+     * Private thread class that automatically plays the maze game,
+     * using maze and robot driver specified in GeneratingActivity.
+     *
+     * @author David Ni
+     */
+    private class animationThread extends Thread implements Runnable{
+        // Flag to check if robot has stopped or not
+        // Used to determine when to stop animation and move to losing state
+        boolean robotStopped = false;
+        /**
+         * This method runs the animationThread by driving the robot one
+         * step closer to exit, until the robot reaches the exit or stops (lack of energy,crash,etc).
+         * This method then opens the appropriate activity based on robot's journey (winning or losing).
+         */
+        @Override
+        public void run() {
+            // Start robot sensor processes
+            startSensors(robot);
+            // Set up robot and driver for maze game
+            robot.setStatePlaying(statePlaying);
+            driver.setMaze(maze);
+            driver.setRobot(robot);
+            // Progress bar representing robot's energy
+            energyProgress = findViewById(R.id.robotEnergyBar);
+
+            // Loop that drives robot one step closer to exit,
+            while (!robot.isAtExit() && !robotStopped && flag) {
+                // Set delay between each step based on animation speed set by user
+                try {
+                    animationThread.sleep(speed);
+                }
+                catch (InterruptedException e) {
+                    return;
+                }
+
+                try {
+                    driver.drive1Step2Exit();
+                }
+                catch (Exception e){
+                    robotStopped = true;
+                }
+
+                // Handler used to update graphics after each step
+                animationHandler.post(new Runnable() {
+                    /**
+                     * This method uses a Handler to update the MazePanel's graphic, after
+                     * a step is taken by the robot.
+                     * Responsible for updating energy bar and sensor visuals.
+                     */
+                    @Override
+                    public void run() {
+                        //TODO add GUI methods
+                    }
+                });
+            }
+            // If robot has not stopped
+            if (robot.isAtExit() && !robotStopped && flag) {
+                try {
+                    driver.stepOutExit();
+                } catch (Exception e) {
+                    robotStopped = true;
+                }
+            }
+
+            if(robotStopped && flag) {
+                //TODO stop sensors
+                goToLosing();
+            }
+        }
     }
 
     /**
@@ -243,6 +327,7 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
      * If a sensor is operational, its UI representation will be given a green tint.
      */
     private void updateSensorImages() {
+        // TODO fix this
         Log.v("PlayAnimationActivity","Updating sensor UI color to represent operational status");
         // Set forward sensor color
         if (this.fSensorStatus) {
@@ -279,10 +364,12 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
      * Sets the robot's energy bar to represent the percentage of energy still left (current energy/initial energy).
      */
     private void updateEnergyBar() {
-        // Current energy consumed by the robot, used hardcoded value of 1000 until P7
-        // TODO P7: get energyConsumed from RobotDriver.getEnergyConsumption()
-        this.energyConsumed = 1000;
-        float percentage =  (((float)this.initialEnergy - this.energyConsumed)/(float)this.initialEnergy)* 100;
+        float energyConsumed = this.driver.getEnergyConsumption();
+        // Initial energy of robot always 3500
+        float initialEnergy = 3500;
+        float percentage =  ((initialEnergy - energyConsumed)/initialEnergy)* 100;
+        if (percentage < 1 && percentage != 0)
+            percentage = 1;
         this.energyProgress.setProgress((int)percentage);
 
         // Log message of robot's energy bar percentage changing, used for debugging
@@ -292,25 +379,22 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
     /**
      * Helper method called robot loses the maze game.
      * Communicates robot's journey information (path length,shortest possible path, and energy consumption) to LosingActivity before starting it.
-     * @param pathLength Path length travelled by robot during its journey.
-     * @param shortestPath Shortest possible path (without jumping) to beat the maze.
-     * @param energyConsumed Energy consumed by the robot during its journey.
      */
-    private void goToLosing(int pathLength, int shortestPath,int energyConsumed) {
-        // TODO call goToLosing when robot runs out of energy
-        // Refactor code so that journey info comes from robot
+    private void goToLosing() {
+        int energyConsumption = (int) driver.getEnergyConsumption();
+        int pathLength = driver.getPathLength();
 
         // Log message to show you lost the game, for debugging purposes
         Log.v("PlayAnimationActivity", "Going to LosingActivity");
         // Log message to show what journey information was sent to LosingActivity, for debugging purposes
         Log.v("PlayAnimationActivity", "Sent the following information to LosingActivity:\nPath length: " + pathLength + ", Shortest Path: "
-                + shortestPath + ", Energy Consumption: " + energyConsumed);
+                + shortestPath + ", Energy Consumption: " + energyConsumption);
 
-        // Send journey information to WinningActivity
+        // Send journey information to LosingActivity
         Intent intent = new Intent(this, LosingActivity.class);
         intent.putExtra("PathLength", pathLength);
         intent.putExtra("ShortestPath", shortestPath);
-        intent.putExtra("energyConsumption", energyConsumed);
+        intent.putExtra("energyConsumption", energyConsumption);
         startActivity(intent);
     }
 
@@ -320,20 +404,20 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
      */
     @Override
     public void goToWinning() {
-        //TODO get path length from robot
-        int pathLength = 0;
+        int energyConsumption = (int) driver.getEnergyConsumption();
+        int pathLength = driver.getPathLength();
 
         // Log message to show you won the game, for debugging purposes
         Log.v("PlayAnimationActivity", "Going to WinningActivity");
         // Log message to show what journey information was sent to WinningActivity, for debugging purposes
         Log.v("PlayAnimationActivity", "Sent the following information to WinningActivity:\nPath length: " + pathLength + ", Shortest Path: "
-                + shortestPath + ", Energy Consumption: " + energyConsumed);
+                + shortestPath + ", Energy Consumption: " + energyConsumption);
 
         // Send journey information to WinningActivity
         Intent intent = new Intent(this, WinningActivity.class);
         intent.putExtra("PathLength", pathLength);
         intent.putExtra("ShortestPath", shortestPath);
-        intent.putExtra("energyConsumption", energyConsumed);
+        intent.putExtra("energyConsumption", energyConsumption);
         startActivity(intent);
     }
 
@@ -343,7 +427,7 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
      */
     private void setDriver(String Driver) {
         switch(Driver) {
-            case "WallFollower":
+            case "Wall-Follower":
                 this.driver = new WallFollower();
                 break;
             case "Wizard":
