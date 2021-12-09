@@ -44,7 +44,7 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
     // Flag to tell animation thread to stop
     private boolean flag = true;
 
-    // Speed of the animation, defaulted to 0
+    // Speed of the animation, defaulted to 0 delay
     private int speed = 0;
 
     // ProgressBar displaying the robot's energy
@@ -198,7 +198,6 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
         });
 
         // SeekBar for animation speed
-        // TODO P7: figure out appropriate range for speed (currently 0-2) and to change animation speed
         SeekBar speedSeekBar = findViewById(R.id.speedBar);
         TextView speedText = findViewById(R.id.speedText);
         // SeekBar Listener
@@ -206,6 +205,7 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
             /**
              * This method listens to changes made to the SeekBar for animation speed.
              * Gets the desired speed of the animation from the SeekBar's progress value.
+             * Speed = milliseconds delay between each driver step.
              * Updates text to show currently selected animation speed.
              * Prints Logcat verbose message for debugging purposes.
              * @param seekBar SeekBar that determines the size of the maze
@@ -214,11 +214,23 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
              */
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String output = "Set Speed: " + progress;
+                String output;
+                switch(progress){
+                    case 0:
+                        output = "Speed: Slow";
+                        break;
+                    case 1:
+                        output = "Speed: Normal";
+                        break;
+                    default:
+                        output = "Speed: Fast";
+                        break;
+                }
                 speedText.setText(output);
                 // Log message about the animation speed selected on the SeekBar, for debugging
                 Log.v("PlayAnimationActivity","Speed set to : " + progress);
-                speed = progress*100;
+                // Convert seekBar progress to desired delay (default speed = 0)
+                speed = (2-progress)*100;
             }
 
             @Override

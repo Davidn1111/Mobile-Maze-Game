@@ -37,6 +37,8 @@ public class GeneratingActivity extends AppCompatActivity {
     private String driver = null;
     // Robot sensor configuration, default Premium
     private String robotConfig = "Premium";
+    // Maze factory for making maze
+    MazeFactory factory;
 
     // Global singleton for sharing generated maze
     public Singleton singleton;
@@ -129,6 +131,9 @@ public class GeneratingActivity extends AppCompatActivity {
 
                 // Interrupt maze generation thread
                 mazeGeneration.interrupt();
+                // Kill the factory thread
+                factory.cancel();
+                factory = null;
 
                 // Return to title
                 Intent intent = new Intent(getApplicationContext(), AMazeActivity.class);
@@ -178,7 +183,7 @@ public class GeneratingActivity extends AppCompatActivity {
          */
         @Override
         public void run() {
-            MazeFactory factory = new MazeFactory();
+            factory = new MazeFactory();
             StubOrder order = new StubOrder(size,getBuilder(),!rooms,seed);
             factory.order(order);
             // Simulate maze generation
@@ -338,15 +343,5 @@ public class GeneratingActivity extends AppCompatActivity {
             default:
                 return Builder.DFS;
         }
-    }
-
-    /**
-     * Override onDestroy, so Handler for maze generation properly
-     * stops thread if GeneratingActivity is close.
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mazeGenHandler.removeCallbacks(mazeGeneration);
     }
 }
