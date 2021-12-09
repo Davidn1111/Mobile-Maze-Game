@@ -45,7 +45,7 @@ public class WinningActivity extends AppCompatActivity {
 
         // TextView for shortest path
         TextView shortestPathText = findViewById(R.id.shortestPathText);
-        shortestPathText.setText("Length of Shortest Path: "+ this.shortestPath);
+        shortestPathText.setText("Shortest Walk Path: "+ this.shortestPath);
 
         // TextView for energy consumption
         TextView energyConsumptionText = findViewById(R.id.energyConsumptionText);
