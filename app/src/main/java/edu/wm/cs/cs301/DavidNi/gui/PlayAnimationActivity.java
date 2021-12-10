@@ -26,7 +26,7 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
     // Maze generated in GeneratingActivity.
     private Maze maze;
     // MazePanel in Activity used to display maze game
-    MazePanel panel;
+    private MazePanel panel;
     // StatePlaying corresponding to this activity
     private StatePlaying statePlaying;
     // Shortest path out of maze.
@@ -55,13 +55,13 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
     private ToggleButton mapButton;
     // Images representing robot's sensors (green = operational and red = non-operational)
     // Forward sensor
-    ImageView fSensor;
+    private ImageView fSensor;
     // Back sensor
-    ImageView bSensor;
+    private ImageView bSensor;
     // Left sensor
-    ImageView lSensor;
+    private ImageView lSensor;
     // Right sensor
-    ImageView rSensor;
+    private ImageView rSensor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +118,7 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
              * If the button is togged off, the map is not shown.
              *
              * @param compoundButton Button view of the toggle button.
-             * @param checked        True if the button is toggled on, False otherwise.
+             * @param checked True if the button is toggled on, False otherwise.
              */
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
@@ -126,18 +126,16 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
                 if (mapButton.isChecked()) {
                     // Log message to show button was toggled on, for debugging
                     Log.v("PlayAnimationActivity", "Toggled Show Map Button: ON");
-                    statePlaying.keyDown(UserInput.TOGGLEFULLMAP);
-                    statePlaying.keyDown(UserInput.TOGGLESOLUTION);
-                    statePlaying.keyDown(UserInput.TOGGLELOCALMAP);
                 }
                 // Do not show map of maze if button is toggled off
                 else {
                     // Log message to show button was toggled off, for debugging
                     Log.v("PlayAnimationActivity", "Toggled Show Map Button: OFF");
-                    statePlaying.keyDown(UserInput.TOGGLEFULLMAP);
-                    statePlaying.keyDown(UserInput.TOGGLESOLUTION);
-                    statePlaying.keyDown(UserInput.TOGGLELOCALMAP);
                 }
+                // Toggle the map with each click
+                statePlaying.keyDown(UserInput.TOGGLEFULLMAP);
+                statePlaying.keyDown(UserInput.TOGGLESOLUTION);
+                statePlaying.keyDown(UserInput.TOGGLELOCALMAP);
             }
         });
 
@@ -243,6 +241,7 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
              * This method listens to changes made to the SeekBar for animation speed.
              * Gets the desired speed of the animation from the SeekBar's progress value.
              * Speed = milliseconds delay between each driver step.
+             * Slow = 200 millisecond delay, Normal = 100 millisecond delay, Fast = no delay.
              * Updates text to show currently selected animation speed.
              * Prints Logcat verbose message for debugging purposes.
              * @param seekBar SeekBar that determines the size of the maze
@@ -265,7 +264,7 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
                 }
                 speedText.setText(output);
                 // Log message about the animation speed selected on the SeekBar, for debugging
-                Log.v("PlayAnimationActivity","Speed set to : " + progress);
+                Log.v("PlayAnimationActivity",output);
                 // Convert seekBar progress to desired delay (default speed = 0)
                 speed = (2-progress)*100;
             }
@@ -309,6 +308,7 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
             // Loop that drives robot one step closer to exit,
             while (!robot.isAtExit() && !robotStopped && flag) {
 
+                // Loop that stalls run method while game is paused
                 while(paused){
                 }
 
@@ -538,6 +538,8 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
 
     /**
      * This method starts all Failure and Repair processes for a given robot.
+     * Each Failure and Repair process has sensor operational for 4 seconds and then broken for 2 seconds.
+     * 1.3 second delay between each Failure and Repair process starting.
      * @param robot robot that will have all its sensor processes started
      */
     private void startSensors(Robot robot){

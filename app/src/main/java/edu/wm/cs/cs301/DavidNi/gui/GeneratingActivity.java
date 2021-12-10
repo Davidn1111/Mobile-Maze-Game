@@ -128,6 +128,8 @@ public class GeneratingActivity extends AppCompatActivity {
                 // Kill the factory thread
                 factory.cancel();
                 factory = null;
+                // Ensure if a maze was generated, it is released.
+                Singleton.getInstance().releaseMaze();
 
                 // Return to title
                 Intent intent = new Intent(getApplicationContext(), AMazeActivity.class);
@@ -211,6 +213,8 @@ public class GeneratingActivity extends AppCompatActivity {
                     }
                 });
             }
+            // Maze generation is done at this point
+            // MazeFactory/StubOrder delivers maze to Singleton when order.getProgress() = 100
             mazeGenHandler.post(new Runnable() {
                 /**
                  * This method uses a handler to communicate to the UI that maze generation has finished.
@@ -221,13 +225,12 @@ public class GeneratingActivity extends AppCompatActivity {
                  */
                 @Override
                 public void run() {
-                    //Debugging message when maze generation is done
+                    // Debugging message when maze generation is done
                     Log.v("GeneratingActivity","Maze generation done");
                     // Set the progress bar to 100% (needed since progress updates are sporadic)
                     progressStatus = 100;
                     progressText.setText("Building Maze: 100%");
                     mazeProgress.setProgress(100);
-                    // MazeFactory/StubOrder delivers maze to Singleton when order.getProgress() = 100
 
                     // If no driver has been selected, send out a warning.
                     if (driver == null) {

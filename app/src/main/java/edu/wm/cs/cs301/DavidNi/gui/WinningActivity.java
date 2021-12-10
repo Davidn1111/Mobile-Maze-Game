@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import edu.wm.cs.cs301.DavidNi.R;
 
@@ -33,8 +32,6 @@ public class WinningActivity extends AppCompatActivity {
         this.shortestPath = intent.getIntExtra("ShortestPath", 0);
         this.energyConsumption = intent.getIntExtra("energyConsumption", -1);
 
-        // Toast message displaying journey information received from playing activity, for debugging purposes
-        Toast.makeText(getApplicationContext(), "You won the game with \nPath Length: " + this.pathLength+ ", ShortestPath: " + this.shortestPath + ",energyConsumption: " + this.energyConsumption, Toast.LENGTH_SHORT).show();
         // Log message that displays journey information received from playing activity, for debugging purposes
         Log.v("WinningActivity","Received the following information:\nPath Length: " + this.pathLength+ ", ShortestPath: " + this.shortestPath + ",energyConsumption: " + this.energyConsumption);
 
@@ -69,8 +66,6 @@ public class WinningActivity extends AppCompatActivity {
              */
             @Override
             public void onClick(View view) {
-                // Toast for returning to title
-                Toast.makeText(getApplicationContext(), "Returning to Title", Toast.LENGTH_SHORT).show();
                 // Log message for returning to title
                 Log.v("WinningActivity","Returning to Title");
 
