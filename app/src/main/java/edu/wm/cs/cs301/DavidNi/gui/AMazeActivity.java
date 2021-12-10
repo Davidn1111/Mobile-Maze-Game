@@ -3,6 +3,7 @@ package edu.wm.cs.cs301.DavidNi.gui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,13 +15,6 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 import edu.wm.cs.cs301.DavidNi.R;
@@ -62,7 +56,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
                 sizeText.setText(output);
                 // Log message about the size of the maze selected on the SeekBar, for debugging
                 Log.v("AMazeActivity","Maze size set to: " + progress);
-                setSize(progress);
+                size = progress;
             }
 
             @Override
@@ -127,7 +121,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
              */
             @Override
             public void onClick(View view) {
-                sendNewMazeData();
+                exploreMaze();
             }
         });
 
@@ -145,9 +139,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
              */
             @Override
             public void onClick(View view) {
-                sendNewMazeData();
-                //TODO replace sendNewMazeData with commented method below for P7 (to use persistent storage)
-                //sendOldMazeData();
+                revisitMaze();
             }
         });
 
@@ -173,27 +165,26 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     /**
-     * Helper method that sets the desired size of the maze to the given value
-     * (intended to be the progress value of the "Skill level" SeekBar in AMazeActivity).
-     * @param progress the progress of the Spinner
-     */
-    private void setSize(int progress) {
-        this.size = progress;
-    }
-
-    /**
      * Helper method that sends the selected maze configuration to GeneratingActivity for maze generation.
      * The seed of the maze configuration is generated randomly in this method, and
-     * the current maze configuration is stored in Android internal storage (as a file).
+     * the current maze configuration is stored in Android internal storage (shared preferences).
      * Prints Logcat verbose message for debugging purposes.
      */
-    public void sendNewMazeData() {
+    public void exploreMaze() {
         // Generate random seed
         Random rand = new Random();
         this.seed = rand.nextInt();
-        // Write maze configuration to file
-        // TODO uncomment writeFile for P7 (to use persistent storage)
-        //writeFile(this.seed,this.size,this.generationMethod,this.rooms);
+
+        // Create shared preference for maze data
+        SharedPreferences mazePreferences = getSharedPreferences(Constants.SHARED_PREFS,MODE_PRIVATE);
+        SharedPreferences.Editor editor  = mazePreferences.edit();
+
+        // Save maze preferences
+        editor.putInt("Seed",this.seed);
+        editor.putInt("Size",this.size);
+        editor.putString("Builder",this.builder);
+        editor.putBoolean("Rooms",this.rooms);
+        editor.apply();
 
         // Log message that displays the maze configuration sent to GeneratingActivity, for debugging purposes
         Log.v("AMazeActivity","Sent the following information to GeneratingActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Builder: " + this.builder + ", Rooms: " + this.rooms);
@@ -208,99 +199,12 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     /**
-     * Helper method that gets the previous maze configuration from internal storage,
+     * Helper method that gets the previous maze configuration from internal storage (shared preferences),
      * and sends it to GeneratingActivity for maze generation.
      * If no previous maze configuration exists, error message is sent.
      * Prints Logcat verbose message for debugging purposes.
      */
-    private void sendOldMazeData() {
-        // Get previous maze configuration from file
-        String mazeConfig = readFile();
-
-        // If a previous maze configuration exists
-        if (mazeConfig != null) {
-            // Parse maze configuration data
-            String[] mazeConfigSplit = mazeConfig.split(",");
-            this.seed = Integer.parseInt(mazeConfigSplit[0]);
-            this.size = Integer.parseInt(mazeConfigSplit[1]);
-            this.builder = mazeConfigSplit[2];
-            this.rooms = Boolean.parseBoolean(mazeConfigSplit[3]);
-
-            // Log message that displays the maze configuration sent to GeneratingActivity, for debugging purposes
-            Log.v("AMazeActivity","Sent the following information to GeneratingActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Builder: " + this.builder + ", Rooms: " + this.rooms);
-
-            // Send maze configuration to GeneratingActivity using intent
-            Intent intent = new Intent(this, GeneratingActivity.class);
-            intent.putExtra("Seed", this.seed);
-            intent.putExtra("Size", this.size);
-            intent.putExtra("Builder",this.builder);
-            intent.putExtra("Rooms", this.rooms);
-            startActivity(intent);
-        }
-
-        // No previous maze configuration exists
-        else {
-            Log.e("AMazeActivity", "No Previous Maze Configuration exists");
-        }
-    }
-
-    /**
-     * Helper method that writes given maze configuration to a file.
-     * Prints Logcat verbose message for debugging purposes.
-     * @param seed Seed of the maze
-     * @param size Size of the maze
-     * @param Algorithm Generation algorithm of the maze
-     * @param perfect Perfect status of the maze
-     */
-    private void writeFile(int seed, int size, String Algorithm, boolean perfect) {
-        // Create string storing all data of maze config (delimited by ",")
-        String mazeConfig = seed + "," + size + "," + Algorithm + "," + perfect;
-
-        // Try to write the maze configuration to file "Maze Configuration.txt"
-        // Note, each call will rewrite the previous file
-        try {
-            FileOutputStream fileOutputStream = openFileOutput("Maze Configuration.txt", MODE_PRIVATE);
-            fileOutputStream.write(mazeConfig.getBytes(StandardCharsets.UTF_8));
-            fileOutputStream.close();
-            // Log message of maze configuration saved in file, for debugging
-            Log.v("AMazeActivity", "Maze config (" + mazeConfig + ") saved to file");
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Helper method that reads the previous maze configuration stored in file and returns it.
-     * Prints Logcat verbose message for debugging purposes.
-     * @return The previous maze configuration (stored as string, with information delimited by ",")
-     */
-    public String readFile() {
-        // Try to get the previous maze configuration stored in file "Maze Configuration.txt"
-        try {
-            FileInputStream fileInputStream = openFileInput("Maze Configuration.txt");
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-            // maze configuration always only one line, so just read first line of bufferedReader
-            String mazeConfig = bufferedReader.readLine();
-
-            if (mazeConfig != null)
-                // Log message of maze configuration read from file, for debugging
-                Log.v("AMazeActivity", "Maze config (" + mazeConfig + ") read from file");
-
-            // Return the mazeConfig
-            return mazeConfig;
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // return null if error was thrown
-        return null;
+    private void revisitMaze() {
+        //TODO get preferences
     }
 }

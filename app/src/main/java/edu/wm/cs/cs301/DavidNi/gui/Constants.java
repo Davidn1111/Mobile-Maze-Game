@@ -25,10 +25,13 @@ public class Constants {
 	public static final int[] SKILL_ROOMS = { 0,  2,  2,  3,  4,  5, 10, 10, 20, 45, 45, 50, 50,  60,  80, 160 };
 	public static final int[] SKILL_PARTCT = { 60, 600, 900, 1200, 2100, 2700, 3300,
 	5000, 6000, 13500, 19800, 25000, 29000, 45000, 85000, 85000*4 };
-		
+
 	// Possible user input  
 	public enum UserInput {RETURNTOTITLE, START, UP, DOWN, LEFT, RIGHT, JUMP, TOGGLELOCALMAP, TOGGLEFULLMAP, TOGGLESOLUTION, ZOOMIN, ZOOMOUT }
 
 	// fixing a value matching the escape key
 	public static final int ESCAPE = 27;
+
+	// Name of shared maze preferences file
+	public static final String SHARED_PREFS = "mazePrefsDavidNi";
 }
