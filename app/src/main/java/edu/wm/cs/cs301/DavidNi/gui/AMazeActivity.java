@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -117,6 +118,7 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
              * This method listens if the Explore button was pressed.
              * If the Explore button is pressed, generate a random seed and send
              * current maze configuration to GeneratingActivity for maze generation.
+             * Stores maze configuration in Android internal storage.
              * @param view The view that was clicked
              */
             @Override
@@ -133,8 +135,8 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
         revisit.setOnClickListener(new View.OnClickListener() {
             /**
              * This method listens if the Revisit button was pressed.
-             * If the Revisit button is pressed, get previous maze configuration stored in
-             * Android internal storage (as file)
+             * If the Revisit button is pressed, send previous maze configuration stored in
+             * Android internal storage to GeneratingActivity for maze generation.
              * @param view The view that was clicked
              */
             @Override
@@ -205,6 +207,27 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
      * Prints Logcat verbose message for debugging purposes.
      */
     private void revisitMaze() {
-        //TODO get preferences
+        // Create shared preference for maze data
+        SharedPreferences mazePreferences = getSharedPreferences(Constants.SHARED_PREFS,MODE_PRIVATE);
+
+        // If previous maze preferences exist, send to GeneratingActivity
+        if (mazePreferences != null && mazePreferences.contains("Seed")) {
+            // Log message stating that previous maze is being revisited
+            Log.v("AMazeActivity", "Revisiting Previous Maze");
+
+            // Send maze configuration to GeneratingActivity using intent
+            Intent intent = new Intent(this, GeneratingActivity.class);
+            intent.putExtra("Seed", mazePreferences.getInt("Seed", 13));
+            intent.putExtra("Size", mazePreferences.getInt("Size", 0));
+            intent.putExtra("Builder", mazePreferences.getString("Builder", "Boruvka"));
+            intent.putExtra("Rooms", mazePreferences.getBoolean("Rooms", true));
+            startActivity(intent);
+        }
+
+        // Produce warning if no maze has been saved in shared preferences
+        else {
+            Toast.makeText(getApplicationContext(), "No previous maze to revisit", Toast.LENGTH_SHORT).show();
+            Log.v("AMazeActivity","No previous maze to revisit");
+        }
     }
 }
