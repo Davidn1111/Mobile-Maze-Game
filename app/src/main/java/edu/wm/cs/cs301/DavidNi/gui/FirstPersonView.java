@@ -412,7 +412,7 @@ public class FirstPersonView {
 		
 		// moved code for drawing bits and pieces into yet another method to 
 		// gain more clarity on what information is actually needed
-		mPanel.setColor(wall.getColor());
+		//mPanel.setColor(wall.getColor());
 		boolean drawn = drawPolygons(x1, x2, y11, y12, y21, y22);
 		
 		if (drawn && !wall.isSeen()) {
@@ -492,7 +492,7 @@ public class FirstPersonView {
 			// debug
 			//System.out.println("polygon-x: " + xps[0] + ", " + xps[1] + ", " + xps[2] + ", " + xps[3]) ;
 			//System.out.println("polygon-y: " + yps[0] + ", " + yps[1] + ", " + yps[2] + ", " + yps[3]) ;
-			mPanel.addFilledPolygon(xps, yps, 4);
+			mPanel.addWall(xps, yps, 4);
 			// for debugging purposes, code will draw a red line around polygon
 			// this makes individual walls visible
 			/*

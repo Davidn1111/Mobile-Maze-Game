@@ -2,11 +2,14 @@ package edu.wm.cs.cs301.DavidNi.gui;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -17,8 +20,8 @@ import edu.wm.cs.cs301.DavidNi.R;
 public class MazePanel extends View implements P5PanelF21{
 
     // Constant width and height shared among MazePanels
-    final int viewWidth = 1050;
-    final int viewHeight = 1050;
+    private final int viewWidth = Constants.VIEW_WIDTH;
+    private final int viewHeight = Constants.VIEW_HEIGHT;
     // Current Color used by View
     private int color;
     // The Bitmap of the MazePanel
@@ -27,6 +30,16 @@ public class MazePanel extends View implements P5PanelF21{
     private Canvas mpCanvas;
     // Internal Paint for MazePanel
     private Paint mpPaint;
+    // Shader for walls
+    private final BitmapShader wallShader = new BitmapShader(BitmapFactory.decodeResource(getResources(),R.drawable.wall),
+            Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+    // Shader for the sky in background
+    private final BitmapShader skyShader = new BitmapShader(BitmapFactory.decodeResource(getResources(),R.drawable.skygame),
+            Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+    // Shader for the ground in background
+    private final BitmapShader groundShader = new BitmapShader(BitmapFactory.decodeResource(getResources(),R.drawable.ground),
+            Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+
 
     /**
      * XML Constructor for MazePanel.
@@ -162,20 +175,29 @@ public class MazePanel extends View implements P5PanelF21{
     /**
      * Draws two solid rectangles to provide a background.
      * Note that this also erases any previous drawings.
-     * The color setting adjusts to the distance to the exit to
-     * provide an additional clue for the user.
-     * Colors transition from black to gold and from grey to green.
+     * Top half of the background is the sky, painted using skyShader.
+     * Bottom half of the background is the ground, painted using groundShader.
      * @param percentToExit gives the distance to exit
      */
     @Override
     public void addBackground(float percentToExit) {
+        Paint backgroundPaint = new Paint();
+        backgroundPaint.setStyle(Paint.Style.FILL);
+        // Draw the sky
+        backgroundPaint.setShader(skyShader);
+        mpCanvas.drawRect(0, 0, viewWidth, viewHeight/2,backgroundPaint);
+        // Draw the ground
+        backgroundPaint.setShader(groundShader);
+        mpCanvas.drawRect(0, viewHeight/2, viewWidth, viewHeight,backgroundPaint);
+
+        /*
         // dynamic color setting top rectangle:
         setColor(getBackgroundColor(percentToExit, true));
         this.addFilledRectangle(0, 0, viewWidth, viewHeight/2);
         // dynamic color setting bottom rectangle:
         setColor(getBackgroundColor(percentToExit, false));
         this.addFilledRectangle(0, viewHeight/2, viewWidth, viewHeight);
-
+         */
         Log.v("MazePanel","Drawing background with percent: " + percentToExit);
     }
 
@@ -221,11 +243,39 @@ public class MazePanel extends View implements P5PanelF21{
             polyPath.lineTo(xPoints[i],yPoints[i]);
         }
         // Finish path by returning to original point
-        polyPath.moveTo(xPoints[0],yPoints[0]);
+        polyPath.lineTo(xPoints[0],yPoints[0]);
         // Set paint style to be FILL for a filled polygon
         mpPaint.setStyle(Paint.Style.FILL);
         // Draw polygon on internal canvas
         mpCanvas.drawPath(polyPath,mpPaint);
+
+        Log.v("MazePanel","Drawing filled polygon");
+    }
+
+    public void addWall(int[] xPoints,int[] yPoints, int nPoints){
+        // New path representing polygon
+        Path polyPath = new Path();
+        // Start path at xPoints[0],yPoints[0]
+        polyPath.moveTo(xPoints[0],yPoints[0]);
+        // Draw lines according to given x and y points
+        for(int i = 1; i < xPoints.length;i++) {
+            polyPath.lineTo(xPoints[i],yPoints[i]);
+        }
+        // Finish path by returning to original point
+        polyPath.lineTo(xPoints[0],yPoints[0]);
+
+        // Paint wall using wall shader
+        Paint wallPaint  = new Paint();
+        wallPaint.setStyle(Paint.Style.FILL);
+        wallPaint.setShader(wallShader);
+        // Draw polygon on internal canvas
+        mpCanvas.drawPath(polyPath,wallPaint);
+
+        // Add black border for wall
+        setColor(Color.BLACK);
+        mpPaint.setStrokeWidth(7f);
+        addPolygon(xPoints,yPoints,nPoints);
+        mpPaint.setStrokeWidth(0f);
 
         Log.v("MazePanel","Drawing filled polygon");
     }
@@ -255,7 +305,7 @@ public class MazePanel extends View implements P5PanelF21{
             polyPath.lineTo(xPoints[i],yPoints[i]);
         }
         // Finish path by returning to original point
-        polyPath.moveTo(xPoints[0],yPoints[0]);
+        polyPath.lineTo(xPoints[0],yPoints[0]);
         // Set paint style to be STROKE for an unfilled polygon
         mpPaint.setStyle(Paint.Style.STROKE);
         // Draw polygon on internal canvas
