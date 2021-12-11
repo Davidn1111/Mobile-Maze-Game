@@ -14,15 +14,12 @@ import android.widget.CheckBox;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Random;
 
 import edu.wm.cs.cs301.DavidNi.R;
 
 public class AMazeActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    // Seed of the maze
-    private int seed;
     // Size of the maze, default to 0
     private int size = 0;
     // Generation method of the maze, default Boruvka
@@ -175,25 +172,25 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
     public void exploreMaze() {
         // Generate random seed
         Random rand = new Random();
-        this.seed = rand.nextInt();
+        // Seed of the maze
+        int seed = rand.nextInt();
 
         // Create shared preference for maze data
         SharedPreferences mazePreferences = getSharedPreferences(Constants.SHARED_PREFS,MODE_PRIVATE);
         SharedPreferences.Editor editor  = mazePreferences.edit();
 
-        // Save maze preferences
-        editor.putInt("Seed",this.seed);
-        editor.putInt("Size",this.size);
-        editor.putString("Builder",this.builder);
-        editor.putBoolean("Rooms",this.rooms);
+        // Link current maze preferences to seed (for revisiting)
+        String mazeData = "Size:" + this.size + ",Builder:" + this.builder + ",Rooms:" + this.rooms;
+        editor.putInt(mazeData, seed);
         editor.apply();
 
         // Log message that displays the maze configuration sent to GeneratingActivity, for debugging purposes
-        Log.v("AMazeActivity","Sent the following information to GeneratingActivity:\nSeed: " + this.seed + ", Size: " + this.size + ", Builder: " + this.builder + ", Rooms: " + this.rooms);
+        Log.v("AMazeActivity","Sent the following information to GeneratingActivity:\nSeed: " + seed +
+                ", Size: " + this.size + ", Builder: " + this.builder + ", Rooms: " + this.rooms);
 
         // Send maze configuration to GeneratingActivity using intent
         Intent intent = new Intent(this, GeneratingActivity.class);
-        intent.putExtra("Seed", this.seed);
+        intent.putExtra("Seed", seed);
         intent.putExtra("Size", this.size);
         intent.putExtra("Builder",this.builder);
         intent.putExtra("Rooms", this.rooms);
@@ -201,33 +198,39 @@ public class AMazeActivity extends AppCompatActivity implements AdapterView.OnIt
     }
 
     /**
-     * Helper method that gets the previous maze configuration from internal storage (shared preferences),
-     * and sends it to GeneratingActivity for maze generation.
-     * If no previous maze configuration exists, error message is sent.
-     * Prints Logcat verbose message for debugging purposes.
+     * Helper method that gets the previous seed matching currently selected settings
+     * from internal storage.
+     * Desired maze configuration is sent to GeneratingActivity afterwards.
+     * If no previous preference has been saved for the currently selected settings,
+     * error message is printed and App proceeds as if "explore" was pressed instead.
      */
     private void revisitMaze() {
         // Create shared preference for maze data
         SharedPreferences mazePreferences = getSharedPreferences(Constants.SHARED_PREFS,MODE_PRIVATE);
 
+        String mazeData = "Size:" + this.size + ",Builder:" + this.builder + ",Rooms:" + this.rooms;
         // If previous maze preferences exist, send to GeneratingActivity
-        if (mazePreferences != null && mazePreferences.contains("Seed")) {
+        if (mazePreferences != null && mazePreferences.contains(mazeData)) {
             // Log message stating that previous maze is being revisited
             Log.v("AMazeActivity", "Revisiting Previous Maze");
 
+            // Log message that displays the maze configuration sent to GeneratingActivity, for debugging purposes
+            Log.v("AMazeActivity","Sent the following information to GeneratingActivity:\nSeed: " + mazePreferences.getInt(mazeData, 13) +
+                    ", Size: " + this.size + ", Builder: " + this.builder + ", Rooms: " + this.rooms);
+
             // Send maze configuration to GeneratingActivity using intent
             Intent intent = new Intent(this, GeneratingActivity.class);
-            intent.putExtra("Seed", mazePreferences.getInt("Seed", 13));
-            intent.putExtra("Size", mazePreferences.getInt("Size", 0));
-            intent.putExtra("Builder", mazePreferences.getString("Builder", "Boruvka"));
-            intent.putExtra("Rooms", mazePreferences.getBoolean("Rooms", true));
+            intent.putExtra("Seed", mazePreferences.getInt(mazeData, 13));
+            intent.putExtra("Size", this.size);
+            intent.putExtra("Builder",this.builder);
+            intent.putExtra("Rooms", this.rooms);
             startActivity(intent);
         }
 
-        // Produce warning if no maze has been saved in shared preferences
+        // Produce warning if no preference has been saved for current maze settings, then explore.
         else {
-            Toast.makeText(getApplicationContext(), "No previous maze to revisit", Toast.LENGTH_SHORT).show();
-            Log.v("AMazeActivity","No previous maze to revisit");
+            Log.v("AMazeActivity","No previous maze with current settings to revisit,exploring instead");
+            exploreMaze();
         }
     }
 }
