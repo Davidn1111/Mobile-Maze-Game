@@ -11,22 +11,34 @@
         android:theme="@style/Theme.AMazeByDavidNi">
         <activity
             android:name=".gui.LosingActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label = 'You Have Been "Disqualified"'
+            />
         <activity
             android:name=".gui.WinningActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label = "You Beat the Squid Game"
+            />
         <activity
             android:name=".gui.PlayAnimationActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label = "Escape Animation"
+            />
         <activity
             android:name=".gui.PlayManuallyActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label = "Escape the Maze"
+            />
         <activity
             android:name=".gui.GeneratingActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label = "Soldiers Building Maze"
+            />
         <activity
             android:name=".gui.AMazeActivity"
-            android:exported="true">
+            android:exported="true"
+            android:label = "Welcome to the Squid Game"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
