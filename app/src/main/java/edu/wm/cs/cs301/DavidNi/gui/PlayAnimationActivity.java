@@ -588,6 +588,7 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
         if (musicPlayer == null) {
             musicPlayer = MediaPlayer.create(this,R.raw.song);
             musicPlayer.setLooping(true);
+            Log.v("PlayAnimationActivity", "Starting Music");
         }
         musicPlayer.start();
     }
@@ -599,6 +600,39 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
         if (musicPlayer != null) {
             musicPlayer.release();
             musicPlayer = null;
+            Log.v("PlayAnimationActivity", "Stopping Music");
         }
+    }
+
+    /**
+     * Method kills all threads if application stops
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Stop the animation
+        flag = false;
+        // Kill the handler
+        animationHandler.removeCallbacks(animation);
+        // Kill all sensor threads
+        stopSensors(robot);
+        // Stop the music
+        stopMusic();
+    }
+
+    /**
+     * Method kills all threads if application dies
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Stop the animation
+        flag = false;
+        // Kill the handler
+        animationHandler.removeCallbacks(animation);
+        // Kill all sensor threads
+        stopSensors(robot);
+        // Stop the music
+        stopMusic();
     }
 }

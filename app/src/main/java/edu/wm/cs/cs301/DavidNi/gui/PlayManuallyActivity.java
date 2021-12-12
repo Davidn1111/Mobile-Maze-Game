@@ -300,6 +300,7 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
             musicPlayer = MediaPlayer.create(this,R.raw.song);
             musicPlayer.setLooping(true);
         }
+        Log.v("PlayManuallyActivity", "Starting Music");
         musicPlayer.start();
     }
 
@@ -310,6 +311,27 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
         if (musicPlayer != null) {
             musicPlayer.release();
             musicPlayer = null;
+            Log.v("PlayManuallyActivity", "Stopping Music");
         }
+    }
+
+    /**
+     * Method releases MediaPlayer if application stops
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Stop the music
+        stopMusic();
+    }
+
+    /**
+     *Method releases MediaPlayer if application dies
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Stop the music
+        stopMusic();
     }
 }
