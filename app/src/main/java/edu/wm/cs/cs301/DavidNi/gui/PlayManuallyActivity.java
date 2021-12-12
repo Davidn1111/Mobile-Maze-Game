@@ -5,7 +5,9 @@ import static edu.wm.cs.cs301.DavidNi.gui.Constants.UserInput;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,6 +31,9 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
     // Toggle button to show currently visible walls of the maze
     private ToggleButton wallsButton;
 
+    // Media player for playing background music
+    MediaPlayer musicPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +56,9 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
         statePlaying.setMazeConfiguration(maze);
         statePlaying.start(panel);
 
+        // Start playing music
+        playMusic();
+
         if (maze != null) {
             // Log message to show that GeneratingActivity global maze reference exists, for debugging purposes
             Log.v("PlayManuallyActivity", "Global Maze Reference from GeneratingActivity not null");
@@ -69,6 +77,9 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
             public void onClick(View view) {
                 // Log message for returning to title
                 Log.v("PlayManuallyActivity","Returning to Title");
+
+                // Stop music
+                stopMusic();
 
                 // Return to title
                 Intent intent = new Intent(getApplicationContext(), AMazeActivity.class);
@@ -266,6 +277,9 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
      */
     @Override
     public void goToWinning() {
+        // Stop music
+        stopMusic();
+
         // Log message to show you won the game, for debugging purposes
         Log.v("PlayManuallyActivity", "Going to WinningActivity");
         // Log message to show what journey information was sent to WinningActivity, for debugging purposes
@@ -276,5 +290,26 @@ public class PlayManuallyActivity extends AppCompatActivity implements PlayingAc
         intent.putExtra("PathLength", statePlaying.getPathLength());
         intent.putExtra("ShortestPath", shortestPath);
         startActivity(intent);
+    }
+
+    /**
+     * This method initializes the MediaPlayer to start playing music (looped)
+     */
+    public void playMusic(){
+        if (musicPlayer == null) {
+            musicPlayer = MediaPlayer.create(this,R.raw.song);
+            musicPlayer.setLooping(true);
+        }
+        musicPlayer.start();
+    }
+
+    /**
+     * This method releases the MediaPlayer to stop music from playing.
+     */
+    public void stopMusic(){
+        if (musicPlayer != null) {
+            musicPlayer.release();
+            musicPlayer = null;
+        }
     }
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -62,6 +63,9 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
     private ImageView lSensor;
     // Right sensor
     private ImageView rSensor;
+
+    // Media player for playing background music
+    MediaPlayer musicPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,6 +199,8 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
                 animationHandler.removeCallbacks(animation);
                 // Kill all sensor threads
                 stopSensors(robot);
+                // Stop the music
+                stopMusic();
 
                 // Return to title
                 Intent intent = new Intent(getApplicationContext(), AMazeActivity.class);
@@ -296,6 +302,9 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
          */
         @Override
         public void run() {
+            // Start music
+            playMusic();
+
             // Start robot sensor processes
             startSensors(robot);
             // Set up robot and driver for maze game
@@ -342,6 +351,9 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
                     return;
                 }
             }
+            // Stop the music because automated play is finished
+            stopMusic();
+
             // If robot has not stopped try to go through exit
             if (robot.isAtExit() && !robotStopped && flag) {
                 try {
@@ -566,6 +578,27 @@ public class PlayAnimationActivity extends AppCompatActivity implements PlayingA
             }
             catch (Exception e) {
             }
+        }
+    }
+
+    /**
+     * This method initializes the MediaPlayer to start playing music (looped)
+     */
+    public void playMusic(){
+        if (musicPlayer == null) {
+            musicPlayer = MediaPlayer.create(this,R.raw.song);
+            musicPlayer.setLooping(true);
+        }
+        musicPlayer.start();
+    }
+
+    /**
+     * This method releases the MediaPlayer to stop music from playing.
+     */
+    public void stopMusic(){
+        if (musicPlayer != null) {
+            musicPlayer.release();
+            musicPlayer = null;
         }
     }
 }
