@@ -124,55 +124,6 @@ public class MazePanel extends View implements P5PanelF21{
     }
 
     /**
-     * Helper method for addBackground()
-     * Determine the background color for the top and bottom
-     * rectangle as a blend between starting color settings
-     * of yellowWM and lightGray towards goldWM and greenWM as final
-     * color settings close to the exit
-     * @param percentToExit describes how far it is to the exit as a percentage value
-     * @param top is true for the top rectangle, false for the bottom
-     * @return the color to use for the background rectangle
-     */
-    private int getBackgroundColor(float percentToExit, boolean top) {
-        // Colors for compass are set in color
-        Color greenWM = Color.valueOf(ContextCompat.getColor(getContext(), R.color.greenWM));
-        Color goldWM = Color.valueOf(ContextCompat.getColor(getContext(), R.color.goldWM));
-        Color yellowWM = Color.valueOf(ContextCompat.getColor(getContext(), R.color.yellowWM));
-
-        return top? blend(yellowWM, goldWM, percentToExit) :
-                blend(Color.valueOf(Color.LTGRAY), greenWM, percentToExit);
-    }
-
-    /**
-     * Helper method for getBackgroundColor()
-     * Calculates the weighted average of the two given colors.
-     * The weight for the first color is expected to be between
-     * 0 and 1. The weight for the other color is then 1-weight0.
-     * The result is the weighted average of the red, green, and
-     * blue components of the colors. The resulting alpha value
-     * for transparency is the max of the alpha values of both colors.
-     * @param fstColor is the first color
-     * @param sndColor is the second color
-     * @param weightFstColor is the weight of fstColor, {@code 0.0 <= weightFstColor <= 1.0}
-     * @return blend of both colors as weighted average of their rgb values
-     */
-    private int blend(Color fstColor, Color sndColor, float weightFstColor) {
-        if (weightFstColor < 0.1)
-            return sndColor.toArgb();
-        if (weightFstColor > 0.95)
-            return fstColor.toArgb();
-        float r = weightFstColor * fstColor.red() + (1-weightFstColor) * sndColor.red();
-        float g = weightFstColor * fstColor.green() + (1-weightFstColor) * sndColor.green();
-        float b = weightFstColor * fstColor.blue() + (1-weightFstColor) * sndColor.blue();
-        float a = Math.max(fstColor.alpha(), sndColor.alpha());
-
-        // Create mix color used calculated argb values
-        Color mix = Color.valueOf(r,g,b,a);
-        // Return the argb value of the mixed color
-        return mix.toArgb();
-    }
-
-    /**
      * Draws two solid rectangles to provide a background.
      * Note that this also erases any previous drawings.
      * Top half of the background is the sky, painted using skyShader.
@@ -189,16 +140,7 @@ public class MazePanel extends View implements P5PanelF21{
         // Draw the ground
         backgroundPaint.setShader(groundShader);
         mpCanvas.drawRect(0, viewHeight/2, viewWidth, viewHeight,backgroundPaint);
-
-        /*
-        // dynamic color setting top rectangle:
-        setColor(getBackgroundColor(percentToExit, true));
-        this.addFilledRectangle(0, 0, viewWidth, viewHeight/2);
-        // dynamic color setting bottom rectangle:
-        setColor(getBackgroundColor(percentToExit, false));
-        this.addFilledRectangle(0, viewHeight/2, viewWidth, viewHeight);
-         */
-        Log.v("MazePanel","Drawing background with percent: " + percentToExit);
+        Log.v("MazePanel","Drawing background");
     }
 
     /**
