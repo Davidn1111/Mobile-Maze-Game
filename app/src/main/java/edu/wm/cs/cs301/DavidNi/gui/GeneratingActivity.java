@@ -214,6 +214,8 @@ public class GeneratingActivity extends AppCompatActivity {
                 });
             }
             // Maze generation is done at this point
+            // Call this, to ensure that threads are synced.
+            factory.waitTillDelivered();
             // MazeFactory/StubOrder delivers maze to Singleton when order.getProgress() = 100
             mazeGenHandler.post(new Runnable() {
                 /**
